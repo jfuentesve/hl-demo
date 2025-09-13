@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace HLApi.Controllers
@@ -26,10 +27,11 @@ namespace HLApi.Controllers
 
 
         [HttpPost("login")]
+        [AllowAnonymous] 
         public ActionResult Login([FromBody] LoginRequest request)
         {
             // For demo purposes, accept hardcoded user
-            if (request.Username != "admin" || request.Password != "password")
+            if (request.Username != "admin" || request.Password != "ChangeMe123!")
                 return Unauthorized("Invalid credentials");
 
 

@@ -1,0 +1,8 @@
+# hl-api/Dockerfile.runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+EXPOSE 8080
+# Si no lo pones en la Task Definition:
+# ENV ASPNETCORE_URLS=http://+:8080
+COPY publish/linux-x64/ .
+ENTRYPOINT ["dotnet", "HLApi.dll"]
