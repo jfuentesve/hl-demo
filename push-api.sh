@@ -138,14 +138,18 @@ IMAGE="${ECR_URI}:${TAG}"
 
 # Asegurar builder y compilar para amd64 (evita el 'exec format error' en Fargate x86_64)
 info "Construyendo y subiendo imagen (linux/amd64) -> ${IMAGE}"
-docker buildx create --use >/dev/null 2>&1 || true
-docker buildx inspect --bootstrap >/dev/null
+docker buildx inspect hlbuilder >/dev/null 2>&1 || docker buildx create --use --name hlbuilder
+docker buildx inspect hlbuilder --bootstrap >/dev/null
 
+
+info "Construyendo y subiendo imagen (linux/amd64) -> ${IMAGE}"
 docker buildx build \
   --platform linux/amd64 \
+  --progress=plain \
+  --cache-from=type=registry,ref="${ECR_URI}:buildcache" \
+  --cache-to=type=registry,ref="${ECR_URI}:buildcache",mode=max \
   -t "${IMAGE}" \
-  -f "${API_DIR}/Dockerfile" \
-  "${API_DIR}" \
+  -f "${API_DIR}/Dockerfile" "${API_DIR}" \
   --push
 
 ok "Imagen publicada en ECR con tag=${TAG}"
@@ -229,16 +233,16 @@ aws ecs wait services-stable --cluster "${CLUSTER}" --services "${SERVICE}" "${A
   || info "Waiter terminó sin éxito, pero el despliegue puede seguir avanzando en segundo plano."
 
 
-############################################
-# Redeploy ECS service
-############################################
-info "Forzando nuevo deployment en ECS (${CLUSTER}/${SERVICE}) ..."
-aws ecs update-service \
-  --cluster "${CLUSTER}" \
-  --service "${SERVICE}" \
-  --force-new-deployment \
-  "${AWS_ARGS[@]}" >/dev/null
-ok "Deployment solicitado."
+# ############################################
+# # Redeploy ECS service
+# ############################################
+# info "Forzando nuevo deployment en ECS (${CLUSTER}/${SERVICE}) ..."
+# aws ecs update-service \
+#   --cluster "${CLUSTER}" \
+#   --service "${SERVICE}" \
+#   --force-new-deployment \
+#   "${AWS_ARGS[@]}" >/dev/null
+# ok "Deployment solicitado."
 
 ############################################
 # Tail logs (opcional)
