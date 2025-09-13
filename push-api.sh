@@ -144,13 +144,15 @@ docker buildx inspect hlbuilder --bootstrap >/dev/null
 
 info "Construyendo y subiendo imagen (linux/amd64) -> ${IMAGE}"
 docker buildx build \
-  --platform linux/amd64 \
   --progress=plain \
-  --cache-from=type=registry,ref="${ECR_URI}:buildcache" \
-  --cache-to=type=registry,ref="${ECR_URI}:buildcache",mode=max \
+  --platform linux/amd64 \
   -t "${IMAGE}" \
-  -f "${API_DIR}/Dockerfile" "${API_DIR}" \
+  -f "${API_DIR}/Dockerfile" \
+  "${API_DIR}" \
+  --cache-from type=registry,ref=${ECR_URI}:buildcache \
+  --cache-to   type=registry,ref=${ECR_URI}:buildcache,mode=max \
   --push
+
 
 ok "Imagen publicada en ECR con tag=${TAG}"
 echo "${TAG}" > .last-image-tag

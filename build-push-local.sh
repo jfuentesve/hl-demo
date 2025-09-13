@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# === build the new binary =====
+
+(cd hl-api && \
+  dotnet restore -r linux-x64 -v minimal && \
+    dotnet publish -c Release -r linux-x64 --no-self-contained -o ./publish/linux-x64)
+
+
 # ====== Config por defecto (puedes exportar estas vars antes de correr) ======
 REGION="${REGION:-us-east-1}"
 REPO="${REPO:-hl-api}"
