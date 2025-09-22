@@ -2,3 +2,4 @@ terraform/hl-infra/.terraform/
 hl-api/publish/
 hl-api/bin
 hl-api/obj/
+terraform/ad-hoc-user.txt
