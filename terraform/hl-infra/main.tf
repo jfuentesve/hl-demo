@@ -107,6 +107,126 @@ resource "aws_security_group_rule" "rds_allow_from_ecs" {
   source_security_group_id = aws_security_group.ecs_sg.id # origen: el SG del ECS
 }
 
+# ============================================================================
+# BASTION HOST FOR DATABASE ADMINISTRATION ACCESS (SSM Session Manager)
+# ============================================================================
+
+# AMI Data Source for Amazon Linux 2
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+# SSM Role for Bastion Host
+resource "aws_iam_role" "bastion_ssm_role" {
+  name = "hl-bastion-ssm-role-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+
+  tags = {
+    Name = "hl-bastion-ssm-role-${var.environment}"
+    Purpose = "Database Administration via SSM"
+  }
+}
+
+# Attach SSM Policy to Role
+resource "aws_iam_role_policy_attachment" "bastion_ssm_policy" {
+  role       = aws_iam_role.bastion_ssm_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+# Instance Profile for SSM
+resource "aws_iam_instance_profile" "bastion_profile" {
+  name = "hl-bastion-ssm-profile-${var.environment}"
+  role = aws_iam_role.bastion_ssm_role.name
+}
+
+# Bastion Security Group (SSM only, no SSH)
+resource "aws_security_group" "bastion_sg" {
+  name        = "hl-bastion-ssm-sg"
+  description = "Bastion via Session Manager (no direct access)"
+  vpc_id      = module.network.vpc_id
+
+  # No SSH ingress needed - managed by SSM Session Manager
+  # All access through AWS Service
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "hl-bastion-ssm-sg"
+    Purpose = "Database Administration via SSM"
+  }
+}
+
+# Bastion EC2 Instance with SSM
+resource "aws_instance" "bastion" {
+  ami                    = data.aws_ami.amazon_linux_2.id
+  instance_type          = "t3.nano"
+  subnet_id              = module.network.private_subnets[0]
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+  iam_instance_profile   = aws_iam_instance_profile.bastion_profile.name
+
+  user_data = base64encode(templatefile("${path.module}/bastion-init-ssm.sh", {
+    rds_endpoint = "hl-deals-db-dev.cav0kksicv9i.us-east-1.rds.amazonaws.com,1433"
+    db_username  = var.db_username
+    db_password  = ***REDACTED***
+    db_name      = "hldeals"
+  }))
+
+  root_block_device {
+    volume_size = 8
+    volume_type = "gp2"
+    encrypted   = true
+  }
+
+  monitoring = true
+
+  tags = {
+    Name = "hl-bastion-ssm-${var.environment}"
+    Purpose = "Database Administration Host"
+    Environment = var.environment
+    AccessMethod = "SSM Session Manager"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# Security Group Rule: Allow Bastion to Access RDS
+resource "aws_security_group_rule" "rds_allow_from_bastion" {
+  type                     = "ingress"
+  from_port                = 1433
+  to_port                  = 1433
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.rds_sg.id  # RDS Security Group
+  source_security_group_id = aws_security_group.bastion_sg.id  # SSM Bastion SG
+}
+
 module "s3_frontend" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "4.1.0"
@@ -398,4 +518,3 @@ resource "aws_lb_listener" "http" {
     target_group_arn = aws_lb_target_group.api_tg.arn
   }
 }
-

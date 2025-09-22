@@ -2,11 +2,16 @@
 namespace HLApi.Models
 {
 public class Deal
-{
-public int Id { get; set; }
-public string Name { get; set; } = string.Empty;
-public string Client { get; set; } = string.Empty;
-public decimal Amount { get; set; }
-public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-}
+    {
+        public long Id { get; set; }                      // BIGINT
+        public string Title { get; set; } = string.Empty;  // maps to Title if you don't rename in DB
+        public string Client { get; set; } = string.Empty;
+        public decimal Amount { get; set; }               // default precision via EF config
+        public string? Description { get; set; }
+        public string CurrencyCode { get; set; } = "USD"; // length 3; enforce in EF config
+        public string Status { get; set; } = "New";
+        public DateTime CreatedAt { get; set; }           // defaulted by DB to SYSUTCDATETIME()
+        public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
+    }
 }

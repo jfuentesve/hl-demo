@@ -1,3 +1,4 @@
 terraform/hl-infra/.terraform/
 hl-api/publish/
 hl-api/bin
+hl-api/obj/

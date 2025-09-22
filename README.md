@@ -4,7 +4,7 @@
 
 HL-API is a comprehensive ASP.NET Core 8.0 RESTful API for managing business deals. It provides full CRUD operations for deal entities with JWT-based authentication, deployed on AWS infrastructure using modern DevOps practices.
 
-**Production URL**: [Application Load Balancer URL would go here]
+**Production URL**: http://hl-api-alb-1496841054.us-east-1.elb.amazonaws.com
 
 ## Technology Stack
 

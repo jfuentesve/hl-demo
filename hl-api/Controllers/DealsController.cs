@@ -30,7 +30,7 @@ namespace HLApi.Controllers
             .Select(d => new DealDto
             {
                 Id = d.Id,
-                Name = d.Name,
+                Title = d.Title,
                 Client = d.Client,
                 Amount = d.Amount,
                 CreatedAt = d.CreatedAt
@@ -52,7 +52,7 @@ namespace HLApi.Controllers
             return Ok(new DealDto
             {
                 Id = deal.Id,
-                Name = deal.Name,
+                Title = deal.Title,
                 Client = deal.Client,
                 Amount = deal.Amount,
                 CreatedAt = deal.CreatedAt
@@ -65,7 +65,7 @@ namespace HLApi.Controllers
         {
             var deal = new Deal
             {
-                Name = dto.Name,
+                Title = dto.Title,
                 Client = dto.Client,
                 Amount = dto.Amount,
                 CreatedAt = DateTime.UtcNow
@@ -77,7 +77,7 @@ namespace HLApi.Controllers
             return CreatedAtAction(nameof(GetDeal), new { id = deal.Id }, new DealDto
             {
                 Id = deal.Id,
-                Name = deal.Name,
+                Title = deal.Title,
                 Client = deal.Client,
                 Amount = deal.Amount,
                 CreatedAt = deal.CreatedAt
@@ -92,7 +92,7 @@ namespace HLApi.Controllers
             if (deal == null) return NotFound();
 
 
-            deal.Name = dto.Name;
+            deal.Title = dto.Title;
             deal.Client = dto.Client;
             deal.Amount = dto.Amount;
 
