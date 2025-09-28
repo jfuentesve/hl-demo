@@ -24,7 +24,7 @@ export class AuthService {
     }
 
     return this.http.post<LoginResponse>(
-      `${environment.apiBaseUrl}/api/auth/login`,
+      `${environment.apiUrl}/auth/login`,
       { username, password }
     ).pipe(
       map(res => {

@@ -1,8 +1,16 @@
-// Navbar component styles
-.navbar-container {
-  // Styles to be added
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-inline: 1.5rem;
 }
 
-.spacer { flex: 1; }
-.brand { font-weight: 600; cursor: pointer; }
+.brand {
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+}
 
+.spacer {
+  flex: 1;
+}

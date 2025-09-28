@@ -1,4 +1,11 @@
-// User home component for HL Deals application
-export class UserHomeComponent {
-  // Component implementation to be added
-}
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-user-home',
+  standalone: true,
+  templateUrl: './user-home.component.html',
+  styleUrls: ['./user-home.component.scss'],
+  imports: [CommonModule]
+})
+export class UserHomeComponent {}
