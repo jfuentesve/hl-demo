@@ -10,5 +10,7 @@
   </mat-form-field>
 
   <button mat-raised-button color="primary" [disabled]="f.invalid || loading">Login</button>
-  <div class="error" *ngIf="error">{{error}}</div>
+  @if (error) {
+    <div class="error">{{error}}</div>
+  }
 </form>

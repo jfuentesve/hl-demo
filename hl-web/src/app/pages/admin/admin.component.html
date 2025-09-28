@@ -4,7 +4,9 @@
   <mat-form-field>
     <mat-label>Client</mat-label>
     <mat-select [(ngModel)]="draft.client">
-      <mat-option *ngFor="let u of users" [value]="u.username">{{u.displayName}}</mat-option>
+      @for (u of users; track u.username) {
+        <mat-option [value]="u.username">{{u.displayName}}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
   <mat-form-field><mat-label>Amount</mat-label><input matInput type="number" [(ngModel)]="draft.amount"></mat-form-field>
