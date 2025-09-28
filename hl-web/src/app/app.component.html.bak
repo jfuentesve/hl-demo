@@ -1,0 +1,5 @@
+<!-- Main app component template -->
+<div class="app-container">
+    <app-navbar></app-navbar>
+  <router-outlet></router-outlet>
+</div>

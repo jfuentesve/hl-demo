@@ -1,0 +1,29 @@
+<h2>Admin – Deals</h2>
+<section class="new">
+  <mat-form-field><mat-label>Name</mat-label><input matInput [(ngModel)]="draft.name"></mat-form-field>
+  <mat-form-field>
+    <mat-label>Client</mat-label>
+    <mat-select [(ngModel)]="draft.client">
+      <mat-option *ngFor="let u of users" [value]="u.username">{{u.displayName}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field><mat-label>Amount</mat-label><input matInput type="number" [(ngModel)]="draft.amount"></mat-form-field>
+  <button mat-raised-button color="primary" (click)="create()">Create</button>
+</section>
+
+<mat-divider></mat-divider>
+
+<section>
+  <table mat-table [dataSource]="deals">
+    <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef>ID</th><td mat-cell *matCellDef="let d">{{d.id}}</td></ng-container>
+    <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef>Name</th><td mat-cell *matCellDef="let d">{{d.name}}</td></ng-container>
+    <ng-container matColumnDef="client"><th mat-header-cell *matHeaderCellDef>Client</th><td mat-cell *matCellDef="let d">{{d.client}}</td></ng-container>
+    <ng-container matColumnDef="amount"><th mat-header-cell *matHeaderCellDef>Amount</th><td mat-cell *matCellDef="let d">{{d.amount | currency}}</td></ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let d"><button mat-stroked-button color="warn" (click)="remove(d.id)">Delete</button></td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['id','name','client','amount','actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['id','name','client','amount','actions'];"></tr>
+  </table>
+</section>
