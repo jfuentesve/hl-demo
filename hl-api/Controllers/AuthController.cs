@@ -10,10 +10,14 @@ namespace HLApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private static readonly Dictionary<string, string> Users = new(StringComparer.OrdinalIgnoreCase)
+        private sealed record DemoUser(string Password, string Role, string Client);
+
+        private static readonly Dictionary<string, DemoUser> Users = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "admin", "ChangeMe123!" },
-            { "alice", "demo123" }
+            { "admin", new DemoUser("ChangeMe123!", "Admin", "Corporate HQ") },
+            { "alice", new DemoUser("demo123", "User", "Acme Corp") },
+            { "bob",   new DemoUser("demo123", "User", "Globex LLC") },
+            { "guest", new DemoUser("guest",   "Viewer", "Public") }
         };
 
         private readonly TokenService _tokenService;
@@ -29,13 +33,13 @@ namespace HLApi.Controllers
         [AllowAnonymous] 
         public ActionResult Login([FromBody] LoginRequest request)
         {
-            if (!Users.TryGetValue(request.Username, out var expectedPassword) || expectedPassword != request.Password)
+            if (!Users.TryGetValue(request.Username, out var user) || user.Password != request.Password)
             {
                 return Unauthorized("Invalid credentials");
             }
 
 
-            var token = _tokenService.GenerateToken(request.Username);
+            var token = _tokenService.GenerateToken(request.Username, user.Role, user.Client);
             return Ok(new { token });
         }
     }

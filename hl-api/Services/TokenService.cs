@@ -19,13 +19,14 @@ namespace HLApi.Services
         }
 
 
-        public string GenerateToken(string username)
+        public string GenerateToken(string username, string role, string client)
         {
             var claims = new[] {
             new Claim(JwtRegisteredClaimNames.Sub, username),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "User")
+            new Claim(ClaimTypes.Role, role),
+            new Claim("client", client)
             };
 
 
