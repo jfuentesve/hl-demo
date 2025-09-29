@@ -17,6 +17,12 @@
 <mat-divider></mat-divider>
 
 <section>
+  @if (loading) {
+    <p class="status">Loading deals…</p>
+  }
+  @if (error) {
+    <p class="status error">{{ error }}</p>
+  }
   <table mat-table [dataSource]="deals">
     <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef>ID</th><td mat-cell *matCellDef="let d">{{d.id}}</td></ng-container>
     <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef>Name</th><td mat-cell *matCellDef="let d">{{d.name}}</td></ng-container>

@@ -33,34 +33,66 @@ export class AdminComponent implements OnInit {
   deals: Deal[] = [];
   users = USERS.filter(u => u.role !== 'viewer');
   draft: Partial<Deal> = { name: '', client: 'alice', amount: 0 };
+  loading = false;
+  error: string | null = null;
 
   constructor(
     private dealsSvc: DealsService,
     private auth: AuthService
   ) {}
 
-  get isAuth() { 
-    console.log("login state: " + this.auth.isAuthenticated());
-    return this.auth.isAuthenticated(); 
-}
-
+  get isAuth(): boolean {
+    return this.auth.isAuthenticated();
+  }
 
   ngOnInit(): void {
-    this.refresh();
+    if (this.isAuth) {
+      this.refresh();
+    }
   }
 
   refresh(): void {
-    this.dealsSvc.list().subscribe((d) => (this.deals = d));
+    if (!this.isAuth) {
+      this.deals = [];
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+
+    this.dealsSvc.list().subscribe({
+      next: (d) => {
+        this.deals = d;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load deals', err);
+        this.error = 'Unable to load deals. Please try again.';
+        this.loading = false;
+      }
+    });
   }
 
   create(): void {
-    this.dealsSvc.create(this.draft).subscribe(() => {
-      this.draft = { name: '', client: 'alice', amount: 0 };
-      this.refresh();
+    this.dealsSvc.create(this.draft).subscribe({
+      next: () => {
+        this.draft = { name: '', client: 'alice', amount: 0 };
+        this.refresh();
+      },
+      error: (err) => {
+        console.error('Failed to create deal', err);
+        this.error = 'Unable to create deal.';
+      }
     });
   }
 
   remove(id: number): void {
-    this.dealsSvc.remove(id).subscribe(() => this.refresh());
+    this.dealsSvc.remove(id).subscribe({
+      next: () => this.refresh(),
+      error: (err) => {
+        console.error('Failed to delete deal', err);
+        this.error = 'Unable to delete deal.';
+      }
+    });
   }
 }
