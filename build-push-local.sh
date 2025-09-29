@@ -4,6 +4,7 @@ set -euo pipefail
 # === build the new binary =====
 
 (cd hl-api && \
+  rm -rf publish && \
   dotnet restore -r linux-x64 -v minimal && \
     dotnet publish -c Release -r linux-x64 --no-self-contained -o ./publish/linux-x64)
 

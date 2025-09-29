@@ -22,11 +22,11 @@ namespace HLApi.Services
         public string GenerateToken(string username)
         {
             var claims = new[] {
-new Claim(JwtRegisteredClaimNames.Sub, username),
-new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-new Claim(ClaimTypes.Name, username),
-new Claim(ClaimTypes.Role, "User")
-};
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Name, username),
+            new Claim(ClaimTypes.Role, "User")
+            };
 
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
@@ -34,11 +34,11 @@ new Claim(ClaimTypes.Role, "User")
 
 
             var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
-            signingCredentials: creds
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds
             );
 
 
