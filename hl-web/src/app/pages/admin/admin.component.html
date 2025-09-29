@@ -6,7 +6,7 @@
     <mat-label>Client</mat-label>
     <mat-select [(ngModel)]="draft.client">
       @for (u of users; track u.username) {
-        <mat-option [value]="u.client">{{u.displayName}} — {{u.client}}</mat-option>
+        <mat-option [value]="u.client">{{u.firstName}} {{u.lastName}} — {{u.client}}</mat-option>
       }
     </mat-select>
   </mat-form-field>

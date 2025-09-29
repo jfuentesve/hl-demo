@@ -13,6 +13,8 @@ export class AuthService {
   private readonly roleKey  = 'role';
   private readonly userKey  = 'username';
   private readonly clientKey = 'client';
+  private readonly firstNameKey = 'firstName';
+  private readonly lastNameKey = 'lastName';
 
   constructor(private http: HttpClient) {}
 
@@ -40,6 +42,16 @@ export class AuthService {
         } else {
           localStorage.removeItem(this.clientKey);
         }
+        if (userMeta?.firstName) {
+          localStorage.setItem(this.firstNameKey, userMeta.firstName);
+        } else {
+          localStorage.removeItem(this.firstNameKey);
+        }
+        if (userMeta?.lastName) {
+          localStorage.setItem(this.lastNameKey, userMeta.lastName);
+        } else {
+          localStorage.removeItem(this.lastNameKey);
+        }
       })
     );
   }
@@ -49,12 +61,23 @@ export class AuthService {
     localStorage.removeItem(this.roleKey);
     localStorage.removeItem(this.userKey);
     localStorage.removeItem(this.clientKey);
+    localStorage.removeItem(this.firstNameKey);
+    localStorage.removeItem(this.lastNameKey);
   }
 
   get token(): string | null { return localStorage.getItem(this.tokenKey); }
   get role(): Role { return (localStorage.getItem(this.roleKey) as Role) ?? 'viewer'; }
   get username(): string | null { return localStorage.getItem(this.userKey); }
   get client(): string | null { return localStorage.getItem(this.clientKey); }
+  get firstName(): string | null { return localStorage.getItem(this.firstNameKey); }
+  get lastName(): string | null { return localStorage.getItem(this.lastNameKey); }
+  get fullName(): string | null {
+    const parts = [this.firstName, this.lastName].filter((p): p is string => !!p && p.trim().length > 0);
+    if (parts.length > 0) {
+      return parts.join(' ');
+    }
+    return this.username;
+  }
 
   isAuthenticated(): boolean { return !!this.token; }
   hasRole(required: Role | Role[]): boolean {

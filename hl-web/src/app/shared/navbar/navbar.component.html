@@ -14,6 +14,6 @@
   @if (!isAuthenticated) {
     <button mat-stroked-button routerLink="/login">Login</button>
   } @else {
-    <button mat-stroked-button (click)="logout()">Logout ({{username}})</button>
+    <button mat-stroked-button (click)="logout()">Logout ({{displayName}})</button>
   }
 </mat-toolbar>

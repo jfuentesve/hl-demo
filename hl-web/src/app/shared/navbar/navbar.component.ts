@@ -36,8 +36,8 @@ export class NavbarComponent {
     return this.auth.hasRole(['user', 'admin']);
   }
 
-  get username(): string | null {
-    return this.auth.username;
+  get displayName(): string {
+    return this.auth.fullName ?? this.auth.username ?? '';
   }
 
   logout(): void {
