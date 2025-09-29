@@ -43,7 +43,7 @@ namespace HLApi.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DealDto>> GetDeal(int id)
+        public async Task<ActionResult<DealDto>> GetDeal(long id)
         {
             var deal = await _context.Deals.FindAsync(id);
             if (deal == null) return NotFound();
@@ -86,7 +86,7 @@ namespace HLApi.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDeal(int id, DealUpdateDto dto)
+        public async Task<IActionResult> UpdateDeal(long id, DealUpdateDto dto)
         {
             var deal = await _context.Deals.FindAsync(id);
             if (deal == null) return NotFound();
@@ -103,7 +103,7 @@ namespace HLApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDeal(int id)
+        public async Task<IActionResult> DeleteDeal(long id)
         {
             var deal = await _context.Deals.FindAsync(id);
             if (deal == null) return NotFound();
