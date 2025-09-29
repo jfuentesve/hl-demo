@@ -1,13 +1,6 @@
 // hl-api/Controllers/AuthController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using HLApi.Models;
 using HLApi.Services;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -17,6 +10,12 @@ namespace HLApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private static readonly Dictionary<string, string> Users = new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "admin", "ChangeMe123!" },
+            { "alice", "demo123" }
+        };
+
         private readonly TokenService _tokenService;
 
 
@@ -30,9 +29,10 @@ namespace HLApi.Controllers
         [AllowAnonymous] 
         public ActionResult Login([FromBody] LoginRequest request)
         {
-            // For demo purposes, accept hardcoded user
-            if (request.Username != "admin" || request.Password != "ChangeMe123!")
+            if (!Users.TryGetValue(request.Username, out var expectedPassword) || expectedPassword != request.Password)
+            {
                 return Unauthorized("Invalid credentials");
+            }
 
 
             var token = _tokenService.GenerateToken(request.Username);
