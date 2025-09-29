@@ -12,6 +12,7 @@ export class AuthService {
   private readonly tokenKey = 'jwt';
   private readonly roleKey  = 'role';
   private readonly userKey  = 'username';
+  private readonly clientKey = 'client';
 
   constructor(private http: HttpClient) {}
 
@@ -29,10 +30,16 @@ export class AuthService {
     ).pipe(
       map(res => {
         console.log('Login response', res);
-        const role = USERS.find(u => u.username === username)?.role ?? 'viewer';
+        const userMeta = USERS.find(u => u.username === username);
+        const role = userMeta?.role ?? 'viewer';
         localStorage.setItem(this.tokenKey, res.token);
         localStorage.setItem(this.roleKey, role);
         localStorage.setItem(this.userKey, username);
+        if (userMeta?.client) {
+          localStorage.setItem(this.clientKey, userMeta.client);
+        } else {
+          localStorage.removeItem(this.clientKey);
+        }
       })
     );
   }
@@ -41,11 +48,13 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.roleKey);
     localStorage.removeItem(this.userKey);
+    localStorage.removeItem(this.clientKey);
   }
 
   get token(): string | null { return localStorage.getItem(this.tokenKey); }
   get role(): Role { return (localStorage.getItem(this.roleKey) as Role) ?? 'viewer'; }
   get username(): string | null { return localStorage.getItem(this.userKey); }
+  get client(): string | null { return localStorage.getItem(this.clientKey); }
 
   isAuthenticated(): boolean { return !!this.token; }
   hasRole(required: Role | Role[]): boolean {

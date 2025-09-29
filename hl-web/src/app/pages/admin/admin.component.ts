@@ -32,14 +32,16 @@ import { AuthService } from '../../core/services/auth.service';
 export class AdminComponent implements OnInit {
   deals: Deal[] = [];
   users = USERS.filter(u => u.role !== 'viewer');
-  draft: Partial<Deal> = { name: '', client: 'alice', amount: 0 };
+  draft: Partial<Deal> = { name: '', client: '', amount: 0 };
   loading = false;
   error: string | null = null;
 
   constructor(
     private dealsSvc: DealsService,
     private auth: AuthService
-  ) {}
+  ) {
+    this.draft.client = this.users[0]?.client ?? '';
+  }
 
   get isAuth(): boolean {
     return this.auth.isAuthenticated();
@@ -74,9 +76,14 @@ export class AdminComponent implements OnInit {
   }
 
   create(): void {
+    if (!this.draft.client) {
+      this.error = 'Please select a client.';
+      return;
+    }
+
     this.dealsSvc.create(this.draft).subscribe({
       next: () => {
-        this.draft = { name: '', client: 'alice', amount: 0 };
+        this.draft = { name: '', client: this.users[0]?.client ?? '', amount: 0 };
         this.refresh();
       },
       error: (err) => {
