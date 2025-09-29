@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { USERS } from '../../core/constants/app.constants';
 import { Deal } from '../../core/models/deal.model';
-import { DealsService } from '../../core/services/deals.service';
+import { DealInput, DealsService } from '../../core/services/deals.service';
 import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/user.model';
+import { CreateDealDialogComponent, DealFormPayload } from './create-deal-dialog.component';
 
 @Component({
   selector: 'app-admin',
@@ -20,28 +22,27 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./admin.component.scss'],
   imports: [
     CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     MatButtonModule,
-    MatDividerModule,
-    MatTableModule
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatTableModule,
+    MatTooltipModule
   ]
 })
 export class AdminComponent implements OnInit {
   deals: Deal[] = [];
-  users = USERS.filter(u => u.role !== 'viewer');
-  draft: Partial<Deal> = { name: '', client: '', amount: 0 };
+  users: User[] = USERS.filter(u => u.role !== 'viewer');
   loading = false;
   error: string | null = null;
+  displayedColumns: string[] = ['id', 'name', 'client', 'amount', 'actions'];
 
   constructor(
     private dealsSvc: DealsService,
-    private auth: AuthService
-  ) {
-    this.draft.client = this.users[0]?.client ?? '';
-  }
+    private auth: AuthService,
+    private dialog: MatDialog
+  ) {}
 
   get isAuth(): boolean {
     return this.auth.isAuthenticated();
@@ -75,24 +76,6 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  create(): void {
-    if (!this.draft.client) {
-      this.error = 'Please select a client.';
-      return;
-    }
-
-    this.dealsSvc.create(this.draft).subscribe({
-      next: () => {
-        this.draft = { name: '', client: this.users[0]?.client ?? '', amount: 0 };
-        this.refresh();
-      },
-      error: (err) => {
-        console.error('Failed to create deal', err);
-        this.error = 'Unable to create deal.';
-      }
-    });
-  }
-
   remove(id: number): void {
     this.dealsSvc.remove(id).subscribe({
       next: () => this.refresh(),
@@ -101,5 +84,79 @@ export class AdminComponent implements OnInit {
         this.error = 'Unable to delete deal.';
       }
     });
+  }
+
+  openCreateDialog(): void {
+    const dialogRef = this.dialog.open(CreateDealDialogComponent, {
+      width: '420px',
+      data: { users: this.users }
+    });
+
+    dialogRef.afterClosed().subscribe((result?: DealFormPayload) => {
+      if (!result) {
+        return;
+      }
+      if (result.id != null) {
+        this.updateDeal(result);
+      } else {
+        this.createDeal(result);
+      }
+    });
+  }
+
+  openEditDialog(deal: Deal): void {
+    const dialogRef = this.dialog.open(CreateDealDialogComponent, {
+      width: '420px',
+      data: { users: this.users, deal }
+    });
+
+    dialogRef.afterClosed().subscribe((result?: DealFormPayload) => {
+      if (!result) {
+        return;
+      }
+      if (result.id != null) {
+        this.updateDeal(result);
+      }
+    });
+  }
+
+  private createDeal(payload: DealFormPayload): void {
+    this.loading = true;
+    this.error = null;
+
+    this.dealsSvc.create(this.toDealInput(payload)).subscribe({
+      next: () => this.refresh(),
+      error: (err) => {
+        console.error('Failed to create deal', err);
+        this.error = 'Unable to create deal.';
+        this.loading = false;
+      }
+    });
+  }
+
+  private updateDeal(payload: DealFormPayload): void {
+    if (payload.id == null) {
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+
+    this.dealsSvc.update(payload.id, this.toDealInput(payload)).subscribe({
+      next: () => this.refresh(),
+      error: (err) => {
+        console.error('Failed to update deal', err);
+        this.error = 'Unable to update deal.';
+        this.loading = false;
+      }
+    });
+  }
+
+  private toDealInput(payload: DealFormPayload): DealInput {
+    return {
+      name: payload.name,
+      client: payload.client,
+      amount: payload.amount
+    };
   }
 }

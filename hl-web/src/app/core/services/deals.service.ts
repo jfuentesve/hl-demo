@@ -27,12 +27,8 @@ export class DealsService {
       .pipe(map((items) => items.map(DealsService.toDeal)));
   }
 
-  create(payload: Partial<Deal>): Observable<Deal> {
-    const body: DealCreatePayload = {
-      title: payload.name ?? '',
-      client: payload.client ?? '',
-      amount: payload.amount ?? 0
-    };
+  create(payload: DealInput): Observable<Deal> {
+    const body = this.toApiPayload(payload);
 
     return this.http
       .post<DealDto>(this.baseUrl, body)
@@ -41,6 +37,19 @@ export class DealsService {
 
   remove(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  update(id: number, payload: DealInput): Observable<void> {
+    const body = this.toApiPayload(payload);
+    return this.http.put<void>(`${this.baseUrl}/${id}`, body);
+  }
+
+  private toApiPayload(payload: DealInput): DealCreatePayload {
+    return {
+      title: payload.name,
+      client: payload.client,
+      amount: payload.amount
+    };
   }
 }
 
@@ -54,6 +63,12 @@ interface DealDto {
 
 interface DealCreatePayload {
   title: string;
+  client: string;
+  amount: number;
+}
+
+export interface DealInput {
+  name: string;
   client: string;
   amount: number;
 }

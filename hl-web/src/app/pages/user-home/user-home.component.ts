@@ -27,7 +27,7 @@ export class UserHomeComponent implements OnInit {
     private dealsSvc: DealsService,
     private auth: AuthService
   ) {
-    this.displayName = this.auth.fullName ?? this.auth.username ?? 'User';
+    this.displayName = this.auth.firstName ?? this.auth.username ?? 'User';
     this.clientName = this.auth.client;
   }
 

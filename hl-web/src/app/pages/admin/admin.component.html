@@ -1,41 +1,74 @@
 <h2>Admin – Deals</h2>
 @if (isAuth) {
-  <section class="new">
-  <mat-form-field><mat-label>Name</mat-label><input matInput [(ngModel)]="draft.name"></mat-form-field>
-  <mat-form-field>
-    <mat-label>Client</mat-label>
-    <mat-select [(ngModel)]="draft.client">
-      @for (u of users; track u.username) {
-        <mat-option [value]="u.client">{{u.firstName}} {{u.lastName}} — {{u.client}}</mat-option>
+  <section class="admin-toolbar">
+    <button mat-flat-button color="primary" (click)="openCreateDialog()">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+      New Deal
+    </button>
+    <div class="summary">Total deals: {{ deals.length }}</div>
+  </section>
+
+  <mat-card class="admin-card">
+    <mat-card-content>
+      @if (loading) {
+        <div class="loading-state">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          <p>Loading deals…</p>
+        </div>
       }
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field><mat-label>Amount</mat-label><input matInput type="number" [(ngModel)]="draft.amount"></mat-form-field>
-  <button mat-raised-button color="primary" (click)="create()">Create</button>
-</section>
 
-<mat-divider></mat-divider>
+      @if (error) {
+        <div class="status error">{{ error }}</div>
+      }
 
-<section>
-  @if (loading) {
-    <p class="status">Loading deals…</p>
-  }
-  @if (error) {
-    <p class="status error">{{ error }}</p>
-  }
-  <table mat-table [dataSource]="deals">
-    <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef>ID</th><td mat-cell *matCellDef="let d">{{d.id}}</td></ng-container>
-    <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef>Name</th><td mat-cell *matCellDef="let d">{{d.name}}</td></ng-container>
-    <ng-container matColumnDef="client"><th mat-header-cell *matHeaderCellDef>Client</th><td mat-cell *matCellDef="let d">{{d.client}}</td></ng-container>
-    <ng-container matColumnDef="amount"><th mat-header-cell *matHeaderCellDef>Amount</th><td mat-cell *matCellDef="let d">{{d.amount | currency}}</td></ng-container>
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let d"><button mat-stroked-button color="warn" (click)="remove(d.id)">Delete</button></td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['id','name','client','amount','actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id','name','client','amount','actions'];"></tr>
-  </table>
-</section>
+      @if (!loading && !error) {
+        @if (deals.length === 0) {
+          <p class="empty-state">No deals registered yet. Use "New Deal" to create one.</p>
+        } @else {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="deals" class="deals-table">
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let d">{{ d.id }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let d">{{ d.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="client">
+                <th mat-header-cell *matHeaderCellDef>Client</th>
+                <td mat-cell *matCellDef="let d">{{ d.client }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef>Amount</th>
+                <td mat-cell *matCellDef="let d">{{ d.amount | currency }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let d" class="actions-cell">
+                  <div class="actions-wrapper">
+                    <button mat-icon-button matTooltip="Edit deal" (click)="openEditDialog(d)">
+                      <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" matTooltip="Delete deal" (click)="remove(d.id)">
+                      <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        }
+      }
+    </mat-card-content>
+  </mat-card>
 } @else {
   <p>Please log in to view this page.</p>
 }
