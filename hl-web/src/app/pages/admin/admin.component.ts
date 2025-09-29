@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { USERS } from '../../core/constants/app.constants';
 import { Deal } from '../../core/models/deal.model';
 import { DealsService } from '../../core/services/deals.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -33,7 +34,16 @@ export class AdminComponent implements OnInit {
   users = USERS.filter(u => u.role !== 'viewer');
   draft: Partial<Deal> = { name: '', client: 'alice', amount: 0 };
 
-  constructor(private dealsSvc: DealsService) {}
+  constructor(
+    private dealsSvc: DealsService,
+    private auth: AuthService
+  ) {}
+
+  get isAuth() { 
+    console.log("login state: " + this.auth.isAuthenticated());
+    return this.auth.isAuthenticated(); 
+}
+
 
   ngOnInit(): void {
     this.refresh();

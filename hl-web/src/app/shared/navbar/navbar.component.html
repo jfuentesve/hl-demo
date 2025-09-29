@@ -1,6 +1,19 @@
-<mat-toolbar color="primary" class="navbar">
-  <a class="brand" routerLink="/">HL Deals</a>
+<mat-toolbar color="primary">
+  <span class="brand" routerLink="/">HL Deals</span>
   <span class="spacer"></span>
-  <a mat-button routerLink="/login">Login</a>
-  <a mat-button routerLink="/admin">Admin</a>
+
+  <a mat-button routerLink="/">Home</a>
+  @if (isUserOrAdmin) {
+    <a mat-button routerLink="/home">My Deals</a>
+  }
+  @if (role==='admin') {
+    <a mat-button routerLink="/admin">Admin</a>
+  }
+
+  <span class="spacer"></span>
+  @if (!isAuthenticated) {
+    <button mat-stroked-button routerLink="/login">Login</button>
+  } @else {
+    <button mat-stroked-button (click)="logout()">Logout ({{username}})</button>
+  }
 </mat-toolbar>

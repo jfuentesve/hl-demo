@@ -28,6 +28,7 @@ export class AuthService {
       { username, password }
     ).pipe(
       map(res => {
+        console.log('Login response', res);
         const role = USERS.find(u => u.username === username)?.role ?? 'viewer';
         localStorage.setItem(this.tokenKey, res.token);
         localStorage.setItem(this.roleKey, role);

@@ -1,5 +1,6 @@
 <h2>Admin – Deals</h2>
-<section class="new">
+@if (isAuth) {
+  <section class="new">
   <mat-form-field><mat-label>Name</mat-label><input matInput [(ngModel)]="draft.name"></mat-form-field>
   <mat-form-field>
     <mat-label>Client</mat-label>
@@ -29,3 +30,6 @@
     <tr mat-row *matRowDef="let row; columns: ['id','name','client','amount','actions'];"></tr>
   </table>
 </section>
+} @else {
+  <p>Please log in to view this page.</p>
+}
