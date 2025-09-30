@@ -1,0 +1,22 @@
+mat-dialog-content {
+  .deal-summary {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+
+    li {
+      margin-bottom: 6px;
+    }
+  }
+
+  .warning {
+    margin-top: 12px;
+    color: #d32f2f;
+    font-weight: 600;
+  }
+}
+
+mat-icon {
+  vertical-align: middle;
+  margin-right: 8px;
+}
