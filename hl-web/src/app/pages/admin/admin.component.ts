@@ -14,6 +14,7 @@ import { DealInput, DealsService } from '../../core/services/deals.service';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../core/models/user.model';
 import { CreateDealDialogComponent, DealFormPayload } from './create-deal-dialog.component';
+import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-admin',
@@ -76,13 +77,24 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  remove(id: number): void {
-    this.dealsSvc.remove(id).subscribe({
-      next: () => this.refresh(),
-      error: (err) => {
-        console.error('Failed to delete deal', err);
-        this.error = 'Unable to delete deal.';
+  remove(deal: Deal): void {
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '420px',
+      data: { deal }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) {
+        return;
       }
+
+      this.dealsSvc.remove(deal.id).subscribe({
+        next: () => this.refresh(),
+        error: (err) => {
+          console.error('Failed to delete deal', err);
+          this.error = 'Unable to delete deal.';
+        }
+      });
     });
   }
 
