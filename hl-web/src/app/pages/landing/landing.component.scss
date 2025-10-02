@@ -18,10 +18,10 @@ $gold-accent: #f4c95d;
 
 .hero {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 48px;
-  padding: 96px min(8vw, 120px) 72px;
-  background: radial-gradient(120% 120% at 20% 20%, rgba(244, 201, 93, 0.25) 0%, rgba(31, 59, 115, 0.9) 60%, rgba(11, 24, 52, 0.98) 100%);
+  padding: clamp(72px, 12vw, 96px) clamp(24px, 8vw, 120px) 72px;
+  background: radial-gradient(120% 120% at 20% 20%, rgba(244, 201, 93, 0.6) 0%, rgba(31, 59, 115, 0.9) 60%, rgba(11, 24, 52, 0.98) 100%);
   color: #fff;
 
   .hero-content {
@@ -92,6 +92,7 @@ $gold-accent: #f4c95d;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
     .badge {
       width: 180px;
@@ -111,8 +112,8 @@ $gold-accent: #f4c95d;
 
     .pulse {
       position: absolute;
-      width: 320px;
-      height: 320px;
+      width: clamp(220px, 60vw, 320px);
+      height: clamp(220px, 60vw, 320px);
       border-radius: 50%;
       background: radial-gradient(rgba(63, 81, 181, 0.45), rgba(31, 59, 115, 0));
       animation: pulse 6s infinite;
@@ -355,7 +356,8 @@ $gold-accent: #f4c95d;
   }
 
   .hero {
-    padding: 80px 24px 64px;
+    padding: 72px 20px 56px;
+    grid-template-columns: 1fr;
 
     .hero-actions {
       width: 100%;
@@ -363,6 +365,13 @@ $gold-accent: #f4c95d;
       .btn {
         flex: 1 1 auto;
         text-align: center;
+      }
+    }
+
+    .hero-art {
+      .pulse {
+        width: clamp(200px, 80vw, 280px);
+        height: clamp(200px, 80vw, 280px);
       }
     }
   }
