@@ -41,3 +41,23 @@ value = module.network.public_subnets
 output "alb_dns_name" {
   value = aws_lb.api_alb.dns_name
 }
+
+output "cloudfront_domain_name" {
+  value = aws_cloudfront_distribution.frontend.domain_name
+}
+
+output "cloudfront_distribution_id" {
+  value = aws_cloudfront_distribution.frontend.id
+}
+
+output "api_https_endpoint" {
+  value = "https://hl-api.demopitch.click"
+}
+
+output "api_alb_zone_id" {
+  value = aws_lb.api_alb.zone_id
+}
+
+output "frontend_https_endpoint" {
+  value = "https://hl-web.demopitch.click"
+}

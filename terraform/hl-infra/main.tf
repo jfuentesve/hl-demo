@@ -227,40 +227,103 @@ resource "aws_security_group_rule" "rds_allow_from_bastion" {
   source_security_group_id = aws_security_group.bastion_sg.id  # SSM Bastion SG
 }
 
+resource "aws_cloudfront_origin_access_identity" "frontend" {
+  comment = "OAI for hl-deals-web-${var.environment}"
+}
+
 module "s3_frontend" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "4.1.0"
 
   bucket = "hl-deals-web-${var.environment}"
 
-  # IMPORTANT: NO ACLs
   acl                      = null
   control_object_ownership = true
   object_ownership         = "BucketOwnerEnforced"
 
-  # Permite políticas públicas (solo si quieres sitio público)
   block_public_acls       = true
   ignore_public_acls      = true
-  block_public_policy     = false
-  restrict_public_buckets = false
+  block_public_policy     = true
+  restrict_public_buckets = true
 
-  website = {
-    index_document = "index.html"
-    error_document = "index.html"
-  }
-
-  # Adjuntar una policy pública de solo lectura a objetos
   attach_policy = true
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{
-      Sid       = "AllowPublicRead",
-      Effect    = "Allow",
-      Principal = "*",
-      Action    = ["s3:GetObject"],
-      Resource  = ["arn:aws:s3:::hl-deals-web-${var.environment}/*"]
-    }]
+    Statement = [
+      {
+        Sid       = "AllowCloudFrontReadOnly",
+        Effect    = "Allow",
+        Principal = {
+          AWS = aws_cloudfront_origin_access_identity.frontend.iam_arn
+        },
+        Action   = ["s3:GetObject"],
+        Resource = "arn:aws:s3:::hl-deals-web-${var.environment}/*"
+      }
+    ]
   })
+
+  tags = {
+    Project = "hl-showcase"
+  }
+}
+
+resource "aws_cloudfront_distribution" "frontend" {
+  enabled             = true
+  comment             = "hl-deals-web-${var.environment}"
+  default_root_object = "index.html"
+  aliases             = ["hl-web.demopitch.click"]
+
+  origin {
+    domain_name = module.s3_frontend.s3_bucket_bucket_regional_domain_name
+    origin_id   = "s3-hl-deals-web-${var.environment}"
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.frontend.cloudfront_access_identity_path
+    }
+  }
+
+  default_cache_behavior {
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "s3-hl-deals-web-${var.environment}"
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+  }
+
+  custom_error_response {
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
+
+  custom_error_response {
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
+
+  price_class = "PriceClass_100"
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn            = "arn:aws:acm:us-east-1:144776104140:certificate/942d4d56-7c76-4681-a8b5-7a6813ff987c"
+    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = "TLSv1.2_2021"
+  }
 
   tags = {
     Project = "hl-showcase"
@@ -455,6 +518,12 @@ resource "aws_security_group" "alb_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -514,7 +583,48 @@ resource "aws_lb_listener" "http" {
   protocol          = "HTTP"
 
   default_action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.api_alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = "arn:aws:acm:us-east-1:144776104140:certificate/942d4d56-7c76-4681-a8b5-7a6813ff987c"
+
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.api_tg.arn
+  }
+}
+
+resource "aws_route53_record" "hl_api" {
+  zone_id = "Z01592811B378OSK8IEP6"
+  name    = "hl-api.demopitch.click"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.api_alb.dns_name
+    zone_id                = aws_lb.api_alb.zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "hl_web" {
+  zone_id = "Z01592811B378OSK8IEP6"
+  name    = "hl-web.demopitch.click"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.frontend.domain_name
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
   }
 }
