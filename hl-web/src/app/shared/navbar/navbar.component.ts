@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { AuthService } from '../../core/services/auth.service';
 import { Role } from '../../core/models/role.type';
@@ -12,7 +15,7 @@ import { Role } from '../../core/models/role.type';
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule]
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule]
 })
 export class NavbarComponent {
 

@@ -4,18 +4,43 @@
   </a>
   <span class="spacer"></span>
 
-  <a mat-button routerLink="/">Home</a>
+  <nav class="links desktop">
+    <a mat-button routerLink="/">Home</a>
+    @if (isUserOrAdmin) {
+      <a mat-button routerLink="/home">My Deals</a>
+    }
+    @if (role==='admin') {
+      <a mat-button routerLink="/admin">Admin</a>
+    }
+  </nav>
+
+  <div class="auth desktop">
+    @if (!isAuthenticated) {
+      <button mat-stroked-button routerLink="/login">Login</button>
+    } @else {
+      <button mat-stroked-button (click)="logout()">Logout ({{displayName}})</button>
+    }
+  </div>
+
+  <div class="mobile-menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon fontSet="material-symbols-outlined">menu</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/">Home</button>
   @if (isUserOrAdmin) {
-    <a mat-button routerLink="/home">My Deals</a>
+    <button mat-menu-item routerLink="/home">My Deals</button>
   }
   @if (role==='admin') {
-    <a mat-button routerLink="/admin">Admin</a>
+    <button mat-menu-item routerLink="/admin">Admin</button>
   }
-
-  <span class="spacer"></span>
+  <mat-divider></mat-divider>
   @if (!isAuthenticated) {
-    <button mat-stroked-button routerLink="/login">Login</button>
+    <button mat-menu-item routerLink="/login">Login</button>
   } @else {
-    <button mat-stroked-button (click)="logout()">Logout ({{displayName}})</button>
+    <button mat-menu-item (click)="logout()">Logout ({{displayName}})</button>
   }
-</mat-toolbar>
+</mat-menu>
