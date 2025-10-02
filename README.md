@@ -13,7 +13,7 @@ flowchart LR
         Browser
     end
 
-    Browser -->|HTTPS| CF[Amazon CloudFront\n(hl-web.demopitch.click)]
+    Browser -->|HTTPS| CF["Amazon CloudFront\nhl-web.demopitch.click"]
     CF -->|OAI| S3[(S3 Bucket\nstatic assets)]
 
     Browser -->|HTTPS /api| ALB[Application Load Balancer]
@@ -29,12 +29,12 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Dev[Developer] -->|./api-build-push-local.sh| ECR(ECR Repository)
-    Dev -->|./ui-build-push-local.sh| S3Static[S3 Static Bucket]
-    ECR --> ECS
-ecs[ECS Service]
-    S3Static --> CFInvalidation[(CloudFront Invalidación)]
-    Route53(Route53) --> CF
+    Dev[Developer] -->|./api-build-push-local.sh| ECR[(Amazon ECR)]
+    Dev -->|./ui-build-push-local.sh| S3Static[(S3 Static Bucket)]
+    ECR --> ECSService[ECS Service]
+    S3Static --> CFInvalidation[(CloudFront invalidación)]
+    CFInvalidation --> CFDeploy[CloudFront Distribución]
+    Route53(Route53) --> CFDeploy
     Route53 --> ALB
 ```
 
