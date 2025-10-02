@@ -1,312 +1,126 @@
-# HL-API: Deal Management System
+# HL Deals Platform
 
-## Overview
+HL Deals es una plataforma integral para originar, estructurar y gestionar operaciones de inversión. El stack combina un backend ASP.NET Core desplegado en AWS ECS Fargate, una SPA Angular servida vía CloudFront y un pipeline de infraestructura automatizado con Terraform.
 
-HL-API is a comprehensive ASP.NET Core 8.0 RESTful API for managing business deals. It provides full CRUD operations for deal entities with JWT-based authentication, deployed on AWS infrastructure using modern DevOps practices.
+- **Frontend (SPA)**: https://hl-web.demopitch.click
+- **API REST**: https://hl-api.demopitch.click
 
-**Production URL**: http://hl-api-alb-1496841054.us-east-1.elb.amazonaws.com
+## Arquitectura
 
-## Technology Stack
+```mermaid
+flowchart LR
+    subgraph Client[Usuarios]
+        Browser
+    end
 
-### Backend
-- **Framework**: ASP.NET Core 8.0
-- **ORM**: Entity Framework Core 8.0
-- **Authentication**: JWT Bearer Tokens
-- **Database**: SQL Server (AWS RDS)
-- **Documentation**: Swagger/OpenAPI
+    Browser -->|HTTPS| CF[Amazon CloudFront\n(hl-web.demopitch.click)]
+    CF -->|OAI| S3[(S3 Bucket\nstatic assets)]
 
-### Infrastructure & DevOps
-- **Containerization**: Docker with multi-stage builds
-- **Orchestration**: AWS ECS Fargate
-- **Infrastructure as Code**: Terraform
-- **Load Balancing**: AWS ALB
-- **Container Registry**: Amazon ECR
-- **Networking**: AWS VPC with private/public subnets
+    Browser -->|HTTPS /api| ALB[Application Load Balancer]
+    ALB --> ECS[ECS Fargate\nHL API Task]
+    ECS --> RDS[(Amazon RDS\nSQL Server)]
 
-### Security
-- **Password Hashing**: BCrypt.Net-Next
-- **CORS**: Configured for cross-origin requests
-- **HTTPS**: Enforced on production
-
-## Architecture Overview
-
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   AWS ALB       │    │   AWS ECS        │    │   AWS RDS       │
-│   (Port 80)     │────│   Fargate Task   │────│   SQL Server    │
-│                 │    │   (hl-api)       │    │   Database      │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                         │                        │
-         │                         │                        │
-         ▼                         ▼                        ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Internet      │    │   Containerized  │    │   Relational    │
-│   Clients       │    │   .NET Core API  │    │   Database      │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+    subgraph AWS[VPC]
+        ALB
+        ECS
+        RDS
+    end
 ```
 
-### Key Components
-
-#### API Layer
-- **Controllers**: RESTful endpoints with proper HTTP methods
-- **Authentication**: JWT token-based security
-- **Authorization**: Role-based access control
-- **Health Checks**: `/healthz` endpoint for load balancer
-
-#### Data Layer
-- **Entity Framework**: Database access and migrations
-- **SQL Server**: Relational data persistence
-- **Connection Pooling**: Efficient database connections
-
-#### Infrastructure Layer
-- **Docker**: Containerization for consistent deployment
-- **ECR**: Private container registry
-- **ECS Fargate**: Serverless container orchestration
-- **RDS**: Managed SQL Server database
-
-## Project Structure
-
-```
-firstDemo/
-├── hl-api/                    # ASP.NET Core API Project
-│   ├── Controllers/
-│   │   ├── AuthController.cs      # JWT Authentication
-│   │   └── DealsController.cs     # Deal CRUD Operations
-│   ├── Data/
-│   │   └── AppDbContext.cs        # EF Core Database Context
-│   ├── Dtos/
-│   │   ├── DealDto.cs            # Response Data Transfer Objects
-│   │   ├── DealCreateDto.cs      # Create Request DTO
-│   │   └── DealUpdateDto.cs      # Update Request DTO
-│   ├── Models/
-│   │   └── Deal.cs               # Domain Model
-│   ├── Services/
-│   │   ├── JwtOptions.cs         # JWT Configuration
-│   │   └── TokenService.cs       # JWT Token Generation
-│   ├── .dockerignore             # Docker ignore configuration
-│   ├── appsettings.json          # Application settings
-│   ├── Dockerfile                # Multi-stage container build
-│   ├── Dockerfile.runtime        # Runtime-only container
-│   └── HLApi.csproj              # Project configuration
-├── terraform/
-│   └── hl-infra/                 # Infrastructure as Code
-│       ├── main.tf               # Primary infrastructure config
-│       ├── variables.tf          # Terraform variables
-│       ├── terraform.tfvars      # Variable values
-│       ├── outputs.tf            # Infrastructure outputs
-│       └── README.md             # Infrastructure documentation
-├── postman/                      # API Testing Collections
-│   ├── HL-API-Deals.postman_collection.json
-│   └── HL-API-Local.postman_environment.json
-├── .gitignore                    # Git ignore rules
-├── build-push-local.sh           # Local build and push script
-├── deploy-api-image-from-ecr.sh  # Deployment automation
-├── dotnet-install.sh             # .NET SDK installer
-├── firstDemo.sln                 # Solution file
-├── is-api-running.sh             # Health check script
-├── jwt-key-setup.sh              # JWT key configuration
-├── login.json                    # Docker registry credentials
-├── push-api.sh                   # Docker push automation
-└── rds-db-url-updater.sh         # Database URL update script
+```mermaid
+flowchart TD
+    Dev[Developer] -->|./api-build-push-local.sh| ECR(ECR Repository)
+    Dev -->|./ui-build-push-local.sh| S3Static[S3 Static Bucket]
+    ECR --> ECS
+ecs[ECS Service]
+    S3Static --> CFInvalidation[(CloudFront Invalidación)]
+    Route53(Route53) --> CF
+    Route53 --> ALB
 ```
 
-## API Endpoints
+## Componentes principales
 
-### Authentication
-```
-POST /api/auth/login
-```
+| Capa | Servicio | Descripción |
+|------|----------|-------------|
+| Frontend | Angular 17, Angular Material | SPA responsive con autenticación JWT y dashboards de deals |
+| API | ASP.NET Core 8 | Endpoints REST (Deals, Auth) con EF Core y SQL Server |
+| Infraestructura | AWS | VPC, ECS Fargate, ALB, RDS SQL Server, S3 + CloudFront, Route53 |
+| IaC | Terraform | Provisión de red, RDS, ECS, ECR, S3, CloudFront, Route53 |
+| DevOps | Bash scripts | `api-build-push-local.sh` y `ui-build-push-local.sh` automatizan build y despliegue |
 
-**Request Body:**
-```json
-{
-  "username": "admin",
-  "password": "ChangeMe123!"
-}
-```
+## Backend (hl-api)
 
-**Response:**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
+- **Framework**: ASP.NET Core 8 + Entity Framework Core
+- **Autenticación**: JWT Bearer Tokens
+- **Base de datos**: Microsoft SQL Server en Amazon RDS
+- **Entorno**: Docker multi-stage → ECR → ECS Fargate (subredes privadas)
+- **CORS**: Configurado en `appsettings.*` para clientes autorizados
+- **Healthcheck**: `/healthz`
 
-### Deals Management (Requires Authentication)
+### Endpoints principales
 
-```
-GET    /api/deals          # Get all deals
-GET    /api/deals/{id}     # Get deal by ID
-POST   /api/deals          # Create new deal
-PUT    /api/deals/{id}     # Update deal
-DELETE /api/deals/{id}     # Delete deal
-```
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| POST | `/api/auth/login` | Devuelve JWT (usuarios demo: admin/alice/bob/guest) |
+| GET | `/api/deals` | Lista deals |
+| POST | `/api/deals` | Crea deal |
+| PUT | `/api/deals/{id}` | Actualiza deal |
+| DELETE | `/api/deals/{id}` | Elimina deal |
 
-**Authentication:**
-Include JWT token in `Authorization` header:
-```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
+### Build & Deploy API
 
-**Deal Schema:**
-```json
-{
-  "id": 1,
-  "name": "Enterprise Software Deal",
-  "client": "TechCorp Inc.",
-  "amount": 150000.00,
-  "createdAt": "2025-09-13T12:00:00Z"
-}
-```
-
-**Create/Update Deal Request:**
-```json
-{
-  "name": "Enterprise Software Deal",
-  "client": "TechCorp Inc.",
-  "amount": 150000.00
-}
-```
-
-### Health Check
-```
-GET /healthz
-```
-Returns `"ok"` when API is healthy.
-
-## Database Schema
-
-### Deal Table
-```sql
-CREATE TABLE [Deals] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max) NULL,
-    [Client] nvarchar(max) NULL,
-    [Amount] decimal(18,2) NULL,
-    [CreatedAt] datetime2 NOT NULL,
-    CONSTRAINT [PK_Deals] PRIMARY KEY ([Id])
-)
-```
-
-## Configuration
-
-### Application Settings (appsettings.json)
-```json
-{
-  "Jwt": {
-    "Key": "ReplaceThisWithAStrongSecretKey123!",
-    "Issuer": "hl-api",
-    "Audience": "hl-client"
-  },
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=...your-connection-string..."
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*"
-}
-```
-
-### Environment Variables (Production)
 ```bash
-ASPNETCORE_ENVIRONMENT=Production
-ASPNETCORE_URLS=http://+:8080
-ConnectionStrings__DefaultConnection=your-rds-connection-string
-Jwt__Key=your-strong-jwt-secret
-Jwt__Issuer=hl-api
-Jwt__Audience=hl-client
+# Compila, construye imagen y actualiza la task definition en ECS
+./api-build-push-local.sh \
+  REGION=us-east-1 \
+  REPO=hl-api \
+  CLUSTER=hl-ecs-cluster \
+  SERVICE=hl-api-service
 ```
 
-## Development Setup
+El script realiza:
+1. `dotnet restore` + `dotnet publish -r linux-x64`
+2. Build docker (`Dockerfile.runtime`) y push a ECR
+3. Actualiza la Task Definition y el servicio ECS
 
-### Prerequisites
-- .NET 8.0 SDK
-- Docker
-- Git
-- AWS CLI (for deployment)
-- Terraform (for infrastructure)
+## Frontend (hl-web)
 
-### Local Development
+- **Framework**: Angular 17 / Angular Material
+- **Branding**: assets en `public/brand/` (`favicon`, logos horizontal/mark)
+- **Deploy**: build local → sync a S3 → invalidación en CloudFront
+- **URL**: https://hl-web.demopitch.click (Route53 alias → CloudFront)
 
-1. **Clone and Setup:**
+### Build & Deploy Frontend
+
 ```bash
-git clone <repository-url>
-cd firstDemo
+./ui-build-push-local.sh \
+  REGION=us-east-1 \
+  ENVIRONMENT=dev \
+  CLOUDFRONT_DISTRIBUTION_ID=E123456789ABC
 ```
 
-2. **Install Dependencies:**
-```bash
-cd hl-api
-dotnet restore
-```
+Pasos internos:
+1. `npm ci` + `npm run build --configuration production`
+2. `aws s3 sync` → sube assets estáticos (excepto `index.html`)
+3. `aws s3 cp` → actualiza `index.html` sin caché agresiva
+4. `aws cloudfront create-invalidation --paths '/*'`
 
-3. **Run Locally:**
-```bash
-dotnet run --environment Development
-```
+Si no se especifica `CLOUDFRONT_DISTRIBUTION_ID`, el script intenta inferirlo por comentario (`hl-deals-web-<env>`).
 
-The API will be available at `https://localhost:5001`
+## Infraestructura (terraform/hl-infra)
 
-4. **Swagger Documentation:**
-Navigate to `https://localhost:5001/swagger` for interactive API documentation.
+### Recursos clave
 
-### Docker Development
+- **Red**: VPC / subredes públicas y privadas, NAT Gateway
+- **Base de datos**: `aws_db_instance` via módulo `terraform-aws-modules/rds/aws`
+- **ECS**: Cluster + task definition (Fargate) + Security Groups
+- **ALB**: Listeners HTTP→HTTPS, target group con healthcheck `/healthz`
+- **Certificados**: ACM us-east-1 (`arn:aws:acm:us-east-1:144776104140:certificate/942d4d56-7c76-4681-a8b5-7a6813ff987c`)
+- **Route53**: Registros `hl-api.demopitch.click` (ALB) y `hl-web.demopitch.click` (CloudFront)
+- **S3 + CloudFront**: bucket privado con OAI, distribución con `index.html` como default root object
 
-1. **Build Image:**
-```bash
-cd hl-api
-docker build -t hl-api:latest -f Dockerfile .
-```
+### Ejecución
 
-2. **Run Container:**
-```bash
-docker run -p 8080:8080 hl-api:latest
-```
-
-## Infrastructure Deployment
-
-### AWS Resources Created by Terraform
-
-- **VPC**: Virtual Private Cloud with public/private subnets
-- **RDS**: SQL Server database instance
-- **ECS**: Container orchestration service
-- **ALB**: Application Load Balancer
-- **ECR**: Elastic Container Registry
-- **S3**: Static website hosting
-- **Security Groups**: Network access rules
-
-### Infrastructure Modules
-
-#### Network Module
-- 2 Availability Zones (us-east-1a, us-east-1b)
-- Public subnets for load balancer
-- Private subnets for RDS and ECS tasks
-- NAT Gateway for outbound traffic
-
-#### Database Module
-- SQL Server Express Edition
-- t3.micro instance class
-- 20GB initial storage, auto-scaling to 100GB
-- Private networking only
-
-#### Compute Module
-- ECS Fargate cluster
-- Serverless container execution
-- Auto-scaling configuration
-- CloudWatch logs integration
-
-#### Load Balancing
-- Application Load Balancer with HTTP
-- Health checks on `/healthz` endpoint
-- Target group for ECS tasks
-
-### Deploying to AWS
-
-1. **Initialize Infrastructure:**
 ```bash
 cd terraform/hl-infra
 terraform init
@@ -314,162 +128,73 @@ terraform plan
 terraform apply
 ```
 
-2. **Build and Push Docker Image:**
+Outputs relevantes (`terraform output`):
+- `api_https_endpoint`
+- `cloudfront_domain_name`
+- `frontend_https_endpoint`
+- `cloudfront_distribution_id`
+
+## Estructura del repositorio
+
+```
+firstDemo/
+├── hl-api/                         # API ASP.NET Core
+│   ├── Controllers/, Models/, Dtos/
+│   ├── appsettings.*.json
+│   ├── Dockerfile, Dockerfile.runtime
+│   └── publish/ (build artefacts)
+├── hl-web/                         # Angular SPA
+│   ├── src/ (componentes, themes)
+│   ├── public/brand/ (logos, favicons)
+│   └── manifests, angular.json
+├── terraform/hl-infra/             # Terraform IaC
+│   ├── main.tf, variables.tf
+│   ├── outputs.tf, terraform.tfvars
+│   └── state files
+├── scripts raíz
+│   ├── api-build-push-local.sh
+│   ├── ui-build-push-local.sh
+│   └── otros auxiliares (.sh)
+└── tests/, postman/, README.md
+```
+
+## Desarrollo local
+
+### Requisitos
+- Docker Desktop
+- .NET 8 SDK
+- Node.js 20 / npm 10+
+- AWS CLI v2 configurado (`aws configure`)
+
+### Pasos rápidos
+
 ```bash
+# Backend local
 cd hl-api
-docker build -t hl-api .
-docker tag hl-api:latest YOUR_ECR_URI:latest
-docker push YOUR_ECR_URI:latest
+dotnet restore
+ASPNETCORE_ENVIRONMENT=Development dotnet run
+
+# Frontend local
+cd hl-web
+npm install
+npm start
 ```
 
-3. **Update ECS Service:**
-The service automatically deploys the new image version via CI/CD pipelines or manual update.
+La SPA espera la API en `http://localhost:8080/api` (ver `environment.ts`). Ajusta CORS en `appsettings.Local.json` si cambias origen.
 
-### Infrastructure Configuration Files
+## Seguridad y buenas prácticas
 
-Location: `terraform/hl-infra/`
-- `main.tf` - Primary infrastructure definition
-- `variables.tf` - Input variables
-- `terraform.tfvars` - Variable values (sensitive data)
-- `outputs.tf` - Output values for other systems
+- **JWT Secrets**: No commitear secretos reales. En producción usar AWS Secrets Manager / SSM Parameter Store.
+- **HTTPS**: Forzado por ALB (HTTP→301→HTTPS) y CloudFront.
+- **Bucket Privado**: Acceso solo vía CloudFront OAI.
+- **Roles demo**: admin (admin), alice/bob (user), guest (viewer). Ajustar en `AuthController`/`USERS` según políticas reales.
 
-## Automation Scripts
+## Referencias adicionales
 
-### Build & Deploy Scripts
-- `build-push-local.sh` - Build Docker image and push to registry
-- `deploy-api-image-from-ecr.sh` - Deploy new image to ECS
-- `push-api.sh` - Push Docker image to ECR
-
-### Utility Scripts
-- `is-api-running.sh` - Check API health
-- `jwt-key-setup.sh` - Generate JWT secrets
-- `rds-db-url-updater.sh` - Update database connection strings
-
-### Example Usage:
-```bash
-# Check if API is running
-./is-api-running.sh
-
-# Build and deploy new version
-./build-push-local.sh
-./deploy-api-image-from-ecr.sh
-```
-
-## Monitoring & Logging
-
-### CloudWatch Logs
-- ECS container logs available in `/ecs/hl-api` log group
-- Application logs with structured logging
-- 7-day log retention
-
-### Health Monitoring
-- ALB health checks on `/healthz`
-- Automatic replacement of unhealthy containers
-- CloudWatch alarms for infrastructure metrics
-
-## Security Features
-
-### Authentication
-- JWT Bearer token validation
-- 1-hour token expiration
-- Secure token storage recommendations
-
-### Network Security
-- Private subnets for database and compute resources
-- Security groups with minimal required access
-- No public access to RDS or ECS tasks
-
-### Best Practices
-- Password hashing with BCrypt
-- HTTPS enforcement in production
-- Secret management via environment variables
-
-## API Testing
-
-### Postman Collections
-Located in `postman/` directory:
-- `HL-API-Deals.postman_collection.json` - Complete API test suite
-- `HL-API-Local.postman_environment.json` - Local environment variables
-
-### Manual Testing
-```bash
-# Get JWT token
-curl -X POST http://localhost:8080/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"ChangeMe123!"}'
-
-# Use token to access protected endpoints
-curl -X GET http://localhost:8080/api/deals \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
-
-## Performance Considerations
-
-### Database Optimization
-- Connection pooling in EF Core
-- Asynchronous database operations
-- Proper indexing on query columns
-
-### Container Performance
-- Fargate task sizing (512 CPU, 1024 MB RAM)
-- Multi-stage Docker builds for smaller images
-- Health checks for graceful shutdowns
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Database Connection Timeout**
-   - Check VPC security group rules
-   - Verify subnet configurations
-   - Ensure DB instance is running
-
-2. **Load Balancer 502 Errors**
-   - Check ECS task health checks
-   - Review container logs in CloudWatch
-   - Verify target group configuration
-
-3. **JWT Authentication Failures**
-   - Verify JWT configuration matches settings
-   - Check token expiration
-   - Validate token format and claims
-
-## Future Enhancements
-
-### Planned Features
-- **Pagination** for large deal collections
-- **API Versioning** for backward compatibility
-- **Rate Limiting** for API protection
-- **Caching** layer with Redis
-- **API Gateway** for microservices expansion
-
-### Infrastructure Improvements
-- **HTTPS Certificate** via AWS ACM
-- **Auto Scaling** based on CPU/memory usage
-- **Multi-region** deployment for HA
-- **Monitoring Dashboard** with CloudWatch insights
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes following established patterns
-4. Add/update relevant tests
-5. Submit a pull request with detailed description
-
-## License
-
-[Specify license here]
-
-## Contact
-
-For questions or support, contact:
-- **Project Lead**: [Contact Information]
-- **DevOps Team**: [Contact Information]
-- **Security Issues**: [Security Contact]
+- [Terraform AWS Modules](https://github.com/terraform-aws-modules)
+- [ASP.NET Core Deployment to ECS](https://learn.microsoft.com/aspnet/core/host-and-deploy)
+- [Angular Deployment to S3 + CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
 
 ---
 
-**Last Updated**: September 2025
-**Version**: 1.0.0
-**Environment**: AWS Production
+¿Dudas o mejoras? Abre un issue o contacta al equipo de plataforma de HL Deals.
