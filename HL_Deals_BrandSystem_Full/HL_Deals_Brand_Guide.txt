@@ -1,0 +1,18 @@
+HL Deals — Brand System (v1.0 – Sept 2025)
+Designed by Juan Fuentes — HL Deals Demo Project (2025)
+
+Palette:
+- Primary Navy: #1F3B73
+- Accent Azure: #3F51B5
+- Neutral Light: #F5F7FA
+- Gold Accent: #F4C95D
+
+Typography:
+- Montserrat (fallback: Manrope / Gotham / Segoe UI / Arial)
+- Semi-Bold para "HL", Medium para "Deals"
+- Tracking recomendado +5 a +10
+
+Variantes incluidas: Isotipo, Imagotipo (horizontal), Logotipo 1 línea, Logotipo 2 líneas, Monocromos
+Reversibles: versiones claro/oscuro
+Favicon: 48×48 PNG y 16×16 ICO
+Tagline (presentaciones): "Data-driven Investment Intelligence"

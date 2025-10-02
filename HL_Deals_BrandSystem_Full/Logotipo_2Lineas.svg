@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="380" viewBox="0 0 500 380"><g id="mark" transform="translate(40,20) scale(0.38)"><g  fill="#1F3B73"> fill="#1F3B73">
+  <rect x="64" y="64" width="64" height="384" rx="12" ry="12"/>
+  <rect x="192" y="64" width="64" height="384" rx="12" ry="12"/>
+  <rect x="64" y="224" width="160" height="64" rx="12" ry="12"/>
+  <rect x="320" y="64" width="64" height="384" rx="12" ry="12"/>
+  <rect x="320" y="384" width="160" height="64" rx="12" ry="12"/>
+</g><g id="growth_arrow" transform="translate(40,20) scale(0.38)"><g  fill="#3F51B5"> fill="#3F51B5">
+  <polygon points="224,224 224,288 400,208 400,144"/>
+  <polygon points="400,144 400,208 460,156.0"/>
+</g><g id="wordmark" fill="#1F3B73">  <text x="340" y="150" style="font-family: Montserrat, Manrope, Gotham, 'Segoe UI', Arial, sans-serif; font-weight: 600; font-size: 84px; letter-spacing: 2.5px;">HL<tspan x="340" dy="92">Deals</tspan></text></g></svg>

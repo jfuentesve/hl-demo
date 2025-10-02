@@ -1,0 +1,17 @@
+HL Deals Logo Style Guide
+---------------------------------
+Primary Navy: #1F3B73
+Accent Azure: #3F51B5
+Neutral Light: #F5F7FA
+Gold Accent: #F4C95D
+
+Typography:
+- Wordmark: Montserrat Semi-Bold (HL)
+- Subtext: Montserrat Medium (Deals)
+- Tracking: +5
+
+Files included:
+- PNG @1x and @2x (horizontal, square)
+- Favicon 48×48
+- Monochrome navy version
+- PDF vector export

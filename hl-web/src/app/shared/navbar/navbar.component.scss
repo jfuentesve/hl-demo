@@ -6,9 +6,16 @@
 }
 
 .brand {
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   color: inherit;
+
+  img {
+    height: 28px;
+    width: auto;
+    display: block;
+  }
 }
 
 .spacer {
