@@ -218,7 +218,8 @@
     },
     "loading": "Loading your deals…",
     "empty": "No deals are registered for {{client}} yet.",
-    "created": "Created {{date}}"
+    "created": "Created {{date}}",
+    "emptyClient": "this client"
   },
   "login": {
     "title": "Log in",
