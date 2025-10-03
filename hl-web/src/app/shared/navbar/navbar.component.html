@@ -1,23 +1,23 @@
 <mat-toolbar color="primary">
-  <a class="brand" routerLink="/">
+  <a class="brand" [routerLink]="['/', currentLang]">
     <img src="brand/navbar-logo.png" alt="HL Deals" />
   </a>
   <span class="spacer"></span>
 
   <nav class="links desktop">
-    <a mat-button routerLink="/" translate>{{'nav.home' | translate}}</a>
-    <a mat-button routerLink="/about" translate>{{ 'nav.about' | translate }}</a>
+    <a mat-button [routerLink]="['/', currentLang]">{{ 'nav.home' | translate }}</a>
+    <a mat-button [routerLink]="['/', currentLang, 'about']">{{ 'nav.about' | translate }}</a>
     @if (isUserOrAdmin) {
-      <a mat-button routerLink="/home" translate>{{ 'nav.demo' | translate }}</a>
+      <a mat-button [routerLink]="['/', currentLang, 'home']">{{ 'nav.demo' | translate }}</a>
     }
     @if (role==='admin') {
-      <a mat-button routerLink="/admin">{{ 'nav.admin' | translate }}</a>
+      <a mat-button [routerLink]="['/', currentLang, 'admin']">{{ 'nav.admin' | translate }}</a>
     }
   </nav>
 
   <div class="auth desktop">
     @if (!isAuthenticated) {
-      <button mat-stroked-button routerLink="/login" translate>{{ 'nav.login' | translate }}</button>
+      <button mat-stroked-button [routerLink]="['/', currentLang, 'login']">{{ 'nav.login' | translate }}</button>
     } @else {
       <button mat-stroked-button (click)="logout()">{{ 'nav.logout' | translate }} ({{displayName}})</button>
     }
@@ -25,7 +25,7 @@
 
   <div class="lang desktop">
     <button mat-button class="lang-trigger" [matMenuTriggerFor]="langMenu">
-      {{ (translate.currentLang || 'es') | uppercase }}
+      {{ (translate.currentLang || 'en') | uppercase }}
       <mat-icon fontSet="material-symbols-outlined">expand_more</mat-icon>
     </button>
   </div>
@@ -38,17 +38,17 @@
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item routerLink="/" translate>{{ 'nav.home' | translate }}</button>
-  <button mat-menu-item routerLink="/about" translate>{{ 'nav.about' | translate }}</button>
+  <button mat-menu-item [routerLink]="['/', currentLang]">{{ 'nav.home' | translate }}</button>
+  <button mat-menu-item [routerLink]="['/', currentLang, 'about']">{{ 'nav.about' | translate }}</button>
   @if (isUserOrAdmin) {
-    <button mat-menu-item routerLink="/home" translate>{{ 'nav.demo' | translate }}</button>
+    <button mat-menu-item [routerLink]="['/', currentLang, 'home']">{{ 'nav.demo' | translate }}</button>
   }
   @if (role==='admin') {
-    <button mat-menu-item routerLink="/admin">{{ 'nav.admin' | translate }}</button>
+    <button mat-menu-item [routerLink]="['/', currentLang, 'admin']">{{ 'nav.admin' | translate }}</button>
   }
   <mat-divider></mat-divider>
   @if (!isAuthenticated) {
-    <button mat-menu-item routerLink="/login" translate>{{ 'nav.login' | translate }}</button>
+    <button mat-menu-item [routerLink]="['/', currentLang, 'login']">{{ 'nav.login' | translate }}</button>
   } @else {
     <button mat-menu-item (click)="logout()">{{ 'nav.logout' | translate }} ({{displayName}})</button>
   }

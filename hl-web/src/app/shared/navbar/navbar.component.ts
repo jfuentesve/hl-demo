@@ -21,6 +21,11 @@ import { Role } from '../../core/models/role.type';
 export class NavbarComponent {
   constructor(private auth: AuthService, private router: Router, public translate: TranslateService) {}
 
+  get currentLang(): 'en' | 'es' {
+    const lang = (this.translate.currentLang ?? '').toLowerCase();
+    return lang === 'es' ? 'es' : 'en';
+  }
+
   get isAuthenticated(): boolean {
     return this.auth.isAuthenticated();
   }
@@ -44,12 +49,26 @@ export class NavbarComponent {
   }
 
   switchLang(lang: 'es' | 'en'): void {
+    if (this.currentLang === lang) {
+      return;
+    }
+
     this.translate.use(lang);
     localStorage.setItem('hl-lang', lang);
+
+    const tree = this.router.parseUrl(this.router.url);
+    const primary = tree.root.children['primary'];
+    const segments = primary?.segments ?? [];
+    const rest = segments.slice(1).map(segment => segment.path);
+
+    this.router.navigate(['/', lang, ...rest], {
+      queryParams: tree.queryParams,
+      fragment: tree.fragment ?? undefined
+    });
   }
 
   logout(): void {
     this.auth.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/', this.currentLang]);
   }
 }

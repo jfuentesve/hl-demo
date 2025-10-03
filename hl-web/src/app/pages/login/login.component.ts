@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,14 +21,17 @@ export class LoginComponent {
   loading = false;
   error = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private translate: TranslateService) {}
 
   submit(): void {
     this.loading = true;
     this.error = '';
 
     this.auth.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/home']),
+      next: () => {
+        const lang = (this.translate.currentLang ?? '').toLowerCase() === 'es' ? 'es' : 'en';
+        this.router.navigate(['/', lang, 'home']);
+      },
       error: (err) => {
         this.error = err?.message ?? 'Login failed';
         this.loading = false;

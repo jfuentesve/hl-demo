@@ -4,8 +4,8 @@
       <h1>{{ 'about.hero.title' | translate }}</h1>
       <p>{{ 'about.hero.copy' | translate }}</p>
       <div class="cta">
-        <a routerLink="/home" class="btn btn-primary">{{ 'about.hero.ctaPrimary' | translate }}</a>
-        <a routerLink="/" class="btn btn-ghost">{{ 'about.hero.ctaSecondary' | translate }}</a>
+        <a [routerLink]="['/', currentLang, 'home']" class="btn btn-primary">{{ 'about.hero.ctaPrimary' | translate }}</a>
+        <a [routerLink]="['/', currentLang]" class="btn btn-ghost">{{ 'about.hero.ctaSecondary' | translate }}</a>
       </div>
     </div>
     <div class="highlight-card">

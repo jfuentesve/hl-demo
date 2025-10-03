@@ -6,8 +6,8 @@
       <h1>{{ 'landing.hero.title' | translate }}</h1>
       <p class="hero-subtitle">{{ 'landing.hero.subtitle' | translate }}</p>
       <div class="hero-actions">
-        <a routerLink="/login" class="btn btn-primary">{{ 'landing.hero.ctaPrimary' | translate }}</a>
-        <a routerLink="/home" class="btn btn-ghost">{{ 'landing.hero.ctaSecondary' | translate }}</a>
+        <a [routerLink]="['/', currentLang, 'login']" class="btn btn-primary">{{ 'landing.hero.ctaPrimary' | translate }}</a>
+        <a [routerLink]="['/', currentLang, 'home']" class="btn btn-ghost">{{ 'landing.hero.ctaSecondary' | translate }}</a>
       </div>
       <ul class="hero-highlights">
         @for (item of highlights; track item.labelKey) {
@@ -83,8 +83,8 @@
     <h2>{{ 'landing.cta.heading' | translate }}</h2>
     <p>{{ 'landing.cta.copy' | translate }}</p>
     <div class="cta-actions">
-      <a routerLink="/login" class="btn btn-primary">{{ 'landing.cta.primary' | translate }}</a>
-      <a routerLink="/admin" class="btn btn-ghost">{{ 'landing.cta.secondary' | translate }}</a>
+      <a [routerLink]="['/', currentLang, 'login']" class="btn btn-primary">{{ 'landing.cta.primary' | translate }}</a>
+      <a [routerLink]="['/', currentLang, 'admin']" class="btn btn-ghost">{{ 'landing.cta.secondary' | translate }}</a>
     </div>
   </section>
 </div>

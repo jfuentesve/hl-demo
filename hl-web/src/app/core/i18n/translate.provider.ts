@@ -20,8 +20,8 @@ export function provideTranslation(): EnvironmentProviders {
         const langToUse = savedLang || (browserLang ? browserLang.split('-')[0] : 'es');
 
         translate.addLangs(['es', 'en']);
-        translate.setDefaultLang('es');
-        translate.use(langToUse === 'en' ? 'en' : 'es');
+        translate.setDefaultLang('en');
+        translate.use(langToUse === 'es' ? 'es' : 'en');
       }
     }
   ]);

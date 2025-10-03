@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface TechItem {
   nameKey: string;
@@ -17,6 +17,12 @@ interface TechItem {
   imports: [CommonModule, RouterModule, TranslateModule]
 })
 export class AboutComponent {
+  constructor(private translate: TranslateService) {}
+
+  get currentLang(): 'en' | 'es' {
+    const lang = (this.translate.currentLang ?? '').toLowerCase();
+    return lang === 'es' ? 'es' : 'en';
+  }
   readonly snapshotItems = [
     'about.hero.snapshot.items.0',
     'about.hero.snapshot.items.1',

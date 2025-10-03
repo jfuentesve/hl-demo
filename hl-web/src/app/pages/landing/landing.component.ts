@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-landing',
@@ -11,6 +11,12 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, RouterModule, TranslateModule]
 })
 export class LandingComponent {
+  constructor(private translate: TranslateService) {}
+
+  get currentLang(): 'en' | 'es' {
+    const lang = (this.translate.currentLang ?? '').toLowerCase();
+    return lang === 'es' ? 'es' : 'en';
+  }
   readonly highlights = [
     { value: '$4.2B', labelKey: 'landing.highlights.transactions' },
     { value: '150+', labelKey: 'landing.highlights.institutions' },
