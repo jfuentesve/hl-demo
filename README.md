@@ -85,7 +85,7 @@ El script realiza:
 
 ## Frontend (hl-web)
 
-- **Framework**: Angular 17 / Angular Material
+- **Framework**: Angular 17 / Angular Material (landing y página About en `/about` con resumen arquitectónico)
 - **Branding**: assets en `public/brand/` (`favicon`, logos horizontal/mark)
 - **Deploy**: build local → sync a S3 → invalidación en CloudFront
 - **URL**: https://hl-web.demopitch.click (Route53 alias → CloudFront)
