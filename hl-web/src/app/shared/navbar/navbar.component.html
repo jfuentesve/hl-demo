@@ -5,27 +5,29 @@
   <span class="spacer"></span>
 
   <nav class="links desktop">
-    <a mat-button routerLink="/" translate>nav.home</a>
-    <a mat-button routerLink="/about" translate>nav.about</a>
+    <a mat-button routerLink="/" translate>{{'nav.home' | translate}}</a>
+    <a mat-button routerLink="/about" translate>{{ 'nav.about' | translate }}</a>
     @if (isUserOrAdmin) {
-      <a mat-button routerLink="/home" translate>nav.demo</a>
+      <a mat-button routerLink="/home" translate>{{ 'nav.demo' | translate }}</a>
     }
     @if (role==='admin') {
-      <a mat-button routerLink="/admin">Admin</a>
+      <a mat-button routerLink="/admin">{{ 'nav.admin' | translate }}</a>
     }
   </nav>
 
   <div class="auth desktop">
     @if (!isAuthenticated) {
-      <button mat-stroked-button routerLink="/login" translate>nav.login</button>
+      <button mat-stroked-button routerLink="/login" translate>{{ 'nav.login' | translate }}</button>
     } @else {
       <button mat-stroked-button (click)="logout()">{{ 'nav.logout' | translate }} ({{displayName}})</button>
     }
   </div>
 
   <div class="lang desktop">
-    <button mat-button (click)="switchLang('es')" [disabled]="translate.currentLang === 'es'">ES</button>
-    <button mat-button (click)="switchLang('en')" [disabled]="translate.currentLang === 'en'">EN</button>
+    <button mat-button class="lang-trigger" [matMenuTriggerFor]="langMenu">
+      {{ (translate.currentLang || 'es') | uppercase }}
+      <mat-icon fontSet="material-symbols-outlined">expand_more</mat-icon>
+    </button>
   </div>
 
   <div class="mobile-menu">
@@ -36,21 +38,30 @@
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item routerLink="/" translate>nav.home</button>
-  <button mat-menu-item routerLink="/about" translate>nav.about</button>
+  <button mat-menu-item routerLink="/" translate>{{ 'nav.home' | translate }}</button>
+  <button mat-menu-item routerLink="/about" translate>{{ 'nav.about' | translate }}</button>
   @if (isUserOrAdmin) {
-    <button mat-menu-item routerLink="/home" translate>nav.demo</button>
+    <button mat-menu-item routerLink="/home" translate>{{ 'nav.demo' | translate }}</button>
   }
   @if (role==='admin') {
-    <button mat-menu-item routerLink="/admin">Admin</button>
+    <button mat-menu-item routerLink="/admin">{{ 'nav.admin' | translate }}</button>
   }
   <mat-divider></mat-divider>
   @if (!isAuthenticated) {
-    <button mat-menu-item routerLink="/login" translate>nav.login</button>
+    <button mat-menu-item routerLink="/login" translate>{{ 'nav.login' | translate }}</button>
   } @else {
     <button mat-menu-item (click)="logout()">{{ 'nav.logout' | translate }} ({{displayName}})</button>
   }
   <mat-divider></mat-divider>
   <button mat-menu-item (click)="switchLang('es')">ES</button>
   <button mat-menu-item (click)="switchLang('en')">EN</button>
+</mat-menu>
+
+<mat-menu #langMenu="matMenu">
+  <button mat-menu-item (click)="switchLang('es')" [disabled]="translate.currentLang === 'es'">
+    {{ 'lang.es' | translate }}
+  </button>
+  <button mat-menu-item (click)="switchLang('en')" [disabled]="translate.currentLang === 'en'">
+    {{ 'lang.en' | translate }}
+  </button>
 </mat-menu>

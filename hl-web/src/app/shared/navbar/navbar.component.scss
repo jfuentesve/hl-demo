@@ -30,6 +30,16 @@
   gap: 8px;
 }
 
+.lang-trigger {
+  display: inline-flex;
+  align-items: center;
+
+  mat-icon {
+    font-size: 18px;
+    margin-left: 4px;
+  }
+}
+
 .mobile-menu {
   display: none;
 }
