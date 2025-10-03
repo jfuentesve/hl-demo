@@ -101,6 +101,49 @@
       "ctaPrimary": "Ver demo interactiva",
       "ctaSecondary": "Explorar landing"
     },
+    "tech": {
+      "heading": "Servicios y tecnologías destacadas",
+      "route53": {
+        "name": "Amazon Route 53",
+        "description": "DNS administrado con health checks y enrutamiento de baja latencia."
+      },
+      "cloudfront": {
+        "name": "Amazon CloudFront",
+        "description": "CDN global que entrega la SPA con certificados ACM en todo el edge."
+      },
+      "s3": {
+        "name": "Amazon S3",
+        "description": "Almacenamiento de objetos privado para assets estáticos y respaldos."
+      },
+      "alb": {
+        "name": "Application Load Balancer",
+        "description": "Balanceador HTTPS que enruta tráfico seguro hacia la API."
+      },
+      "ecs": {
+        "name": "Amazon ECS Fargate",
+        "description": "Orquestación serverless para contenedores .NET con aislamiento administrado."
+      },
+      "rds": {
+        "name": "Amazon RDS",
+        "description": "SQL Server administrado con backups automáticos y alta disponibilidad."
+      },
+      "dotnet": {
+        "name": ".NET 8",
+        "description": "API escrita en ASP.NET Core con rendimiento enterprise y soporte a largo plazo."
+      },
+      "angular": {
+        "name": "Angular 17",
+        "description": "Frontend modular con componentes standalone y Angular Material."
+      },
+      "terraform": {
+        "name": "Terraform",
+        "description": "Infraestructura como código para replicar entornos con control de versiones."
+      },
+      "ecr": {
+        "name": "Amazon ECR",
+        "description": "Registro privado de contenedores con versionado y escaneo automatizado."
+      }
+    },
     "architecture": {
       "title": "Arquitectura AWS",
       "note": "Los certificados TLS provienen de ACM (us-east-1) y protegen tanto CloudFront como el ALB.",

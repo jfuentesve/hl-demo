@@ -101,6 +101,49 @@
       "ctaPrimary": "View interactive demo",
       "ctaSecondary": "Explore landing"
     },
+    "tech": {
+      "heading": "Featured services and technologies",
+      "route53": {
+        "name": "Amazon Route 53",
+        "description": "Managed DNS with health checks and low-latency routing."
+      },
+      "cloudfront": {
+        "name": "Amazon CloudFront",
+        "description": "Global CDN serving the SPA with ACM certificates at the edge."
+      },
+      "s3": {
+        "name": "Amazon S3",
+        "description": "Private object storage for static assets and backups."
+      },
+      "alb": {
+        "name": "Application Load Balancer",
+        "description": "HTTPS load balancer routing secure traffic to the API."
+      },
+      "ecs": {
+        "name": "Amazon ECS Fargate",
+        "description": "Serverless container orchestration for .NET workloads on Fargate."
+      },
+      "rds": {
+        "name": "Amazon RDS",
+        "description": "Managed SQL Server database with automated backups and high availability."
+      },
+      "dotnet": {
+        "name": ".NET 8",
+        "description": "ASP.NET Core API runtime with enterprise-grade performance."
+      },
+      "angular": {
+        "name": "Angular 17",
+        "description": "Modular frontend built with standalone components and Angular Material."
+      },
+      "terraform": {
+        "name": "Terraform",
+        "description": "Infrastructure as Code to reproduce environments consistently."
+      },
+      "ecr": {
+        "name": "Amazon ECR",
+        "description": "Private container registry with versioning and image scanning."
+      }
+    },
     "architecture": {
       "title": "AWS architecture",
       "note": "TLS certificates come from ACM (us-east-1) and protect both CloudFront and the ALB.",
