@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { User } from '../../core/models/user.model';
 import { Deal } from '../../core/models/deal.model';
@@ -35,7 +36,8 @@ interface CreateDealDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ]
 })
 export class CreateDealDialogComponent {

@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '../../core/services/auth.service';
 import { Role } from '../../core/models/role.type';
@@ -15,11 +16,10 @@ import { Role } from '../../core/models/role.type';
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule]
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, TranslateModule]
 })
 export class NavbarComponent {
-
-    constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, public translate: TranslateService) {}
 
   get isAuthenticated(): boolean {
     return this.auth.isAuthenticated();
@@ -41,6 +41,11 @@ export class NavbarComponent {
 
   get displayName(): string {
     return this.auth.fullName ?? this.auth.username ?? '';
+  }
+
+  switchLang(lang: 'es' | 'en'): void {
+    this.translate.use(lang);
+    localStorage.setItem('hl-lang', lang);
   }
 
   logout(): void {

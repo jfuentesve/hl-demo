@@ -23,7 +23,8 @@
 }
 
 .links,
-.auth {
+.auth,
+.lang {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -35,7 +36,8 @@
 
 @media (max-width: 768px) {
   .links,
-  .auth {
+  .auth,
+  .lang {
     display: none;
   }
 

@@ -1,11 +1,11 @@
-<h2>Admin – Deals</h2>
+<h2>{{ 'admin.title' | translate }}</h2>
 @if (isAuth) {
   <section class="admin-toolbar">
     <button mat-flat-button color="primary" (click)="openCreateDialog()">
       <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
-      New Deal
+      {{ 'admin.new' | translate }}
     </button>
-    <div class="summary">Total deals: {{ deals.length }}</div>
+    <div class="summary">{{ 'admin.total' | translate:{ count: deals.length } }}</div>
   </section>
 
   <mat-card class="admin-card">
@@ -13,7 +13,7 @@
       @if (loading) {
         <div class="loading-state">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-          <p>Loading deals…</p>
+          <p>{{ 'admin.loading' | translate }}</p>
         </div>
       }
 
@@ -23,7 +23,7 @@
 
       @if (!loading && !error) {
         @if (deals.length === 0) {
-          <p class="empty-state">No deals registered yet. Use "New Deal" to create one.</p>
+          <p class="empty-state">{{ 'admin.empty' | translate }}</p>
         } @else {
           <div class="table-wrapper">
             <table mat-table [dataSource]="deals" class="deals-table">
@@ -33,28 +33,28 @@
               </ng-container>
 
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <th mat-header-cell *matHeaderCellDef>{{ 'admin.columns.name' | translate }}</th>
                 <td mat-cell *matCellDef="let d">{{ d.name }}</td>
               </ng-container>
 
               <ng-container matColumnDef="client">
-                <th mat-header-cell *matHeaderCellDef>Client</th>
+                <th mat-header-cell *matHeaderCellDef>{{ 'admin.columns.client' | translate }}</th>
                 <td mat-cell *matCellDef="let d">{{ d.client }}</td>
               </ng-container>
 
               <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef>Amount</th>
+                <th mat-header-cell *matHeaderCellDef>{{ 'admin.columns.amount' | translate }}</th>
                 <td mat-cell *matCellDef="let d">{{ d.amount | currency }}</td>
               </ng-container>
 
               <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <th mat-header-cell *matHeaderCellDef>{{ 'admin.columns.actions' | translate }}</th>
                 <td mat-cell *matCellDef="let d" class="actions-cell">
                   <div class="actions-wrapper">
-                  <button mat-icon-button matTooltip="Edit deal" (click)="openEditDialog(d)">
+                  <button mat-icon-button matTooltip="{{ 'admin.tooltips.edit' | translate }}" (click)="openEditDialog(d)">
                     <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
                   </button>
-                  <button mat-icon-button color="warn" matTooltip="Delete deal" (click)="remove(d)">
+                  <button mat-icon-button color="warn" matTooltip="{{ 'admin.tooltips.delete' | translate }}" (click)="remove(d)">
                     <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
                   </button>
                   </div>
@@ -70,5 +70,5 @@
     </mat-card-content>
   </mat-card>
 } @else {
-  <p>Please log in to view this page.</p>
+  <p>{{ 'admin.loginPrompt' | translate }}</p>
 }

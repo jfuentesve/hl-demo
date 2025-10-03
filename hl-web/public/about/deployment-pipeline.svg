@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <style>
+    text { font-family: 'Segoe UI', Arial, sans-serif; fill: #1f3b73; }
+    .title { font-size: 18px; font-weight: 600; }
+    .caption { font-size: 14px; fill: #4a5572; }
+    .card { fill: #ffffff; stroke: #d1d7e8; stroke-width: 2; rx: 18; }
+    .arrow { stroke: #3f51b5; stroke-width: 3; marker-end: url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#3f51b5" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="360" rx="28" fill="#f5f7fa" />
+
+  <!-- Developer -->
+  <g transform="translate(60,120)">
+    <rect class="card" width="200" height="140" />
+    <circle cx="56" cy="56" r="28" fill="#3f51b5" opacity="0.2" />
+    <text class="title" x="96" y="56">Developer</text>
+    <text class="caption" x="24" y="96">Scripts locales</text>
+    <text class="caption" x="24" y="120">`api-build-push-local.sh`</text>
+    <text class="caption" x="24" y="144">`ui-build-push-local.sh`</text>
+  </g>
+
+  <!-- Build -->
+  <g transform="translate(300,80)">
+    <rect class="card" width="200" height="200" />
+    <image href="icon-docker.svg" x="24" y="30" width="48" height="48" />
+    <image href="icon-dotnet.svg" x="84" y="30" width="48" height="48" />
+    <image href="icon-angular.svg" x="144" y="30" width="48" height="48" />
+    <text class="title" x="24" y="110">Build</text>
+    <text class="caption" x="24" y="140">Docker multi-stage (API)</text>
+    <text class="caption" x="24" y="164">`dotnet publish` linux-x64</text>
+    <text class="caption" x="24" y="188">`ng build --configuration production`</text>
+  </g>
+
+  <!-- Publication -->
+  <g transform="translate(540,80)">
+    <rect class="card" width="200" height="200" />
+    <image href="icon-ecr.svg" x="24" y="30" width="48" height="48" />
+    <image href="icon-s3.svg" x="84" y="30" width="48" height="48" />
+    <text class="title" x="24" y="110">Publicación</text>
+    <text class="caption" x="24" y="140">Push a Amazon ECR (API)</text>
+    <text class="caption" x="24" y="164">Sync a S3 (SPA)</text>
+    <text class="caption" x="24" y="188">Cache-control adecuado</text>
+  </g>
+
+  <!-- Actualización -->
+  <g transform="translate(780,80)">
+    <rect class="card" width="200" height="200" />
+    <image href="icon-ecs.svg" x="24" y="30" width="48" height="48" />
+    <image href="icon-cloudfront.svg" x="84" y="30" width="48" height="48" />
+    <text class="title" x="24" y="110">Actualización</text>
+    <text class="caption" x="24" y="140">Registrar nueva Task Definition</text>
+    <text class="caption" x="24" y="164">Actualizar servicio ECS</text>
+    <text class="caption" x="24" y="188">Invalidar CloudFront (`/*`)</text>
+  </g>
+
+  <!-- Arrows -->
+  <line class="arrow" x1="260" y1="190" x2="300" y2="180" />
+  <line class="arrow" x1="500" y1="180" x2="540" y2="180" />
+  <line class="arrow" x1="740" y1="180" x2="780" y2="180" />
+</svg>

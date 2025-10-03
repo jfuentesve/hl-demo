@@ -1,0 +1,231 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "demo": "Mis deals",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión"
+  },
+  "lang": {
+    "es": "ES",
+    "en": "EN"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Plataforma institucional de originación y gestión de deals",
+      "title": "Impulsa tus inversiones con información confiable, velocidad operativa y gobierno impecable.",
+      "subtitle": "HL Deals centraliza originación, estructuración y seguimiento para equipos de banca de inversión, private equity y fintechs de crédito. Toma decisiones basadas en datos, con controles diseñados para auditorías regulatorias.",
+      "ctaPrimary": "Ingresar a la plataforma",
+      "ctaSecondary": "Explorar demo interactiva"
+    },
+    "highlights": {
+      "transactions": "en transacciones habilitadas",
+      "institutions": "instituciones asociadas",
+      "retention": "tasa de retención de clientes"
+    },
+    "trust": {
+      "heading": "Confianza de líderes del ecosistema financiero",
+      "copy": "Utilizada por mesas de inversión, fondos privados y originadores fintech para administrar más de cuatro mil millones de dólares en oportunidades. Seguridad certificada, cumplimiento KYC/AML automatizado y soporte 24/7."
+    },
+    "solutions": {
+      "origin": {
+        "title": "Originación inteligente",
+        "copy": "Motor de originación impulsado por analítica predictiva para identificar oportunidades antes que el mercado."
+      },
+      "portfolio": {
+        "title": "Gestión de portafolio 360°",
+        "copy": "Supervisa flujo de caja, covenants y performance en tiempo real con dashboards adaptados a tu mesa de inversión."
+      },
+      "governance": {
+        "title": "Gobierno y cumplimiento",
+        "copy": "Automatiza auditorías, políticas KYC/AML y flujos de aprobación con trazabilidad completa."
+      }
+    },
+    "testimonials": {
+      "one": {
+        "quote": "HL Deals nos dio la agilidad para cerrar estructuras complejas en días, no semanas. La visibilidad en riesgo cambió la conversación con nuestros inversionistas.",
+        "author": "María Torres",
+        "role": "Directora de Inversiones, Capital Nova"
+      },
+      "two": {
+        "quote": "La plataforma nos permitió consolidar originación y seguimiento en un solo lugar. El equipo de HL entiende verdaderamente el negocio financiero.",
+        "author": "Sebastián Ríos",
+        "role": "CEO, Horizonte Partners"
+      }
+    },
+    "workflow": {
+      "heading": "Un journey completo, de la prospección al cierre",
+      "steps": {
+        "origin": {
+          "label": "Origina con velocidad.",
+          "copy": "Configura pipelines personalizados, califica automáticamente y comparte data room seguro en segundos."
+        },
+        "evaluate": {
+          "label": "Evalúa con precisión.",
+          "copy": "Modelos de escenarios, stress testing y alertas proactivas frente a desvíos operativos."
+        },
+        "close": {
+          "label": "Cierra y monitorea.",
+          "copy": "Firma electrónica integrada, flujo de desembolso y tablero para inversores con métricas en tiempo real."
+        }
+      },
+      "benefitsTitle": "Beneficios clave",
+      "benefits": [
+        "Implementación en menos de 6 semanas",
+        "Arquitectura multi-tenant con cifrado end-to-end",
+        "APIs abiertas para core bancario y ERPs líderes",
+        "Equipo de Customer Success especializado en finanzas"
+      ]
+    },
+    "cta": {
+      "heading": "¿Listo para acelerar tu mesa de deals?",
+      "copy": "Agenda una sesión estratégica con nuestros especialistas y descubre cómo HL Deals puede potenciar tu modelo de inversión.",
+      "primary": "Solicitar sesión estratégica",
+      "secondary": "Ver tablero administrativo"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Arquitectura productiva, optimizada para equipos financieros exigentes.",
+      "copy": "HL Deals demuestra cómo desplegar un stack moderno listo para producción: infraestructura segura en AWS, pipelines de despliegue automatizados y un frontend que escala globalmente. Esta página resume la ingeniería detrás del demo para líderes técnicos, reclutadores y decision makers.",
+      "snapshot": {
+        "title": "Snapshot del stack",
+        "items": [
+          "Frontend: Angular 17, Material Design standalone",
+          "Backend: ASP.NET Core 8, EF Core, JWT",
+          "Infra: AWS VPC, CloudFront, ALB, ECS Fargate, RDS SQL Server",
+          "IaC & DevOps: Terraform, Docker, Amazon ECR"
+        ]
+      },
+      "ctaPrimary": "Ver demo interactiva",
+      "ctaSecondary": "Explorar landing"
+    },
+    "architecture": {
+      "title": "Arquitectura AWS",
+      "note": "Los certificados TLS provienen de ACM (us-east-1) y protegen tanto CloudFront como el ALB.",
+      "chain": {
+        "clients": {
+          "title": "Usuarios",
+          "copy": "Navegadores y apps móviles. Todo el tráfico viaja sobre HTTPS."
+        },
+        "route53": {
+          "title": "Amazon Route 53",
+          "copy": "Alias hl-web → CloudFront. Alias hl-api → ALB."
+        },
+        "cloudfront": {
+          "title": "Amazon CloudFront",
+          "copy": "Distribuye la SPA. Origin Access Identity + ACM."
+        },
+        "s3": {
+          "title": "Amazon S3",
+          "copy": "Bucket privado hl-deals-web-dev. Assets estáticos e index.html."
+        }
+      },
+      "publicSubnet": "Subred pública",
+      "privateSubnet": "Subred privada",
+      "alb": {
+        "title": "Application Load Balancer",
+        "copy": "Listener 80 (redirect) / 443 (ACM). Healthcheck /healthz."
+      },
+      "ecs": {
+        "title": "Amazon ECS Fargate",
+        "copy": "Contenedor ASP.NET Core 8. Security Group mínimo."
+      },
+      "rds": {
+        "title": "Amazon RDS (SQL Server)",
+        "copy": "Instancia administrada. Acceso sólo desde ECS SG."
+      }
+    },
+    "pipeline": {
+      "title": "Flujo de despliegue automatizado",
+      "copy": "Desde los scripts locales hasta la publicación en ECS y CloudFront.",
+      "steps": {
+        "build": {
+          "title": "Build local",
+          "copy": "api-build-push-local.sh ejecuta dotnet publish, build Docker y push a ECR. ui-build-push-local.sh ejecuta ng build y prepara assets."
+        },
+        "registry": {
+          "title": "Registro",
+          "copy": "Imágenes versionadas en Amazon ECR para ECS Fargate."
+        },
+        "frontend": {
+          "title": "Front-end",
+          "copy": "Assets sincronizados al bucket S3 y cache invalidado en CloudFront."
+        },
+        "backend": {
+          "title": "Back-end",
+          "copy": "Nueva Task Definition registrada y servicio ECS actualizado para la API."
+        }
+      }
+    },
+    "security": {
+      "title": "Seguridad y confiabilidad",
+      "copy": "La demo implementa patrones utilizados en proyectos productivos: certificados válidos, segmentación de red, gestión de secretos y despliegues reproducibles. Está pensada para demostrar procesos listos para auditorías.",
+      "items": [
+        "Tráfico cifrado end-to-end con certificados ACM válidos.",
+        "Bucket S3 privado accesible solo mediante Origin Access Identity.",
+        "JWT firmados con claves rotables y CORS configurado para clientes confiables.",
+        "Subredes privadas para ECS y RDS, con SG mínimos necesarios.",
+        "Scripts de despliegue que fuerzan invalidaciones de caché y versiones consistentes."
+      ]
+    }
+  },
+  "admin": {
+    "title": "Admin – Deals",
+    "new": "Nuevo deal",
+    "total": "Total de deals: {{count}}",
+    "loading": "Cargando deals…",
+    "empty": "Aún no hay deals registrados. Usa \"Nuevo deal\" para crear uno.",
+    "columns": {
+      "name": "Nombre",
+      "client": "Cliente",
+      "amount": "Monto",
+      "actions": "Acciones"
+    },
+    "tooltips": {
+      "edit": "Editar deal",
+      "delete": "Eliminar deal"
+    },
+    "loginPrompt": "Por favor inicia sesión para ver esta página.",
+    "errorLoad": "No fue posible obtener los deals. Intenta nuevamente.",
+    "errorDelete": "No fue posible eliminar el deal."
+  },
+  "createDeal": {
+    "titleNew": "Nuevo deal",
+    "titleEdit": "Editar deal",
+    "name": "Nombre del deal",
+    "client": "Cliente",
+    "amount": "Monto",
+    "cancel": "Cancelar",
+    "create": "Crear",
+    "save": "Guardar",
+    "errorCreate": "No fue posible crear el deal.",
+    "errorUpdate": "No fue posible actualizar el deal."
+  },
+  "deleteDeal": {
+    "title": "Confirmar eliminación",
+    "intro": "Estás a punto de eliminar este deal de forma permanente:",
+    "warning": "Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
+  },
+  "userHome": {
+    "welcome": "¡Bienvenido de nuevo, {{name}}!",
+    "portfolio": "Resumen de portafolio de {{client}}",
+    "metrics": {
+      "deals": "Deals activos",
+      "volume": "Volumen total"
+    },
+    "loading": "Cargando tus deals…",
+    "empty": "Aún no hay deals registrados para {{client}}.",
+    "created": "Creado {{date}}",
+    "error": "No fue posible cargar tus deals. Intenta nuevamente más tarde.",
+    "emptyClient": "este cliente"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "submit": "Ingresar"
+  }
+}

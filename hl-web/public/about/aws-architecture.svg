@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <style>
+    text { font-family: 'Segoe UI', Arial, sans-serif; fill: #1f3b73; }
+    .title { font-size: 18px; font-weight: 600; }
+    .caption { font-size: 14px; fill: #4a5572; }
+    .card { fill: #ffffff; stroke: #d1d7e8; stroke-width: 2; rx: 20; }
+    .zone { stroke: #bfc8e2; stroke-width: 2; stroke-dasharray: 12 10; }
+    .arrow { stroke: #3f51b5; stroke-width: 3; marker-end: url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#3f51b5" />
+    </marker>
+  </defs>
+
+  <rect width="960" height="540" rx="32" fill="#f5f7fa" />
+
+  <!-- Client block -->
+  <g transform="translate(40,200)">
+    <rect class="card" width="200" height="140" />
+    <circle cx="60" cy="60" r="28" fill="#3f51b5" opacity="0.2" />
+    <text class="title" x="98" y="64">Usuarios</text>
+    <text class="caption" x="24" y="96">Navegadores y apps móviles</text>
+  </g>
+
+  <!-- Route 53 -->
+  <g transform="translate(300,60)">
+    <rect class="card" width="220" height="140" />
+    <image href="icon-route53.svg" x="24" y="20" width="56" height="56" />
+    <text class="title" x="96" y="56">Amazon Route 53</text>
+    <text class="caption" x="24" y="92">Alias hl-web.demopitch.click</text>
+    <text class="caption" x="24" y="116">Alias hl-api.demopitch.click</text>
+  </g>
+
+  <!-- CloudFront -->
+  <g transform="translate(560,40)">
+    <rect class="card" width="260" height="180" />
+    <image href="icon-cloudfront.svg" x="24" y="24" width="56" height="56" />
+    <text class="title" x="96" y="60">Amazon CloudFront</text>
+    <text class="caption" x="24" y="100">Distribuye la SPA Angular</text>
+    <text class="caption" x="24" y="124">Origin Access Identity hacia S3</text>
+    <text class="caption" x="24" y="148">Certificado ACM (HTTPS)</text>
+  </g>
+
+  <!-- S3 -->
+  <g transform="translate(560,260)">
+    <rect class="card" width="260" height="140" />
+    <image href="icon-s3.svg" x="24" y="24" width="56" height="56" />
+    <text class="title" x="96" y="60">Amazon S3</text>
+    <text class="caption" x="24" y="96">Bucket privado hl-deals-web-dev</text>
+    <text class="caption" x="24" y="120">Archivos estáticos + index.html</text>
+  </g>
+
+  <!-- VPC zone -->
+  <rect class="zone" x="280" y="220" width="600" height="240" rx="26" fill="none" />
+  <text class="caption" x="294" y="250">VPC (subredes públicas / privadas)</text>
+
+  <!-- ALB -->
+  <g transform="translate(320,280)">
+    <rect class="card" width="220" height="140" />
+    <text class="title" x="24" y="64">Application Load Balancer</text>
+    <text class="caption" x="24" y="96">Listener 80 → redirect HTTPS 443</text>
+    <text class="caption" x="24" y="120">Target group /healthz</text>
+  </g>
+
+  <!-- ECS Fargate -->
+  <g transform="translate(560,320)">
+    <rect class="card" width="220" height="120" />
+    <image href="icon-ecs.svg" x="24" y="20" width="56" height="56" />
+    <text class="title" x="96" y="56">ECS Fargate</text>
+    <text class="caption" x="24" y="92">Contenedor ASP.NET Core</text>
+  </g>
+
+  <!-- RDS -->
+  <g transform="translate(800,320)">
+    <rect class="card" width="120" height="120" />
+    <image href="icon-rds.svg" x="32" y="20" width="56" height="56" />
+    <text class="caption" x="20" y="96">Amazon RDS</text>
+    <text class="caption" x="20" y="116">SQL Server</text>
+  </g>
+
+  <!-- Connectors -->
+              
+  <line class="arrow" x1="240" y1="270" x2="300" y2="190" />
+  <line class="arrow" x1="410" y1="200" x2="410" y2="280" />
+  <line class="arrow" x1="520" y1="130" x2="560" y2="130" />
+  <line class="arrow" x1="820" y1="200" x2="820" y2="260" />
+  <line class="arrow" x1="540" y1="350" x2="560" y2="350" />
+  <line class="arrow" x1="780" y1="380" x2="800" y2="380" />
+</svg>

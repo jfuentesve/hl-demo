@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { USERS } from '../../core/constants/app.constants';
 import { Deal } from '../../core/models/deal.model';
@@ -29,7 +30,8 @@ import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog.component'
     MatIconModule,
     MatProgressBarModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    TranslateModule
   ]
 })
 export class AdminComponent implements OnInit {
@@ -42,7 +44,8 @@ export class AdminComponent implements OnInit {
   constructor(
     private dealsSvc: DealsService,
     private auth: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
 
   get isAuth(): boolean {
@@ -71,7 +74,7 @@ export class AdminComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to load deals', err);
-        this.error = 'Unable to load deals. Please try again.';
+        this.error = this.translate.instant('admin.errorLoad');
         this.loading = false;
       }
     });
@@ -92,7 +95,7 @@ export class AdminComponent implements OnInit {
         next: () => this.refresh(),
         error: (err) => {
           console.error('Failed to delete deal', err);
-          this.error = 'Unable to delete deal.';
+          this.error = this.translate.instant('admin.errorDelete');
         }
       });
     });
@@ -140,7 +143,7 @@ export class AdminComponent implements OnInit {
       next: () => this.refresh(),
       error: (err) => {
         console.error('Failed to create deal', err);
-        this.error = 'Unable to create deal.';
+        this.error = this.translate.instant('createDeal.errorCreate');
         this.loading = false;
       }
     });
@@ -158,7 +161,7 @@ export class AdminComponent implements OnInit {
       next: () => this.refresh(),
       error: (err) => {
         console.error('Failed to update deal', err);
-        this.error = 'Unable to update deal.';
+        this.error = this.translate.instant('createDeal.errorUpdate');
         this.loading = false;
       }
     });

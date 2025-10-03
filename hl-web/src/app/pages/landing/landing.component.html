@@ -2,24 +2,18 @@
   <section class="hero">
     <div class="hero-content">
       <img src="brand/logo-horizontal-transparent.png" alt="HL Deals" class="hero-logo" />
-      <p class="eyebrow">Plataforma institucional de originación y gestión de deals</p>
-      <h1>
-        Impulsa tus inversiones con información confiable, velocidad operativa y gobierno impecable.
-      </h1>
-      <p class="hero-subtitle">
-        HL Deals centraliza originación, estructuración y seguimiento para equipos de banca de inversión,
-        private equity y fintechs de crédito. Toma decisiones basadas en datos, con controles diseñados para
-        auditorías regulatorias.
-      </p>
+      <p class="eyebrow" translate>landing.hero.eyebrow</p>
+      <h1>{{ 'landing.hero.title' | translate }}</h1>
+      <p class="hero-subtitle">{{ 'landing.hero.subtitle' | translate }}</p>
       <div class="hero-actions">
-        <a routerLink="/login" class="btn btn-primary">Ingresar a la plataforma</a>
-        <a routerLink="/home" class="btn btn-ghost">Explorar demo interactiva</a>
+        <a routerLink="/login" class="btn btn-primary">{{ 'landing.hero.ctaPrimary' | translate }}</a>
+        <a routerLink="/home" class="btn btn-ghost">{{ 'landing.hero.ctaSecondary' | translate }}</a>
       </div>
       <ul class="hero-highlights">
-        @for (item of highlights; track item.label) {
+        @for (item of highlights; track item.labelKey) {
           <li>
             <span class="value">{{ item.value }}</span>
-            <span class="label">{{ item.label }}</span>
+            <span class="label">{{ item.labelKey | translate }}</span>
           </li>
         }
       </ul>
@@ -33,28 +27,25 @@
   </section>
 
   <section class="trust">
-    <h2>Confianza de líderes del ecosistema financiero</h2>
-    <p>
-      Utilizada por mesas de inversión, fondos privados y originadores fintech para administrar más de cuatro mil
-      millones de dólares en oportunidades. Seguridad certificada, cumplimiento KYC/AML automatizado y soporte 24/7.
-    </p>
+    <h2>{{ 'landing.trust.heading' | translate }}</h2>
+    <p>{{ 'landing.trust.copy' | translate }}</p>
     <div class="features">
-      @for (solution of solutions; track solution.title) {
+      @for (solution of solutions; track solution.titleKey) {
         <article>
-          <h3>{{ solution.title }}</h3>
-          <p>{{ solution.copy }}</p>
+          <h3>{{ solution.titleKey | translate }}</h3>
+          <p>{{ solution.copyKey | translate }}</p>
         </article>
       }
     </div>
   </section>
 
   <section class="testimonials">
-    @for (item of testimonials; track item.author) {
+    @for (item of testimonials; track item.authorKey) {
       <figure>
-        <blockquote>“{{ item.quote }}”</blockquote>
+        <blockquote>“{{ item.quoteKey | translate }}”</blockquote>
         <figcaption>
-          <strong>{{ item.author }}</strong>
-          <span>{{ item.role }}</span>
+          <strong>{{ item.authorKey | translate }}</strong>
+          <span>{{ item.roleKey | translate }}</span>
         </figcaption>
       </figure>
     }
@@ -62,42 +53,38 @@
 
   <section class="workflow">
     <div class="content">
-      <h2>Un journey completo, de la prospección al cierre</h2>
+      <h2>{{ 'landing.workflow.heading' | translate }}</h2>
       <ul>
         <li>
-          <strong>Origina con velocidad.</strong> Configura pipelines personalizados, califica automáticamente y
-          comparte data room seguro en segundos.
+          <strong>{{ 'landing.workflow.steps.origin.label' | translate }}</strong>
+          {{ 'landing.workflow.steps.origin.copy' | translate }}
         </li>
         <li>
-          <strong>Evalúa con precisión.</strong> Modelos de escenarios, stress testing y alertas proactivas frente a
-          desvíos operativos.
+          <strong>{{ 'landing.workflow.steps.evaluate.label' | translate }}</strong>
+          {{ 'landing.workflow.steps.evaluate.copy' | translate }}
         </li>
         <li>
-          <strong>Cierra y monitorea.</strong> Firma electrónica integrada, flujo de desembolso y tablero para inversores
-          con métricas en tiempo real.
+          <strong>{{ 'landing.workflow.steps.close.label' | translate }}</strong>
+          {{ 'landing.workflow.steps.close.copy' | translate }}
         </li>
       </ul>
     </div>
     <div class="card">
-      <h3>Beneficios clave</h3>
+      <h3>{{ 'landing.workflow.benefitsTitle' | translate }}</h3>
       <ul>
-        <li>Implementación en menos de 6 semanas</li>
-        <li>Arquitectura multi-tenant con cifrado end-to-end</li>
-        <li>APIs abiertas para core bancario y ERPs líderes</li>
-        <li>Equipo de Customer Success especializado en finanzas</li>
+        @for (benefit of ['landing.workflow.benefits.0', 'landing.workflow.benefits.1', 'landing.workflow.benefits.2', 'landing.workflow.benefits.3']; track benefit) {
+          <li>{{ benefit | translate }}</li>
+        }
       </ul>
     </div>
   </section>
 
   <section class="cta">
-    <h2>¿Listo para acelerar tu mesa de deals?</h2>
-    <p>
-      Agenda una sesión estratégica con nuestros especialistas y descubre cómo HL Deals puede potenciar tu modelo
-      de inversión.
-    </p>
+    <h2>{{ 'landing.cta.heading' | translate }}</h2>
+    <p>{{ 'landing.cta.copy' | translate }}</p>
     <div class="cta-actions">
-      <a routerLink="/login" class="btn btn-primary">Solicitar sesión estratégica</a>
-      <a routerLink="/admin" class="btn btn-ghost">Ver tablero administrativo</a>
+      <a routerLink="/login" class="btn btn-primary">{{ 'landing.cta.primary' | translate }}</a>
+      <a routerLink="/admin" class="btn btn-ghost">{{ 'landing.cta.secondary' | translate }}</a>
     </div>
   </section>
 </div>
