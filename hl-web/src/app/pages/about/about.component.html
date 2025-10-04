@@ -1,0 +1,109 @@
+<div class="about">
+  <section class="hero">
+    <div class="copy">
+      <h1>{{ 'about.hero.title' | translate }}</h1>
+      <p>{{ 'about.hero.copy' | translate }}</p>
+      <div class="cta">
+        <a [routerLink]="['/', currentLang, 'home']" class="btn btn-primary">{{ 'about.hero.ctaPrimary' | translate }}</a>
+        <a [routerLink]="['/', currentLang]" class="btn btn-ghost">{{ 'about.hero.ctaSecondary' | translate }}</a>
+      </div>
+    </div>
+    <div class="highlight-card">
+      <h2>{{ 'about.hero.snapshot.title' | translate }}</h2>
+      <ul>
+        @for (item of snapshotItems; track item) {
+          <li>{{ item | translate }}</li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="architecture">
+    <h2>{{ 'about.architecture.title' | translate }}</h2>
+    <div class="diagram-architecture">
+      <div class="chain">
+        @for (item of architectureChain; track item.titleKey; let idx = $index) {
+          <div class="node" [ngClass]="{ 'clients': item.icon === 'about/icon-users.svg' }">
+            <img [src]="item.icon" [alt]="item.titleKey | translate" />
+            <h3>{{ item.titleKey | translate }}</h3>
+            <p [innerHTML]="item.copyKey | translate"></p>
+          </div>
+          @if (idx < architectureChain.length - 1) {
+            <div class="arrow">→</div>
+          }
+        }
+      </div>
+
+      <div class="vpc">
+        <div class="vpc-header">AWS VPC</div>
+        <div class="vpc-content">
+          <div class="subnet public">
+            <div class="subnet-header">{{ 'about.architecture.publicSubnet' | translate }}</div>
+            <div class="node alb">
+              <img src="about/icon-alb.svg" alt="Application Load Balancer" />
+              <h3>{{ 'about.architecture.alb.title' | translate }}</h3>
+              <p [innerHTML]="'about.architecture.alb.copy' | translate"></p>
+            </div>
+          </div>
+          <div class="subnet private">
+            <div class="subnet-header">{{ 'about.architecture.privateSubnet' | translate }}</div>
+            <div class="node ecs">
+              <img src="about/icon-ecs.svg" alt="Amazon ECS Fargate" />
+              <h3>{{ 'about.architecture.ecs.title' | translate }}</h3>
+              <p [innerHTML]="'about.architecture.ecs.copy' | translate"></p>
+            </div>
+            <div class="arrow vertical">↓</div>
+            <div class="node rds">
+              <img src="about/icon-rds.svg" alt="Amazon RDS" />
+              <h3>{{ 'about.architecture.rds.title' | translate }}</h3>
+              <p [innerHTML]="'about.architecture.rds.copy' | translate"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="diagram-note">{{ 'about.architecture.note' | translate }}</p>
+  </section>
+
+  <section class="pipeline">
+    <h2>{{ 'about.pipeline.title' | translate }}</h2>
+    <p>{{ 'about.pipeline.copy' | translate }}</p>
+    <div class="pipeline-grid">
+      @for (stage of pipelineStages; track stage.titleKey; let idx = $index) {
+        <div class="stage">
+          @for (icon of stage.icons; track icon) {
+            <img [src]="icon" alt="" />
+          }
+          <h3>{{ stage.titleKey | translate }}</h3>
+          <p [innerHTML]="stage.copyKey | translate"></p>
+        </div>
+        @if (idx < pipelineStages.length - 1) {
+          <div class="arrow">→</div>
+        }
+      }
+    </div>
+  </section>
+
+  <section class="tech">
+    <h2>{{ 'about.tech.heading' | translate }}</h2>
+    <div class="grid">
+      @for (tech of techStack; track tech.nameKey) {
+        <article>
+          <img [src]="tech.icon" [attr.alt]="tech.nameKey | translate" />
+          <h3>{{ tech.nameKey | translate }}</h3>
+          <p>{{ tech.descriptionKey | translate }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="security">
+    <h2>{{ 'about.security.title' | translate }}</h2>
+    <p>{{ 'about.security.copy' | translate }}</p>
+    <ul>
+      @for (point of securityHighlightKeys; track point) {
+        <li>{{ point | translate }}</li>
+      }
+    </ul>
+  </section>
+</div>

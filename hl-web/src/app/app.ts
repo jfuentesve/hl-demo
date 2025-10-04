@@ -8,6 +8,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss']
 })
 export class App {}

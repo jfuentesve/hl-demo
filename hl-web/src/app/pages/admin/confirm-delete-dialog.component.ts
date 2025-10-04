@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { Deal } from '../../core/models/deal.model';
 
@@ -15,7 +16,7 @@ interface ConfirmDeleteData {
   standalone: true,
   templateUrl: './confirm-delete-dialog.component.html',
   styleUrls: ['./confirm-delete-dialog.component.scss'],
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule]
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, TranslateModule]
 })
 export class ConfirmDeleteDialogComponent {
   constructor(

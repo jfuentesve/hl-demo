@@ -1,9 +1,9 @@
 <h2 mat-dialog-title>
   <mat-icon fontSet="material-symbols-outlined">warning</mat-icon>
-  Confirm delete
+  {{ 'deleteDeal.title' | translate }}
 </h2>
 <mat-dialog-content>
-  <p>You are about to permanently delete this deal:</p>
+  <p>{{ 'deleteDeal.intro' | translate }}</p>
   <ul class="deal-summary">
     <li><strong>ID:</strong> {{ data.deal.id }}</li>
     <li><strong>Name:</strong> {{ data.deal.name }}</li>
@@ -11,9 +11,9 @@
     <li><strong>Amount:</strong> {{ data.deal.amount | currency }}</li>
     <li><strong>Created:</strong> {{ data.deal.createdAt | date: 'medium' }}</li>
   </ul>
-  <p class="warning">This action cannot be undone.</p>
+  <p class="warning">{{ 'deleteDeal.warning' | translate }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="warn" (click)="confirm()">Delete</button>
+  <button mat-button (click)="cancel()">{{ 'deleteDeal.cancel' | translate }}</button>
+  <button mat-raised-button color="warn" (click)="confirm()">{{ 'deleteDeal.delete' | translate }}</button>
 </mat-dialog-actions>

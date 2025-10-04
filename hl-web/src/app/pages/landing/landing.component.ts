@@ -1,51 +1,53 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss'],
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, TranslateModule]
 })
 export class LandingComponent {
+  constructor(private translate: TranslateService) {}
+
+  get currentLang(): 'en' | 'es' {
+    const lang = (this.translate.currentLang ?? '').toLowerCase();
+    return lang === 'es' ? 'es' : 'en';
+  }
   readonly highlights = [
-    { value: '$4.2B', label: 'en transacciones habilitadas' },
-    { value: '150+', label: 'instituciones asociadas' },
-    { value: '98%', label: 'tasa de retención de clientes' }
+    { value: '$4.2B', labelKey: 'landing.highlights.transactions' },
+    { value: '150+', labelKey: 'landing.highlights.institutions' },
+    { value: '98%', labelKey: 'landing.highlights.retention' }
   ];
 
   readonly solutions = [
     {
-      title: 'Originación inteligente',
-      copy:
-        'Motor de originación impulsado por analítica predictiva para identificar oportunidades antes que el mercado.'
+      titleKey: 'landing.solutions.origin.title',
+      copyKey: 'landing.solutions.origin.copy'
     },
     {
-      title: 'Gestión de portafolio 360°',
-      copy:
-        'Supervisa flujo de caja, covenants y performance en tiempo real con dashboards adaptados a tu mesa de inversión.'
+      titleKey: 'landing.solutions.portfolio.title',
+      copyKey: 'landing.solutions.portfolio.copy'
     },
     {
-      title: 'Gobierno y cumplimiento',
-      copy:
-        'Automatiza auditorías, políticas KYC/AML y flujos de aprobación con trazabilidad completa.'
+      titleKey: 'landing.solutions.governance.title',
+      copyKey: 'landing.solutions.governance.copy'
     }
   ];
 
   readonly testimonials = [
     {
-      quote:
-        'HL Deals nos dio la agilidad para cerrar estructuras complejas en días, no semanas. La visibilidad en riesgo cambió la conversación con nuestros inversionistas.',
-      author: 'María Torres',
-      role: 'Directora de Inversiones, Capital Nova'
+      quoteKey: 'landing.testimonials.one.quote',
+      authorKey: 'landing.testimonials.one.author',
+      roleKey: 'landing.testimonials.one.role'
     },
     {
-      quote:
-        'La plataforma nos permitió consolidar originación y seguimiento en un solo lugar. El equipo de HL entiende verdaderamente el negocio financiero.',
-      author: 'Sebastián Ríos',
-      role: 'CEO, Horizonte Partners'
+      quoteKey: 'landing.testimonials.two.quote',
+      authorKey: 'landing.testimonials.two.author',
+      roleKey: 'landing.testimonials.two.role'
     }
   ];
 }

@@ -1,0 +1,274 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "demo": "My deals",
+    "admin": "Admin",
+    "login": "Log in",
+    "logout": "Log out"
+  },
+  "lang": {
+    "es": "ES",
+    "en": "EN"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Institutional platform for deal origination and management",
+      "title": "Accelerate your investments with reliable insights, operational speed, and impeccable governance.",
+      "subtitle": "HL Deals centralizes origination, structuring, and monitoring for investment banking teams, private equity, and credit fintechs. Make data-driven decisions with controls designed for regulatory audits.",
+      "ctaPrimary": "Access the platform",
+      "ctaSecondary": "Explore interactive demo"
+    },
+    "highlights": {
+      "transactions": "in transactions enabled",
+      "institutions": "partner institutions",
+      "retention": "client retention rate"
+    },
+    "trust": {
+      "heading": "Trusted by financial ecosystem leaders",
+      "copy": "Used by investment desks, private funds, and fintech originators to manage over four billion dollars in opportunities. Certified security, automated KYC/AML compliance, and 24/7 support."
+    },
+    "solutions": {
+      "origin": {
+        "title": "Smart origination",
+        "copy": "Predictive analytics identify opportunities before the market does."
+      },
+      "portfolio": {
+        "title": "360° portfolio management",
+        "copy": "Monitor cash flow, covenants, and performance in real time with dashboards tailored to your investment desk."
+      },
+      "governance": {
+        "title": "Governance and compliance",
+        "copy": "Automate audits, KYC/AML policies, and approval workflows with complete traceability."
+      }
+    },
+    "testimonials": {
+      "one": {
+        "quote": "HL Deals gave us the agility to close complex structures in days, not weeks. The risk visibility changed the conversation with our investors.",
+        "author": "María Torres",
+        "role": "Chief Investment Officer, Capital Nova"
+      },
+      "two": {
+        "quote": "The platform let us consolidate origination and monitoring in one place. The HL team truly understands the financial business.",
+        "author": "Sebastián Ríos",
+        "role": "CEO, Horizonte Partners"
+      }
+    },
+    "workflow": {
+      "heading": "A complete journey, from origination to closing",
+      "steps": {
+        "origin": {
+          "label": "Originate faster.",
+          "copy": "Configure tailored pipelines, score automatically, and share secure data rooms in seconds."
+        },
+        "evaluate": {
+          "label": "Evaluate precisely.",
+          "copy": "Scenario modeling, stress testing, and proactive alerts for operational deviations."
+        },
+        "close": {
+          "label": "Close and monitor.",
+          "copy": "Integrated e-signature, disbursement workflows, and investor dashboards with real-time metrics."
+        }
+      },
+      "benefitsTitle": "Key benefits",
+      "benefits": [
+        "Go-live in under 6 weeks",
+        "Multi-tenant architecture with end-to-end encryption",
+        "Open APIs for core banking and leading ERPs",
+        "Customer Success team specialized in finance"
+      ]
+    },
+    "cta": {
+      "heading": "Ready to accelerate your deal desk?",
+      "copy": "Schedule a strategic session with our specialists and discover how HL Deals can boost your investment model.",
+      "primary": "Request strategy session",
+      "secondary": "View admin dashboard"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Production-ready architecture for demanding financial teams.",
+      "copy": "HL Deals showcases how to deploy a modern production-ready stack: secure AWS infrastructure, automated deployment pipelines, and a frontend that scales globally. This page summarizes the engineering behind the demo for tech leads, recruiters, and decision makers.",
+      "snapshot": {
+        "title": "Stack snapshot",
+        "items": [
+          "Frontend: Angular 17, Material Design standalone",
+          "Backend: ASP.NET Core 8, EF Core, JWT",
+          "Infra: AWS VPC, CloudFront, ALB, ECS Fargate, RDS SQL Server",
+          "IaC & DevOps: Terraform, Docker, Amazon ECR"
+        ]
+      },
+      "ctaPrimary": "View interactive demo",
+      "ctaSecondary": "Explore landing"
+    },
+    "tech": {
+      "heading": "Featured services and technologies",
+      "route53": {
+        "name": "Amazon Route 53",
+        "description": "Managed DNS with health checks and low-latency routing."
+      },
+      "cloudfront": {
+        "name": "Amazon CloudFront",
+        "description": "Global CDN serving the SPA with ACM certificates at the edge."
+      },
+      "s3": {
+        "name": "Amazon S3",
+        "description": "Private object storage for static assets and backups."
+      },
+      "alb": {
+        "name": "Application Load Balancer",
+        "description": "HTTPS load balancer routing secure traffic to the API."
+      },
+      "ecs": {
+        "name": "Amazon ECS Fargate",
+        "description": "Serverless container orchestration for .NET workloads on Fargate."
+      },
+      "rds": {
+        "name": "Amazon RDS",
+        "description": "Managed SQL Server database with automated backups and high availability."
+      },
+      "dotnet": {
+        "name": ".NET 8",
+        "description": "ASP.NET Core API runtime with enterprise-grade performance."
+      },
+      "angular": {
+        "name": "Angular 17",
+        "description": "Modular frontend built with standalone components and Angular Material."
+      },
+      "terraform": {
+        "name": "Terraform",
+        "description": "Infrastructure as Code to reproduce environments consistently."
+      },
+      "ecr": {
+        "name": "Amazon ECR",
+        "description": "Private container registry with versioning and image scanning."
+      }
+    },
+    "architecture": {
+      "title": "AWS architecture",
+      "note": "TLS certificates come from ACM (us-east-1) and protect both CloudFront and the ALB.",
+      "chain": {
+        "clients": {
+          "title": "Users",
+          "copy": "Browsers and mobile apps. All traffic runs over HTTPS."
+        },
+        "route53": {
+          "title": "Amazon Route 53",
+          "copy": "Alias hl-web → CloudFront. Alias hl-api → ALB."
+        },
+        "cloudfront": {
+          "title": "Amazon CloudFront",
+          "copy": "Serves the SPA. Origin Access Identity + ACM."
+        },
+        "s3": {
+          "title": "Amazon S3",
+          "copy": "Private bucket hl-deals-web-dev. Static assets and index.html."
+        }
+      },
+      "publicSubnet": "Public subnet",
+      "privateSubnet": "Private subnet",
+      "alb": {
+        "title": "Application Load Balancer",
+        "copy": "Listener 80 (redirect) / 443 (ACM). Healthcheck /healthz."
+      },
+      "ecs": {
+        "title": "Amazon ECS Fargate",
+        "copy": "ASP.NET Core 8 container. Minimal security group."
+      },
+      "rds": {
+        "title": "Amazon RDS (SQL Server)",
+        "copy": "Managed instance. Access restricted to ECS SG."
+      }
+    },
+    "pipeline": {
+      "title": "Automated deployment flow",
+      "copy": "From local scripts to publishing on ECS and CloudFront.",
+      "steps": {
+        "build": {
+          "title": "Local build",
+          "copy": "api-build-push-local.sh runs dotnet publish, Docker build, and push to ECR. ui-build-push-local.sh runs ng build and prepares assets."
+        },
+        "registry": {
+          "title": "Registry",
+          "copy": "Versioned images in Amazon ECR for ECS Fargate."
+        },
+        "frontend": {
+          "title": "Front-end",
+          "copy": "Assets synced to S3 bucket and CloudFront cache invalidated."
+        },
+        "backend": {
+          "title": "Back-end",
+          "copy": "New task definition registered and ECS service updated for the API."
+        }
+      }
+    },
+    "security": {
+      "title": "Security & reliability",
+      "copy": "The demo follows production-grade patterns: valid certificates, network segmentation, secret management, and reproducible deployments. It is designed to demonstrate audit-ready practices.",
+      "items": [
+        "End-to-end encrypted traffic with ACM certificates.",
+        "Private S3 bucket accessible only through the Origin Access Identity.",
+        "JWT signed with rotatable keys and CORS configured for trusted clients.",
+        "Private subnets for ECS and RDS with minimal security groups.",
+        "Deployment scripts that enforce cache invalidations and consistent versions."
+      ]
+    }
+  },
+  "admin": {
+    "title": "Admin – Deals",
+    "new": "New deal",
+    "total": "Total deals: {{count}}",
+    "loading": "Loading deals…",
+    "empty": "No deals registered yet. Use \"New deal\" to create one.",
+    "columns": {
+      "name": "Name",
+      "client": "Client",
+      "amount": "Amount",
+      "actions": "Actions"
+    },
+    "tooltips": {
+      "edit": "Edit deal",
+      "delete": "Delete deal"
+    },
+    "loginPrompt": "Please log in to view this page.",
+    "errorLoad": "Unable to load deals. Please try again.",
+    "errorDelete": "Unable to delete deal."
+  },
+  "createDeal": {
+    "titleNew": "New deal",
+    "titleEdit": "Edit deal",
+    "name": "Deal name",
+    "client": "Client",
+    "amount": "Amount",
+    "cancel": "Cancel",
+    "create": "Create",
+    "save": "Save",
+    "errorCreate": "Unable to create deal.",
+    "errorUpdate": "Unable to update deal."
+  },
+  "deleteDeal": {
+    "title": "Confirm delete",
+    "intro": "You are about to permanently delete this deal:",
+    "warning": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "userHome": {
+    "welcome": "Welcome back, {{name}}!",
+    "portfolio": "{{client}} portfolio snapshot",
+    "metrics": {
+      "deals": "Active deals",
+      "volume": "Total volume"
+    },
+    "loading": "Loading your deals…",
+    "empty": "No deals are registered for {{client}} yet.",
+    "created": "Created {{date}}",
+    "emptyClient": "this client"
+  },
+  "login": {
+    "title": "Log in",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Continue"
+  }
+}

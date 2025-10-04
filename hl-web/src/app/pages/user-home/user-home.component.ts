@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { DealsService } from '../../core/services/deals.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -12,7 +13,7 @@ import { Deal } from '../../core/models/deal.model';
   standalone: true,
   templateUrl: './user-home.component.html',
   styleUrls: ['./user-home.component.scss'],
-  imports: [CommonModule, MatCardModule, MatProgressBarModule]
+  imports: [CommonModule, MatCardModule, MatProgressBarModule, TranslateModule]
 })
 export class UserHomeComponent implements OnInit {
   loading = false;
@@ -25,7 +26,8 @@ export class UserHomeComponent implements OnInit {
 
   constructor(
     private dealsSvc: DealsService,
-    private auth: AuthService
+    private auth: AuthService,
+    private translate: TranslateService
   ) {
     this.displayName = this.auth.firstName ?? this.auth.username ?? 'User';
     this.clientName = this.auth.client;
@@ -51,7 +53,7 @@ export class UserHomeComponent implements OnInit {
       },
       error: err => {
         console.error('Failed to load deals for user home', err);
-        this.error = 'Unable to load your deals right now. Please try again later.';
+        this.error = this.translate.instant('userHome.error');
         this.loading = false;
       }
     });

@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '../../core/services/auth.service';
 import { Role } from '../../core/models/role.type';
@@ -15,11 +16,15 @@ import { Role } from '../../core/models/role.type';
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule]
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, TranslateModule]
 })
 export class NavbarComponent {
+  constructor(private auth: AuthService, private router: Router, public translate: TranslateService) {}
 
-    constructor(private auth: AuthService, private router: Router) {}
+  get currentLang(): 'en' | 'es' {
+    const lang = (this.translate.currentLang ?? '').toLowerCase();
+    return lang === 'es' ? 'es' : 'en';
+  }
 
   get isAuthenticated(): boolean {
     return this.auth.isAuthenticated();
@@ -43,8 +48,27 @@ export class NavbarComponent {
     return this.auth.fullName ?? this.auth.username ?? '';
   }
 
+  switchLang(lang: 'es' | 'en'): void {
+    if (this.currentLang === lang) {
+      return;
+    }
+
+    this.translate.use(lang);
+    localStorage.setItem('hl-lang', lang);
+
+    const tree = this.router.parseUrl(this.router.url);
+    const primary = tree.root.children['primary'];
+    const segments = primary?.segments ?? [];
+    const rest = segments.slice(1).map(segment => segment.path);
+
+    this.router.navigate(['/', lang, ...rest], {
+      queryParams: tree.queryParams,
+      fragment: tree.fragment ?? undefined
+    });
+  }
+
   logout(): void {
     this.auth.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/', this.currentLang]);
   }
 }

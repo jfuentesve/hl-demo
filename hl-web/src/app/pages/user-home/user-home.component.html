@@ -1,18 +1,18 @@
 <!-- User home component template -->
 <div class="user-home-container">
   <mat-card class="welcome-card">
-    <mat-card-title>Welcome back, {{ displayName }}!</mat-card-title>
+    <mat-card-title>{{ 'userHome.welcome' | translate:{ name: displayName } }}</mat-card-title>
     @if (clientName) {
-      <mat-card-subtitle>{{ clientName }} portfolio snapshot</mat-card-subtitle>
+      <mat-card-subtitle>{{ 'userHome.portfolio' | translate:{ client: clientName } }}</mat-card-subtitle>
     }
     <mat-card-content>
       <div class="metrics">
         <div class="metric">
-          <span class="metric-label">Active deals</span>
+          <span class="metric-label">{{ 'userHome.metrics.deals' | translate }}</span>
           <span class="metric-value">{{ totalDeals }}</span>
         </div>
         <div class="metric">
-          <span class="metric-label">Total volume</span>
+          <span class="metric-label">{{ 'userHome.metrics.volume' | translate }}</span>
           <span class="metric-value">{{ totalAmount | currency }}</span>
         </div>
       </div>
@@ -22,7 +22,7 @@
   @if (loading) {
     <mat-card class="state-card">
       <mat-card-content>
-        <p>Loading your deals…</p>
+        <p>{{ 'userHome.loading' | translate }}</p>
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </mat-card-content>
     </mat-card>
@@ -37,7 +37,7 @@
       @if (totalDeals === 0) {
         <mat-card class="state-card empty">
           <mat-card-content>
-            <p>No deals are registered for {{ clientName ?? 'this client' }} yet.</p>
+            <p>{{ 'userHome.empty' | translate:{ client: clientName ?? ('userHome.emptyClient' | translate) } }}</p>
           </mat-card-content>
         </mat-card>
       } @else {
@@ -51,7 +51,7 @@
               </mat-card-header>
               <mat-card-content>
                 <p class="amount">{{ deal.amount | currency }}</p>
-                <p class="date">Created {{ deal.createdAt | date: 'mediumDate' }}</p>
+                <p class="date">{{ 'userHome.created' | translate:{ date: (deal.createdAt | date: 'mediumDate') } }}</p>
               </mat-card-content>
             </mat-card>
           }

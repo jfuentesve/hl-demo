@@ -1,13 +1,13 @@
-<h2 mat-dialog-title>{{ isEdit ? 'Edit Deal' : 'New Deal' }}</h2>
+<h2 mat-dialog-title>{{ isEdit ? ('createDeal.titleEdit' | translate) : ('createDeal.titleNew' | translate) }}</h2>
 <form (ngSubmit)="submit(form)" #form="ngForm" class="create-deal-form">
   <mat-dialog-content>
     <mat-form-field appearance="fill">
-      <mat-label>Deal name</mat-label>
+      <mat-label>{{ 'createDeal.name' | translate }}</mat-label>
       <input matInput name="name" [(ngModel)]="model.name" required />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Client</mat-label>
+      <mat-label>{{ 'createDeal.client' | translate }}</mat-label>
       <mat-select name="client" [(ngModel)]="model.client" required>
         @for (u of data.users; track u.username) {
           <mat-option [value]="u.client">{{ u.firstName }} {{ u.lastName }} — {{ u.client }}</mat-option>
@@ -16,7 +16,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Amount</mat-label>
+      <mat-label>{{ 'createDeal.amount' | translate }}</mat-label>
       <input
         matInput
         type="text"
@@ -30,9 +30,9 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="dialog-actions">
-    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-button type="button" (click)="cancel()">{{ 'createDeal.cancel' | translate }}</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-      {{ isEdit ? 'Save' : 'Create' }}
+      {{ isEdit ? ('createDeal.save' | translate) : ('createDeal.create' | translate) }}
     </button>
   </mat-dialog-actions>
 </form>
