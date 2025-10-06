@@ -21,6 +21,9 @@
 <PrivateAssets>all</PrivateAssets>
 <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 </PackageReference>
+<PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.7.301.42" />
+<PackageReference Include="AWSSDK.SecretsManager" Version="3.7.301.41" />
+<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.1" />
 <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 </ItemGroup>
 

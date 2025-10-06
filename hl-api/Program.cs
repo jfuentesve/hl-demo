@@ -1,18 +1,96 @@
 // hl-api/Program.cs
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.SecretsManager;
+using Amazon.SimpleSystemsManagement;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.Data.SqlClient;
 using HLApi.Data;
 using HLApi.Services;
+using HLApi.Services.Secrets;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database connection with retry logic for RDS transient failures
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()));
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonSimpleSystemsManagement>();
+builder.Services.AddAWSService<IAmazonSecretsManager>();
+
+builder.Services.Configure<JwtSecretOptions>(builder.Configuration.GetSection("Secrets:Jwt"));
+builder.Services.Configure<RdsSecretOptions>(builder.Configuration.GetSection("Secrets:Rds"));
+
+builder.Services.AddSingleton<SsmParameterStoreProvider>();
+builder.Services.AddSingleton<SecretsManagerProvider>();
+builder.Services.AddSingleton<ISecretProvider>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var backend = Environment.GetEnvironmentVariable("SECRETS_BACKEND")
+                  ?? configuration["Secrets:Backend"];
+
+    return backend?.Equals("sm", StringComparison.OrdinalIgnoreCase) == true
+        ? sp.GetRequiredService<SecretsManagerProvider>()
+        : sp.GetRequiredService<SsmParameterStoreProvider>();
+    // Future vault integration: register VaultSecretProvider and switch here via SECRETS_BACKEND=vault or Secrets:Backend=vault.
+});
+
+builder.Services.AddSingleton<JwtSecretAccessor>();
+builder.Services.AddSingleton<RdsCredentialsAccessor>();
+
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+{
+    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+    var logger = serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DbConnectionFactory");
+    var connectionString = configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection is required");
+
+    try
+    {
+        var credentialsAccessor = serviceProvider.GetRequiredService<RdsCredentialsAccessor>();
+        var credentials = credentialsAccessor.GetCredentialsAsync().GetAwaiter().GetResult();
+
+        if (credentials is not null)
+        {
+            var sqlBuilder = new SqlConnectionStringBuilder(connectionString);
+
+            if (!string.IsNullOrEmpty(credentials.Username))
+            {
+                sqlBuilder.UserID = credentials.Username;
+            }
+
+            if (!string.IsNullOrEmpty(credentials.Password))
+            {
+                sqlBuilder.Password = ***REDACTED***;
+            }
+
+            if (!string.IsNullOrEmpty(credentials.Database))
+            {
+                sqlBuilder.InitialCatalog = credentials.Database;
+            }
+
+            if (!string.IsNullOrEmpty(credentials.Endpoint))
+            {
+                var dataSource = credentials.Endpoint;
+                if (!dataSource.Contains(',', StringComparison.Ordinal) && credentials.Port > 0)
+                {
+                    dataSource = $"{dataSource},{credentials.Port}";
+                }
+
+                sqlBuilder.DataSource = dataSource;
+            }
+
+            connectionString = sqlBuilder.ConnectionString;
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Failed to build connection string from secrets");
+        throw;
+    }
+
+    options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+});
 
 builder.Services.AddCors(options =>
 {
@@ -35,22 +113,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-// JWT Authentication
-var jwtKey = builder.Configuration["Jwt:Key"];
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
-        };
-    });
+    .AddJwtBearer();
+
+builder.Services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 

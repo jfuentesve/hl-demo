@@ -4,6 +4,11 @@ provider "aws" {
   region = var.aws_region
 }
 
+locals {
+  secrets_backend_code  = var.use_secrets_manager ? "sm" : "ps"
+  secret_access_actions = var.use_secrets_manager ? ["secretsmanager:GetSecretValue"] : ["ssm:GetParameter"]
+}
+
 module "network" {
   source = "terraform-aws-modules/vpc/aws"
   name   = "hl-vpc"
@@ -48,6 +53,30 @@ module "rds" {
   skip_final_snapshot = true
 
   depends_on = [null_resource.depends_network]
+}
+
+module "jwt_secret" {
+  source              = "./modules/app_secrets"
+  name                = "/hl-deals/${var.environment}/jwt-key"
+  description         = "JWT signing key for HL API (${var.environment})"
+  secret_value        = var.jwt_key
+  use_secrets_manager = var.use_secrets_manager
+  kms_key_id          = var.secrets_kms_key_arn
+}
+
+module "rds_credentials_secret" {
+  source      = "./modules/app_secrets"
+  name        = "/hl-deals/${var.environment}/rds-credentials"
+  description = "RDS credentials for HL API (${var.environment})"
+  secret_value = jsonencode({
+    username = var.db_username
+    password = ***REDACTED***
+    endpoint = module.rds.db_instance_endpoint
+    port     = 1433
+    database = var.db_name
+  })
+  use_secrets_manager = var.use_secrets_manager
+  kms_key_id          = var.secrets_kms_key_arn
 }
 
 
@@ -143,7 +172,7 @@ resource "aws_iam_role" "bastion_ssm_role" {
   })
 
   tags = {
-    Name = "hl-bastion-ssm-role-${var.environment}"
+    Name    = "hl-bastion-ssm-role-${var.environment}"
     Purpose = "Database Administration via SSM"
   }
 }
@@ -177,7 +206,7 @@ resource "aws_security_group" "bastion_sg" {
   }
 
   tags = {
-    Name = "hl-bastion-ssm-sg"
+    Name    = "hl-bastion-ssm-sg"
     Purpose = "Database Administration via SSM"
   }
 }
@@ -206,9 +235,9 @@ resource "aws_instance" "bastion" {
   monitoring = true
 
   tags = {
-    Name = "hl-bastion-ssm-${var.environment}"
-    Purpose = "Database Administration Host"
-    Environment = var.environment
+    Name         = "hl-bastion-ssm-${var.environment}"
+    Purpose      = "Database Administration Host"
+    Environment  = var.environment
     AccessMethod = "SSM Session Manager"
   }
 
@@ -223,8 +252,8 @@ resource "aws_security_group_rule" "rds_allow_from_bastion" {
   from_port                = 1433
   to_port                  = 1433
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.rds_sg.id  # RDS Security Group
-  source_security_group_id = aws_security_group.bastion_sg.id  # SSM Bastion SG
+  security_group_id        = aws_security_group.rds_sg.id     # RDS Security Group
+  source_security_group_id = aws_security_group.bastion_sg.id # SSM Bastion SG
 }
 
 resource "aws_cloudfront_origin_access_identity" "frontend" {
@@ -251,8 +280,8 @@ module "s3_frontend" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid       = "AllowCloudFrontReadOnly",
-        Effect    = "Allow",
+        Sid    = "AllowCloudFrontReadOnly",
+        Effect = "Allow",
         Principal = {
           AWS = aws_cloudfront_origin_access_identity.frontend.iam_arn
         },
@@ -320,9 +349,9 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = "arn:aws:acm:us-east-1:144776104140:certificate/942d4d56-7c76-4681-a8b5-7a6813ff987c"
-    ssl_support_method             = "sni-only"
-    minimum_protocol_version       = "TLSv1.2_2021"
+    acm_certificate_arn      = "arn:aws:acm:us-east-1:144776104140:certificate/942d4d56-7c76-4681-a8b5-7a6813ff987c"
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   tags = {
@@ -422,6 +451,7 @@ resource "aws_ecs_task_definition" "hl_api" {
   memory                   = "1024"
   # execution_role_arn       = module.ecs_task_exec_role.iam_role_arn
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn      = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([
     {
       name  = "hl-api"
@@ -436,9 +466,12 @@ resource "aws_ecs_task_definition" "hl_api" {
         { name = "ASPNETCORE_ENVIRONMENT", value = "Production" },
         { name = "ASPNETCORE_URLS", value = "http://+:8080" }, # 👈 clave
         { name = "ConnectionStrings__DefaultConnection", value = var.db_connection_string },
-        { name = "Jwt__Key", value = var.jwt_key },
         { name = "Jwt__Issuer", value = var.jwt_issuer },
-        { name = "Jwt__Audience", value = var.jwt_audience }
+        { name = "Jwt__Audience", value = var.jwt_audience },
+        { name = "SECRETS_BACKEND", value = local.secrets_backend_code },
+        { name = "Secrets__Backend", value = local.secrets_backend_code },
+        { name = "Secrets__Jwt__SecretName", value = module.jwt_secret.identifier },
+        { name = "Secrets__Rds__SecretName", value = module.rds_credentials_secret.identifier }
       ],
       logConfiguration = {
         logDriver = "awslogs",
@@ -494,8 +527,8 @@ resource "aws_cloudwatch_log_group" "hl_api" {
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "hl-task-exec-role"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{ Effect="Allow", Principal={ Service="ecs-tasks.amazonaws.com" }, Action="sts:AssumeRole"}]
+    Version   = "2012-10-17",
+    Statement = [{ Effect = "Allow", Principal = { Service = "ecs-tasks.amazonaws.com" }, Action = "sts:AssumeRole" }]
   })
 }
 
@@ -503,6 +536,53 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 resource "aws_iam_role_policy_attachment" "ecs_task_exec_attach" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role" "ecs_task_role" {
+  name = "hl-task-app-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Service = "ecs-tasks.amazonaws.com"
+      },
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+locals {
+  secret_policy_statements = concat(
+    [
+      {
+        Effect = "Allow"
+        Action = local.secret_access_actions
+        Resource = [
+          module.jwt_secret.arn,
+          module.rds_credentials_secret.arn
+        ]
+      }
+    ],
+    var.secrets_kms_key_arn != "" ? [
+      {
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt"]
+        Resource = [var.secrets_kms_key_arn]
+      }
+    ] : []
+  )
+}
+
+resource "aws_iam_role_policy" "ecs_task_secret_access" {
+  name = "hl-task-secrets"
+  role = aws_iam_role.ecs_task_role.id
+
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = local.secret_policy_statements
+  })
 }
 
 

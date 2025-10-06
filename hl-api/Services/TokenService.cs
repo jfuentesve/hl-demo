@@ -1,9 +1,8 @@
 // hl-api/Services/TokenService.cs
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using HLApi.Services.Secrets;
 
 
 namespace HLApi.Services
@@ -11,15 +10,17 @@ namespace HLApi.Services
     public class TokenService
     {
         private readonly IConfiguration _config;
+        private readonly JwtSecretAccessor _jwtSecretAccessor;
 
 
-        public TokenService(IConfiguration config)
+        public TokenService(IConfiguration config, JwtSecretAccessor jwtSecretAccessor)
         {
             _config = config;
+            _jwtSecretAccessor = jwtSecretAccessor;
         }
 
 
-        public string GenerateToken(string username, string role, string client)
+        public async Task<string> GenerateTokenAsync(string username, string role, string client, CancellationToken cancellationToken = default)
         {
             var claims = new[] {
             new Claim(JwtRegisteredClaimNames.Sub, username),
@@ -30,7 +31,8 @@ namespace HLApi.Services
             };
 
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            var keyBytes = await _jwtSecretAccessor.GetSigningKeyBytesAsync(cancellationToken).ConfigureAwait(false);
+            var key = new SymmetricSecurityKey(keyBytes);
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 

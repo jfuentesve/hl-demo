@@ -1,9 +1,9 @@
-aws_region   = "us-east-1"
-environment  = "dev"
+aws_region  = "us-east-1"
+environment = "dev"
 
-db_name      = "hldeals"
-db_username  = "hladmin"
-db_password  =***REDACTED***"StrongP4ssw0rd123!" # ⚠️ Nunca incluir esto en Git
+db_name     = "hldeals"
+db_username = "hladmin"
+db_password =***REDACTED***"StrongP4ssw0rd123!" # ⚠️ Nunca incluir esto en Git
 
 db_connection_string = "Server=hl-deals-db-dev.cav0kksicv9i.us-east-1.rds.amazonaws.com,1433;Database=hldeals;User Id=hladmin;Password=***REDACTED***!;TrustServerCertificate=True;MultipleActiveResultSets=True;Encrypt=False"
 
