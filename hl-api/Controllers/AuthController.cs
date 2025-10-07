@@ -31,7 +31,7 @@ namespace HLApi.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous] 
-        public ActionResult Login([FromBody] LoginRequest request)
+        public async Task<ActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
         {
             if (!Users.TryGetValue(request.Username, out var user) || user.Password != request.Password)
             {
@@ -39,7 +39,7 @@ namespace HLApi.Controllers
             }
 
 
-            var token = _tokenService.GenerateToken(request.Username, user.Role, user.Client);
+            var token = await _tokenService.GenerateTokenAsync(request.Username, user.Role, user.Client, cancellationToken).ConfigureAwait(false);
             return Ok(new { token });
         }
     }

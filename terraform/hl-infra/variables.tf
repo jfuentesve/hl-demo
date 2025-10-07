@@ -54,6 +54,18 @@ variable "jwt_audience" {
   default     = "hl-client"
 }
 
+variable "use_secrets_manager" {
+  description = "Toggle to provision secrets in AWS Secrets Manager instead of SSM Parameter Store"
+  type        = bool
+  default     = false
+}
+
+variable "secrets_kms_key_arn" {
+  description = "Optional KMS key ARN for encrypting application secrets"
+  type        = string
+  default     = ""
+}
+
 
 variable "major_engine_version" {
   description = "Major engine version of the DB engine (e.g., 15 for SQL Server)"
