@@ -76,3 +76,18 @@ output "rds_secret_identifier" {
   description = "Identifier used by the API to locate the RDS credentials secret"
   value       = module.rds_credentials_secret.identifier
 }
+
+output "codebuild_project_name" {
+  description = "Name of the CodeBuild project that builds the hl-api image"
+  value       = aws_codebuild_project.hl_api.name
+}
+
+output "codepipeline_name" {
+  description = "Name of the CodePipeline delivering hl-api"
+  value       = aws_codepipeline.hl_api.name
+}
+
+output "codepipeline_artifact_bucket" {
+  description = "S3 bucket storing CodePipeline artifacts"
+  value       = aws_s3_bucket.codepipeline_artifacts.bucket
+}
