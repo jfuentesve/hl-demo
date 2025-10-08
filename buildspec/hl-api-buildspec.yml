@@ -21,7 +21,7 @@ phases:
       - 'cd hl-api'
       - 'dotnet restore -r linux-x64 -v minimal'
       - 'dotnet publish -c Release -r linux-x64 --no-self-contained -o ./publish/linux-x64'
-      - 'cd..'
+      - 'cd ..'
       - 'echo "==> Logging into Amazon ECR"'
       - 'ECR_REGISTRY=$(echo "$REPOSITORY_URI" | cut -d"/" -f1)'
       - 'aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
