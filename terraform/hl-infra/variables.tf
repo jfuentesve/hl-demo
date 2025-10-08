@@ -54,6 +54,22 @@ variable "jwt_audience" {
   default     = "hl-client"
 }
 
+variable "codepipeline_github_connection_arn" {
+  description = "ARN of the CodeStar Connection used by CodePipeline to pull source from GitHub"
+  type        = string
+}
+
+variable "codepipeline_github_repo" {
+  description = "GitHub repository in the format owner/repo for the hl-api pipeline"
+  type        = string
+}
+
+variable "codepipeline_github_branch" {
+  description = "Git branch monitored by CodePipeline"
+  type        = string
+  default     = "master"
+}
+
 variable "use_secrets_manager" {
   description = "Toggle to provision secrets in AWS Secrets Manager instead of SSM Parameter Store"
   type        = bool

@@ -1,6 +1,9 @@
 aws_region  = "us-east-1"
 environment = "dev"
 
+codepipeline_github_connection_arn = "arn:aws:codeconnections:us-east-1:144776104140:connection/107b6b8d-2d15-4022-bc13-e69a3af5131d" # jmcalydar-gh-conn
+codepipeline_github_repo           = "jmcalydar/firstDemo"
+
 db_name = "hldeals"
 
 jwt_issuer   = "hl-api"
