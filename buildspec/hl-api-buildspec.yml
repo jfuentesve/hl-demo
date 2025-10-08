@@ -10,16 +10,18 @@ phases:
       dotnet: 8.0
     commands:
       - 'echo "==> Install phase"'
+      - 'echo ''{ "sdk": { "version": "8.0.401", "rollForward": "latestFeature" } }'' > global.json'
       - 'aws --version || true'
+      - 'aws ecr-public --version || true'
       - 'docker --version || true'
 
   pre_build:
     commands:
       - 'echo "==> Restoring and publishing .NET project"'
-      - 'pushd hl-api'
+      - 'cd hl-api'
       - 'dotnet restore -r linux-x64 -v minimal'
       - 'dotnet publish -c Release -r linux-x64 --no-self-contained -o ./publish/linux-x64'
-      - 'popd'
+      - 'cd..'
       - 'echo "==> Logging into Amazon ECR"'
       - 'ECR_REGISTRY=$(echo "$REPOSITORY_URI" | cut -d"/" -f1)'
       - 'aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
