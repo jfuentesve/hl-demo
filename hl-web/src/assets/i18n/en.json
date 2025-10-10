@@ -263,12 +263,41 @@
     "loading": "Loading your deals…",
     "empty": "No deals are registered for {{client}} yet.",
     "created": "Created {{date}}",
-    "emptyClient": "this client"
+    "emptyClient": "this client",
+    "adminBanner": {
+      "title": "Admin portfolio overview",
+      "copy": "This is your landing view showing the Admin user's deals. Head to the admin page to keep exploring the full create, read, update, delete demo.",
+      "cta": "Open admin workspace"
+    }
   },
   "login": {
     "title": "Log in",
     "username": "Username",
     "password": "Password",
-    "submit": "Continue"
+    "submit": "Continue",
+    "demo": {
+      "title": "Explore the live demo",
+      "subtitle": "Jump in with pre-populated accounts that highlight key scenarios.",
+      "adminConfirm": "Please be mindful of existing demo data. Only delete deals you created so other users can explore the demo smoothly.",
+      "dialog": {
+        "title": "Before you continue",
+        "cancel": "Cancel",
+        "confirm": "Proceed as Admin"
+      },
+      "users": {
+        "alice": {
+          "button": "Log in as Alice",
+          "role": "Portfolio analyst · read-only deals"
+        },
+        "bob": {
+          "button": "Log in as Bob",
+          "role": "Portfolio analyst · read-only deals"
+        },
+        "admin": {
+          "button": "Log in as Admin",
+          "role": "Deal desk admin · full create, update, delete"
+        }
+      }
+    }
   }
 }

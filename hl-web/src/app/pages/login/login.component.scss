@@ -1,4 +1,49 @@
-// Login component styles
-.login-container {
-  // Styles to be added
+.login-form {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.demo-banner {
+  margin: 32px auto 0;
+  padding: 24px;
+  max-width: 420px;
+  border-radius: 12px;
+  background: rgba(63, 81, 181, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  animation: fadeInUp 420ms ease-out both;
+}
+
+.demo-actions {
+  margin-top: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.demo-actions button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 16px;
+}
+
+.user-label {
+  font-weight: 600;
+}
+
+.user-role {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

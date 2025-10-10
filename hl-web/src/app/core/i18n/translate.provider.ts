@@ -2,13 +2,17 @@ import { APP_INITIALIZER, EnvironmentProviders, importProvidersFrom, makeEnviron
 import { TranslateModule, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import packageJson from '../../../../package.json' assert { type: 'json' };
+
+const TRANSLATION_VERSION = typeof packageJson.version === 'string' ? packageJson.version : 'dev';
+
 export function provideTranslation(): EnvironmentProviders {
   return makeEnvironmentProviders([
     importProvidersFrom(TranslateModule),
     provideTranslateService(),
     ...provideTranslateHttpLoader({
       prefix: 'assets/i18n/',
-      suffix: '.json'
+      suffix: `.json?v=${TRANSLATION_VERSION}`
     }),
     {
       provide: APP_INITIALIZER,

@@ -14,3 +14,24 @@
     <div class="error">{{error}}</div>
   }
 </form>
+
+@if (bannerVisible) {
+  <section class="demo-banner" aria-live="polite">
+    <h2>{{ 'login.demo.title' | translate }}</h2>
+    <p>{{'login.demo.subtitle' | translate }}</p>
+
+    <div class="demo-actions">
+      @for (user of demoUsers; track user) {
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="loginAs(user)"
+          [disabled]="loading"
+        >
+          <span class="user-label">{{ ('login.demo.users.' + user + '.button') | translate }}: </span>
+          <span class="user-role">{{ ('login.demo.users.' + user + '.role') | translate }}</span>
+        </button>
+      }
+    </div>
+  </section>
+}
