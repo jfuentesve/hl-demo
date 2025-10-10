@@ -7,12 +7,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { UserHomeComponent } from './pages/user-home/user-home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { languageGuard } from './core/guards/language.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 const localizedChildren: Routes = [
   { path: '', component: LandingComponent },
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: UserHomeComponent },
+  { path: 'home', component: UserHomeComponent, canActivate: [authGuard] },
   { path: 'deals/:id', component: DealDetailComponent },
   { path: 'admin', component: AdminComponent }
 ];
