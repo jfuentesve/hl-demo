@@ -1,5 +1,21 @@
 <!-- User home component template -->
 <div class="user-home-container">
+  @if (isAdmin && adminBannerVisible) {
+    <div class="admin-demo-banner" aria-live="polite">
+      <div class="banner-content">
+        <h2>{{ 'userHome.adminBanner.title' | translate }}</h2>
+        <p>{{ 'userHome.adminBanner.copy' | translate }}</p>
+      </div>
+      <a
+        mat-flat-button
+        color="accent"
+        [routerLink]="['/', currentLang, 'admin']"
+      >
+        {{ 'userHome.adminBanner.cta' | translate }}
+      </a>
+    </div>
+  }
+
   <mat-card class="welcome-card">
     <mat-card-title>{{ 'userHome.welcome' | translate:{ name: displayName } }}</mat-card-title>
     @if (clientName) {

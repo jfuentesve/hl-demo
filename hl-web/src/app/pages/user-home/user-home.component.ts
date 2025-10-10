@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { DealsService } from '../../core/services/deals.service';
@@ -13,9 +15,9 @@ import { Deal } from '../../core/models/deal.model';
   standalone: true,
   templateUrl: './user-home.component.html',
   styleUrls: ['./user-home.component.scss'],
-  imports: [CommonModule, MatCardModule, MatProgressBarModule, TranslateModule]
+  imports: [CommonModule, MatCardModule, MatProgressBarModule, MatButtonModule, RouterModule, TranslateModule]
 })
-export class UserHomeComponent implements OnInit {
+export class UserHomeComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
   filteredDeals: Deal[] = [];
@@ -23,6 +25,9 @@ export class UserHomeComponent implements OnInit {
 
   displayName = 'User';
   clientName: string | null = null;
+  readonly isAdmin: boolean;
+  adminBannerVisible = false;
+  private bannerTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private dealsSvc: DealsService,
@@ -31,14 +36,29 @@ export class UserHomeComponent implements OnInit {
   ) {
     this.displayName = this.auth.firstName ?? this.auth.username ?? 'User';
     this.clientName = this.auth.client;
+    this.isAdmin = this.auth.role === 'admin';
   }
 
   ngOnInit(): void {
+    if (this.isAdmin) {
+      this.bannerTimer = setTimeout(() => (this.adminBannerVisible = true), 3000);
+    }
     this.loadDeals();
+  }
+
+  ngOnDestroy(): void {
+    if (this.bannerTimer) {
+      clearTimeout(this.bannerTimer);
+    }
   }
 
   get totalDeals(): number {
     return this.filteredDeals.length;
+  }
+
+  get currentLang(): 'en' | 'es' {
+    const lang = (this.translate.currentLang ?? '').toLowerCase();
+    return lang === 'es' ? 'es' : 'en';
   }
 
   private loadDeals(): void {

@@ -6,6 +6,39 @@
   padding: 32px 24px 40px;
   max-width: 960px;
   margin: 0 auto;
+
+  .admin-demo-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: linear-gradient(120deg, rgba(63, 81, 181, 0.12), rgba(31, 59, 115, 0.05));
+    border: 1px solid rgba(63, 81, 181, 0.18);
+    box-shadow: 0 16px 32px rgba(31, 59, 115, 0.12);
+    animation: fadeInUp 420ms ease-out both;
+
+    .banner-content {
+      max-width: 600px;
+
+      h2 {
+        margin: 0 0 6px;
+        font-size: 1.25rem;
+        color: #1f3b73;
+      }
+
+      p {
+        margin: 0;
+        color: #2f3a50;
+      }
+    }
+
+    a[mat-flat-button] {
+      font-weight: 600;
+    }
+  }
 }
 
 .welcome-card {
@@ -94,5 +127,17 @@
   .date {
     font-size: 0.85rem;
     color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

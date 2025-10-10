@@ -264,12 +264,41 @@
     "empty": "Aún no hay deals registrados para {{client}}.",
     "created": "Creado {{date}}",
     "error": "No fue posible cargar tus deals. Intenta nuevamente más tarde.",
-    "emptyClient": "este cliente"
+    "emptyClient": "este cliente",
+    "adminBanner": {
+      "title": "Resumen del portafolio Admin",
+      "copy": "Esta vista muestra los deals del usuario Admin. Visita la página de administración para seguir recorriendo el demo completo de crear, leer, actualizar y eliminar.",
+      "cta": "Abrir panel administrativo"
+    }
   },
   "login": {
     "title": "Iniciar sesión",
     "username": "Usuario",
     "password": "Contraseña",
-    "submit": "Ingresar"
+    "submit": "Ingresar",
+    "demo": {
+      "title": "Explora la demo en vivo",
+      "subtitle": "Ingresa con cuentas preconfiguradas que muestran escenarios clave.",
+      "adminConfirm": "Por favor cuida los datos existentes. Solo elimina deals que hayas creado para que otros usuarios puedan experimentar la demo sin inconvenientes.",
+      "dialog": {
+        "title": "Antes de continuar",
+        "cancel": "Cancelar",
+        "confirm": "Ingresar como Admin"
+      },
+      "users": {
+        "alice": {
+          "button": "Ingresar como Alice",
+          "role": "Analista de portafolio · solo lectura"
+        },
+        "bob": {
+          "button": "Ingresar como Bob",
+          "role": "Analista de portafolio · solo lectura"
+        },
+        "admin": {
+          "button": "Ingresar como Admin",
+          "role": "Administrador de deals · crear, editar y eliminar"
+        }
+      }
+    }
   }
 }
