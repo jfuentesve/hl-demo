@@ -3,7 +3,15 @@ name: Deploy PROD (Angular → S3/CloudFront)
 on:
   push:
     branches: [ "ui-release" ]
+    paths:
+      - 'hl-web/**'
+      - '.github/workflows/deploy-ui-release.yml'
   workflow_dispatch:
+
+# Set once so every run step occurs in the subfolder
+defaults:
+  run:
+    working-directory: hl-web
 
 env:
   BUILD_DIR: dist/hl-web/browser
