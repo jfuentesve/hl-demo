@@ -1,0 +1,41 @@
+name: Deploy PROD (Angular → S3/CloudFront)
+
+on:
+  push:
+    branches: [ "ui-release" ]
+  workflow_dispatch:
+
+env:
+  BUILD_DIR: dist/hl-web/browser
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build Angular
+        run: |
+          npm ci
+          npm run build -- --configuration=production
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Sync to S3
+        run: aws s3 sync ${{ env.BUILD_DIR }} s3://${{ vars.S3_BUCKET }} --delete --only-show-errors
+
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_ID }} --paths "/*"
