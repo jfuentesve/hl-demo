@@ -1,0 +1,21 @@
+name: CI (HL Demo Web Angular)
+
+on:
+  pull_request:
+  push:
+    branches: [ "ui-release" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm test --if-present -- --watch=false
+      - run: npm run build -- --configuration=production
