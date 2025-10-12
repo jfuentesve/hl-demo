@@ -28,6 +28,12 @@ jobs:
           # IMPORTANT: point cache to the subfolder lockfile
           cache-dependency-path: hl-web/package-lock.json
       - run: npm ci
+        working-directory: hl-web
+
       - run: npm run lint --if-present
+        working-directory: hl-web
+
       # - run: npm test --if-present -- --watch=false
       - run: npm run build -- --configuration=production
+        working-directory: hl-web
+
