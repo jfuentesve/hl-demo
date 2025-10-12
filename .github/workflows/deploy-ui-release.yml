@@ -15,8 +15,7 @@ defaults:
 
 env:
   NODE_VERSION: '20'
-  DIST_FOLDER_FOR_S3: dist/hl-web/browser
-
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
