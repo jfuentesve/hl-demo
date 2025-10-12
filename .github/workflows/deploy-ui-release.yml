@@ -39,14 +39,27 @@ jobs:
           npm ci
           npm run build -- --configuration=production
       
-      - name: Detect build output path
-        id: detect
+      - name: Resolve build dir
+        id: resolve
         shell: bash
         working-directory: hl-web
         run: |
-          OUT=$(node -e "const f=require('./angular.json'); function find(o){ if(o&&typeof o==='object'){ if('outputPath'in o) return o.outputPath; for(const k of Object.keys(o)){ const r=find(o[k]); if(r) return r; } } }; const p=find(f); if(!p){ process.exit(1);} console.log(p);")
+          set -e
+          # Try angular.json first
+          OUT=$(
+            node -e "const fs=require('fs');const ws=JSON.parse(fs.readFileSync('angular.json','utf8'));const g=p=>p?.architect?.build?.options?.outputPath||p?.targets?.build?.options?.outputPath||null;let o=null;if(ws.defaultProject&&ws.projects?.[ws.defaultProject])o=g(ws.projects[ws.defaultProject]);if(!o&&ws.projects){for(const k of Object.keys(ws.projects)){o=g(ws.projects[k]);if(o)break}}if(o)console.log(o)"
+          )
+          # Fallback: pick the newest dist directory that contains index.html
+          if [ -z "$OUT" ]; then
+            OUT=$(find dist -type f -name index.html -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n1 | awk '{print $2}' | sed 's#/index.html##') || true
+          fi
+          if [ -z "$OUT" ]; then
+            echo "Could not resolve build directory"; exit 1
+          fi
           echo "BUILD_DIR=$OUT" >> "$GITHUB_OUTPUT"
-
+          echo "Resolved BUILD_DIR: $OUT"
+          ls -la "$OUT"
+          
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
