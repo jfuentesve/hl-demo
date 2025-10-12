@@ -105,7 +105,7 @@
                 <p [innerHTML]="stage.copyKey | translate"></p>
               </div>
               @if (idx < flow.stages.length - 1) {
-                <div class="stage-arrow">→</div>
+                <div class="stage-arrow" aria-hidden="true"></div>
               }
             }
           </div>

@@ -342,6 +342,11 @@ $gold-accent: #f4c95d;
       font-size: 1.6rem;
       color: $accent-azure;
       font-weight: 600;
+      min-height: 24px;
+
+      &::after {
+        content: '→';
+      }
     }
   }
 }
@@ -468,6 +473,16 @@ $gold-accent: #f4c95d;
 
     .architecture-mobile {
       display: flex;
+    }
+  }
+
+  .pipeline {
+    .flow-card .stage-arrow::after {
+      content: '↓';
+    }
+
+    .flow-stages {
+      grid-template-columns: 1fr;
     }
   }
 }
