@@ -22,7 +22,10 @@
     <h2>{{ 'about.architecture.title' | translate }}</h2>
 
     <div class="architecture-mobile">
-      <img src="about/architecture-mobile.png" alt="{{ 'about.architecture.title' | translate }}" />
+      <picture>
+        <source srcset="about/architecture-mobile@2x.png 2x" />
+        <img src="about/architecture-mobile.png" alt="{{ 'about.architecture.title' | translate }}" />
+      </picture>
       <button mat-stroked-button color="primary" (click)="openDiagram()">
         {{ 'about.architecture.mobile.cta' | translate }}
       </button>

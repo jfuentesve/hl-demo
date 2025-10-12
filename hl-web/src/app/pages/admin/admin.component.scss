@@ -19,9 +19,20 @@ h2 {
     margin-right: 6px;
   }
 
-  .summary {
-    color: #5f6368;
-    font-size: 0.95rem;
+  .toolbar-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .summary {
+      color: #5f6368;
+      font-size: 0.95rem;
+    }
+
+    .clear-filters mat-icon {
+      margin-right: 4px;
+    }
   }
 }
 
@@ -58,15 +69,93 @@ h2 {
 
 .deals-table {
   width: 100%;
-}
-
-.deals-table {
-  width: 100%;
 
   .mat-mdc-header-cell,
   .mat-mdc-cell {
     padding: 12px 16px;
     vertical-align: middle;
+  }
+
+  .mat-mdc-header-row {
+    background: linear-gradient(135deg, #1f3b73, #3f51b5);
+  }
+
+  .mat-mdc-header-cell {
+    color: #fff;
+    border-bottom: none;
+    background: transparent;
+  }
+
+  ::ng-deep .mat-sort-header-arrow {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  ::ng-deep .mat-sort-header.mat-sort-header-sorted .mat-sort-header-arrow {
+    color: #f4c95d;
+  }
+
+  .header-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    span {
+      font-weight: 600;
+      color: #fff;
+    }
+  }
+
+  .filter-field {
+    width: 100%;
+    margin: 0;
+
+    .mat-mdc-text-field-wrapper {
+      border-radius: 10px;
+      padding: 0 12px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .mat-mdc-form-field-infix {
+      min-height: 40px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-input-element {
+      color: #fff;
+    }
+
+    .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .mdc-floating-label {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .mat-mdc-icon-button {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .mat-mdc-notched-outline {
+      --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.28);
+      --mdc-outlined-text-field-hover-outline-color: rgba(255, 255, 255, 0.45);
+      --mdc-outlined-text-field-focus-outline-color: #f4c95d;
+      --mdc-outlined-text-field-focus-label-text-color: #f4c95d;
+      --mdc-outlined-text-field-label-text-color: rgba(255, 255, 255, 0.75);
+    }
+    
+    --mat-form-field-outlined-label-text-color: rgba(255, 255, 255, 0.75);
+    --mat-form-field-outlined-outline-color: rgba(255, 255, 255, 0.28);
+    --mat-form-field-outlined-hover-label-text-color: rgba(255, 255, 255, 0.45);
+    --mat-form-field-outlined-hover-outline-color: rgba(255, 255, 255, 0.45);    
+    --mat-form-field-outlined-focus-outline-color: #f4c95d;
+    --mat-form-field-outlined-focus-label-text-color: #f4c95d;
+
   }
 }
 
@@ -79,4 +168,45 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .admin-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+    }
+
+    .toolbar-meta {
+      justify-content: space-between;
+      width: 100%;
+      gap: 10px;
+
+      .summary {
+        flex: 1;
+      }
+
+      .clear-filters {
+        flex: 1;
+      }
+    }
+  }
+
+  .deals-table {
+    .header-cell {
+      gap: 6px;
+    }
+
+    .filter-field {
+      .mat-mdc-text-field-wrapper {
+        padding: 0 10px;
+      }
+
+      input {
+        font-size: 0.85rem;
+      }
+    }
+  }
 }
