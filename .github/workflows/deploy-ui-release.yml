@@ -15,6 +15,7 @@ defaults:
 
 env:
   NODE_VERSION: '20'
+  DIST_FOLDER_FOR_S3: dist/hl-web/browser
 
 jobs:
   deploy:
@@ -68,9 +69,7 @@ jobs:
 
       - name: Sync to S3
         run: |
-          echo "pwd"; pwd
-          echo "ls"; ls
-          BUILD_DIR="${{ steps.resolve.outputs.BUILD_DIR }}"
+          BUILD_DIR=$DIST_FOLDER_FOR_S3
           if [ -z "$BUILD_DIR" ]; then BUILD_DIR="dist"; fi
           echo "Deploying from: hl-web/$BUILD_DIR"
           aws s3 sync "hl-web/$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
