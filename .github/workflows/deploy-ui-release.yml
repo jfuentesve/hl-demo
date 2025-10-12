@@ -14,7 +14,7 @@ defaults:
     working-directory: hl-web
 
 env:
-  BUILD_DIR: dist/hl-web/browser
+  BUILD_DIR: hl-web/dist/hl-web/browser
 
 jobs:
   deploy:
