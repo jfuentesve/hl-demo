@@ -1,0 +1,77 @@
+name: Deploy PROD (Angular → S3/CloudFront)
+
+on:
+  push:
+    branches: [ "ui-release" ]
+    paths:
+      - 'hl-web/**'
+      - '.github/workflows/deploy-ui-release.yml'
+  workflow_dispatch: {}
+
+# Set once so every run step occurs in the subfolder
+defaults:
+  run:
+    working-directory: hl-web
+
+env:
+  NODE_VERSION: '20'
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: hl-web/package-lock.json  # 👈 point to subfolder lockfile
+
+
+      - name: Build Angular
+        working-directory: hl-web                         # 👈 run inside subfolder
+        run: |
+          npm ci
+          npm run build -- --configuration=production
+      
+      - name: Resolve build dir
+        id: resolve
+        shell: bash
+        working-directory: hl-web
+        run: |
+          set -e
+          # Try angular.json first
+          OUT=$(
+            node -e "const fs=require('fs');const ws=JSON.parse(fs.readFileSync('angular.json','utf8'));const g=p=>p?.architect?.build?.options?.outputPath||p?.targets?.build?.options?.outputPath||null;let o=null;if(ws.defaultProject&&ws.projects?.[ws.defaultProject])o=g(ws.projects[ws.defaultProject]);if(!o&&ws.projects){for(const k of Object.keys(ws.projects)){o=g(ws.projects[k]);if(o)break}}if(o)console.log(o)"
+          )
+          # Fallback: pick the newest dist directory that contains index.html
+          if [ -z "$OUT" ]; then
+            OUT=$(find dist -type f -name index.html -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n1 | awk '{print $2}' | sed 's#/index.html##') || true
+          fi
+          if [ -z "$OUT" ]; then
+            echo "Could not resolve build directory"; exit 1
+          fi
+          echo "BUILD_DIR=$OUT" >> "$GITHUB_OUTPUT"
+          echo "Resolved BUILD_DIR: $OUT"
+          ls -la "$OUT"
+          
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Sync to S3
+        run: |
+          BUILD_DIR="${{ steps.resolve.outputs.BUILD_DIR }}"
+          if [ -z "$BUILD_DIR" ]; then BUILD_DIR="dist"; fi
+          echo "Deploying from: $BUILD_DIR"
+          aws s3 sync "$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
+
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_ID }} --paths "/*"
