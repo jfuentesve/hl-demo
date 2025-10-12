@@ -68,7 +68,7 @@ jobs:
 
       - name: Sync to S3
         run: |
-          BUILD_DIR="${{ steps.detect.outputs.BUILD_DIR }}"
+          BUILD_DIR="${{ steps.resolve.outputs.BUILD_DIR }}"
           if [ -z "$BUILD_DIR" ]; then BUILD_DIR="dist"; fi
           echo "Deploying from: hl-web/$BUILD_DIR"
           aws s3 sync "hl-web/$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
