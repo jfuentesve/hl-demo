@@ -262,6 +262,7 @@
     "loading": "Loading deals…",
     "empty": "No deals registered yet. Use \"New deal\" to create one.",
     "columns": {
+      "id": "ID",
       "name": "Name",
       "client": "Client",
       "amount": "Amount",
@@ -270,6 +271,14 @@
     "tooltips": {
       "edit": "Edit deal",
       "delete": "Delete deal"
+    },
+    "filters": {
+      "id": "Filter ID",
+      "name": "Filter by name",
+      "client": "Filter by client",
+      "amount": "Filter amount",
+      "clear": "Clear filter",
+      "clearAll": "Clear filters"
     },
     "loginPrompt": "Please log in to view this page.",
     "errorLoad": "Unable to load deals. Please try again.",

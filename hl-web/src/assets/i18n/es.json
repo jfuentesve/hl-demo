@@ -262,6 +262,7 @@
     "loading": "Cargando deals…",
     "empty": "Aún no hay deals registrados. Usa \"Nuevo deal\" para crear uno.",
     "columns": {
+      "id": "ID",
       "name": "Nombre",
       "client": "Cliente",
       "amount": "Monto",
@@ -270,6 +271,14 @@
     "tooltips": {
       "edit": "Editar deal",
       "delete": "Eliminar deal"
+    },
+    "filters": {
+      "id": "Filtrar ID",
+      "name": "Filtrar por nombre",
+      "client": "Filtrar por cliente",
+      "amount": "Filtrar monto",
+      "clear": "Borrar filtro",
+      "clearAll": "Borrar filtros"
     },
     "loginPrompt": "Por favor inicia sesión para ver esta página.",
     "errorLoad": "No fue posible obtener los deals. Intenta nuevamente.",
