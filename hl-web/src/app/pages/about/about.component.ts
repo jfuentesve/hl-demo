@@ -53,26 +53,50 @@ export class AboutComponent {
     }
   ];
 
-  readonly pipelineStages = [
+  readonly pipelineFlows = [
     {
-      icons: [],
-      titleKey: 'about.pipeline.steps.build.title',
-      copyKey: 'about.pipeline.steps.build.copy'
+      badgeIcons: ['about/icon-codepipeline.svg', 'about/icon-ecs.svg'],
+      titleKey: 'about.pipeline.api.title',
+      copyKey: 'about.pipeline.api.copy',
+      stages: [
+        {
+          titleKey: 'about.pipeline.api.stages.source.title',
+          copyKey: 'about.pipeline.api.stages.source.copy',
+          icons: ['about/icon-codepipeline.svg']
+        },
+        {
+          titleKey: 'about.pipeline.api.stages.build.title',
+          copyKey: 'about.pipeline.api.stages.build.copy',
+          icons: ['about/icon-codebuild.svg', 'about/icon-docker.svg', 'about/icon-ecr.svg']
+        },
+        {
+          titleKey: 'about.pipeline.api.stages.deploy.title',
+          copyKey: 'about.pipeline.api.stages.deploy.copy',
+          icons: ['about/icon-ecs.svg']
+        }
+      ]
     },
     {
-      icons: ['about/icon-docker.svg', 'about/icon-ecr.svg'],
-      titleKey: 'about.pipeline.steps.registry.title',
-      copyKey: 'about.pipeline.steps.registry.copy'
-    },
-    {
-      icons: ['about/icon-s3.svg', 'about/icon-cloudfront.svg'],
-      titleKey: 'about.pipeline.steps.frontend.title',
-      copyKey: 'about.pipeline.steps.frontend.copy'
-    },
-    {
-      icons: ['about/icon-ecs.svg'],
-      titleKey: 'about.pipeline.steps.backend.title',
-      copyKey: 'about.pipeline.steps.backend.copy'
+      badgeIcons: ['about/icon-github.svg', 'about/icon-github-actions.png', 'about/icon-cloudfront.svg'],
+      titleKey: 'about.pipeline.ui.title',
+      copyKey: 'about.pipeline.ui.copy',
+      stages: [
+        {
+          titleKey: 'about.pipeline.ui.stages.source.title',
+          copyKey: 'about.pipeline.ui.stages.source.copy',
+          icons: ['about/icon-github.svg', 'about/icon-github-actions.png']
+        },
+        {
+          titleKey: 'about.pipeline.ui.stages.build.title',
+          copyKey: 'about.pipeline.ui.stages.build.copy',
+          icons: ['about/icon-github-actions.png', 'about/icon-angular.svg']
+        },
+        {
+          titleKey: 'about.pipeline.ui.stages.deploy.title',
+          copyKey: 'about.pipeline.ui.stages.deploy.copy',
+          icons: ['about/icon-s3.svg', 'about/icon-cloudfront.svg']
+        }
+      ]
     }
   ];
 
