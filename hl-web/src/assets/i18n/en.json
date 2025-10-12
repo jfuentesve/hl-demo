@@ -92,7 +92,7 @@
       "snapshot": {
         "title": "Stack snapshot",
         "items": [
-          "Frontend: Angular 17, Material Design standalone",
+          "Frontend: Angular 19, Material Design standalone",
           "Backend: ASP.NET Core 8, EF Core, JWT",
           "Infra: AWS VPC, CloudFront, ALB, ECS Fargate, RDS SQL Server",
           "IaC & DevOps: Terraform, Docker, Amazon ECR"
@@ -132,7 +132,7 @@
         "description": "ASP.NET Core API runtime with enterprise-grade performance."
       },
       "angular": {
-        "name": "Angular 17",
+        "name": "Angular 19",
         "description": "Modular frontend built with standalone components and Angular Material."
       },
       "terraform": {
