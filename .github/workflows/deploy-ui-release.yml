@@ -38,6 +38,14 @@ jobs:
         run: |
           npm ci
           npm run build -- --configuration=production
+      
+      - name: Detect build output path
+        id: detect
+        shell: bash
+        working-directory: hl-web
+        run: |
+          OUT=$(node -e "const f=require('./angular.json'); function find(o){ if(o&&typeof o==='object'){ if('outputPath'in o) return o.outputPath; for(const k of Object.keys(o)){ const r=find(o[k]); if(r) return r; } } }; const p=find(f); if(!p){ process.exit(1);} console.log(p);")
+          echo "BUILD_DIR=$OUT" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
@@ -46,7 +54,11 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Sync to S3
-        run: aws s3 sync ${{ env.BUILD_DIR }} s3://${{ vars.S3_BUCKET }} --delete --only-show-errors
+        run: |
+          BUILD_DIR="${{ steps.detect.outputs.BUILD_DIR }}"
+          if [ -z "$BUILD_DIR" ]; then BUILD_DIR="dist"; fi
+          echo "Deploying from: hl-web/$BUILD_DIR"
+          aws s3 sync "hl-web/$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
 
       - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_ID }} --paths "/*"
