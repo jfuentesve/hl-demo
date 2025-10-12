@@ -103,6 +103,22 @@
     },
     "tech": {
       "heading": "Servicios y tecnologías destacadas",
+      "github": {
+        "name": "GitHub",
+        "description": "Rama release con merges protegidos y revisiones obligatorias antes de cada despliegue."
+      },
+      "githubActions": {
+        "name": "GitHub Actions",
+        "description": "Workflows de CI que construyen la SPA de Angular y publican los artefactos estáticos."
+      },
+      "codepipeline": {
+        "name": "AWS CodePipeline",
+        "description": "Pipeline administrado que coordina las fases de origen, build y despliegue para la API."
+      },
+      "codebuild": {
+        "name": "AWS CodeBuild",
+        "description": "Plataforma efímera de build que compila .NET, construye imágenes Docker y publica en ECR."
+      },
       "route53": {
         "name": "Amazon Route 53",
         "description": "DNS administrado con health checks y enrutamiento de baja latencia."
@@ -122,6 +138,10 @@
       "ecs": {
         "name": "Amazon ECS Fargate",
         "description": "Orquestación serverless para contenedores .NET con aislamiento administrado."
+      },
+      "docker": {
+        "name": "Docker",
+        "description": "Imágenes de contenedor generadas en CI y reutilizadas localmente para mantener paridad con producción."
       },
       "rds": {
         "name": "Amazon RDS",
@@ -182,23 +202,41 @@
     },
     "pipeline": {
       "title": "Flujo de despliegue automatizado",
-      "copy": "Desde los scripts locales hasta la publicación en ECS y CloudFront.",
-      "steps": {
-        "build": {
-          "title": "Build local",
-          "copy": "api-build-push-local.sh ejecuta dotnet publish, build Docker y push a ECR. ui-build-push-local.sh ejecuta ng build y prepara assets."
-        },
-        "registry": {
-          "title": "Registro",
-          "copy": "Imágenes versionadas en Amazon ECR para ECS Fargate."
-        },
-        "frontend": {
-          "title": "Front-end",
-          "copy": "Assets sincronizados al bucket S3 y cache invalidado en CloudFront."
-        },
-        "backend": {
-          "title": "Back-end",
-          "copy": "Nueva Task Definition registrada y servicio ECS actualizado para la API."
+      "copy": "Dos pipelines mantienen en sincronía API y UI sin tareas manuales.",
+      "api": {
+        "title": "API · AWS CodePipeline hacia ECS",
+        "copy": "CodePipeline coordina la construcción de la imagen Docker y el despliegue en ECS cada vez que avanza la rama release.",
+        "stages": {
+          "source": {
+            "title": "Fase de origen",
+            "copy": "Commits en la rama release de GitHub disparan la ejecución de AWS CodePipeline."
+          },
+          "build": {
+            "title": "Fase de build",
+            "copy": "AWS CodeBuild ejecuta dotnet publish, docker build y publica la imagen en Amazon ECR."
+          },
+          "deploy": {
+            "title": "Fase de despliegue",
+            "copy": "Amazon ECS Fargate actualiza el servicio productivo con la nueva imagen detrás del ALB público."
+          }
+        }
+      },
+      "ui": {
+        "title": "UI · GitHub Actions hacia CloudFront",
+        "copy": "Un workflow de GitHub compila la SPA de Angular, sincroniza S3 e invalida las cachés de CloudFront.",
+        "stages": {
+          "source": {
+            "title": "Disparador de origen",
+            "copy": "El workflow se ejecuta cada vez que la rama release recibe cambios en GitHub."
+          },
+          "build": {
+            "title": "Build y empaquetado",
+            "copy": "Instala dependencias, genera el build de producción de Angular y prepara los artefactos estáticos."
+          },
+          "deploy": {
+            "title": "Despliegue e invalidación",
+            "copy": "Los artefactos se sincronizan al bucket S3 y se invalidan globalmente los edge caches de CloudFront."
+          }
         }
       }
     },
@@ -210,7 +248,7 @@
         "Bucket S3 privado accesible solo mediante Origin Access Identity.",
         "JWT firmados con claves rotables y CORS configurado para clientes confiables.",
         "Subredes privadas para ECS y RDS, con SG mínimos necesarios.",
-        "Scripts de despliegue que fuerzan invalidaciones de caché y versiones consistentes."
+        "Pipelines automatizados invalidan cachés y publican artefactos versionados en cada entorno."
       ]
     }
   },

@@ -68,18 +68,38 @@
   <section class="pipeline">
     <h2>{{ 'about.pipeline.title' | translate }}</h2>
     <p>{{ 'about.pipeline.copy' | translate }}</p>
-    <div class="pipeline-grid">
-      @for (stage of pipelineStages; track stage.titleKey; let idx = $index) {
-        <div class="stage">
-          @for (icon of stage.icons; track icon) {
-            <img [src]="icon" alt="" />
-          }
-          <h3>{{ stage.titleKey | translate }}</h3>
-          <p [innerHTML]="stage.copyKey | translate"></p>
-        </div>
-        @if (idx < pipelineStages.length - 1) {
-          <div class="arrow">→</div>
-        }
+    <div class="pipeline-flows">
+      @for (flow of pipelineFlows; track flow.titleKey) {
+        <article class="flow-card">
+          <header>
+            <div class="flow-icons">
+              @for (icon of flow.badgeIcons; track icon) {
+                <img [src]="icon" alt="" />
+              }
+            </div>
+            <div class="flow-copy">
+              <h3>{{ flow.titleKey | translate }}</h3>
+              <p>{{ flow.copyKey | translate }}</p>
+            </div>
+          </header>
+
+          <div class="flow-stages">
+            @for (stage of flow.stages; track stage.titleKey; let idx = $index) {
+              <div class="stage">
+                <div class="stage-icons">
+                  @for (icon of stage.icons; track icon) {
+                    <img [src]="icon" alt="" />
+                  }
+                </div>
+                <h4>{{ stage.titleKey | translate }}</h4>
+                <p [innerHTML]="stage.copyKey | translate"></p>
+              </div>
+              @if (idx < flow.stages.length - 1) {
+                <div class="stage-arrow">→</div>
+              }
+            }
+          </div>
+        </article>
       }
     </div>
   </section>

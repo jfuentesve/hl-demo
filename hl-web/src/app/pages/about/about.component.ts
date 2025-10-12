@@ -53,30 +53,84 @@ export class AboutComponent {
     }
   ];
 
-  readonly pipelineStages = [
+  readonly pipelineFlows = [
     {
-      icons: [],
-      titleKey: 'about.pipeline.steps.build.title',
-      copyKey: 'about.pipeline.steps.build.copy'
+      badgeIcons: ['about/icon-codepipeline.svg', 'about/icon-ecs.svg'],
+      titleKey: 'about.pipeline.api.title',
+      copyKey: 'about.pipeline.api.copy',
+      stages: [
+        {
+          titleKey: 'about.pipeline.api.stages.source.title',
+          copyKey: 'about.pipeline.api.stages.source.copy',
+          icons: ['about/icon-codepipeline.svg']
+        },
+        {
+          titleKey: 'about.pipeline.api.stages.build.title',
+          copyKey: 'about.pipeline.api.stages.build.copy',
+          icons: ['about/icon-codebuild.svg', 'about/icon-docker.svg', 'about/icon-ecr.svg']
+        },
+        {
+          titleKey: 'about.pipeline.api.stages.deploy.title',
+          copyKey: 'about.pipeline.api.stages.deploy.copy',
+          icons: ['about/icon-ecs.svg']
+        }
+      ]
     },
     {
-      icons: ['about/icon-docker.svg', 'about/icon-ecr.svg'],
-      titleKey: 'about.pipeline.steps.registry.title',
-      copyKey: 'about.pipeline.steps.registry.copy'
-    },
-    {
-      icons: ['about/icon-s3.svg', 'about/icon-cloudfront.svg'],
-      titleKey: 'about.pipeline.steps.frontend.title',
-      copyKey: 'about.pipeline.steps.frontend.copy'
-    },
-    {
-      icons: ['about/icon-ecs.svg'],
-      titleKey: 'about.pipeline.steps.backend.title',
-      copyKey: 'about.pipeline.steps.backend.copy'
+      badgeIcons: ['about/icon-github.svg', 'about/icon-github-actions.png', 'about/icon-cloudfront.svg'],
+      titleKey: 'about.pipeline.ui.title',
+      copyKey: 'about.pipeline.ui.copy',
+      stages: [
+        {
+          titleKey: 'about.pipeline.ui.stages.source.title',
+          copyKey: 'about.pipeline.ui.stages.source.copy',
+          icons: ['about/icon-github.svg', 'about/icon-github-actions.png']
+        },
+        {
+          titleKey: 'about.pipeline.ui.stages.build.title',
+          copyKey: 'about.pipeline.ui.stages.build.copy',
+          icons: ['about/icon-github-actions.png', 'about/icon-angular.svg']
+        },
+        {
+          titleKey: 'about.pipeline.ui.stages.deploy.title',
+          copyKey: 'about.pipeline.ui.stages.deploy.copy',
+          icons: ['about/icon-s3.svg', 'about/icon-cloudfront.svg']
+        }
+      ]
     }
   ];
 
   readonly techStack: TechItem[] = [
+    {
+      nameKey: 'about.tech.github.name',
+      descriptionKey: 'about.tech.github.description',
+      icon: 'about/icon-github.svg'
+    },
+    {
+      nameKey: 'about.tech.githubActions.name',
+      descriptionKey: 'about.tech.githubActions.description',
+      icon: 'about/icon-github-actions.png'
+    },
+    {
+      nameKey: 'about.tech.codepipeline.name',
+      descriptionKey: 'about.tech.codepipeline.description',
+      icon: 'about/icon-codepipeline.svg'
+    },
+    {
+      nameKey: 'about.tech.codebuild.name',
+      descriptionKey: 'about.tech.codebuild.description',
+      icon: 'about/icon-codebuild.svg'
+    },
+    {
+      nameKey: 'about.tech.ecs.name',
+      descriptionKey: 'about.tech.ecs.description',
+      icon: 'about/icon-ecs.svg'
+    },
+    {
+      nameKey: 'about.tech.docker.name',
+      descriptionKey: 'about.tech.docker.description',
+      icon: 'about/icon-docker.svg'
+    },
     {
       nameKey: 'about.tech.route53.name',
       descriptionKey: 'about.tech.route53.description',
@@ -96,11 +150,6 @@ export class AboutComponent {
       nameKey: 'about.tech.alb.name',
       descriptionKey: 'about.tech.alb.description',
       icon: 'about/icon-alb.svg'
-    },
-    {
-      nameKey: 'about.tech.ecs.name',
-      descriptionKey: 'about.tech.ecs.description',
-      icon: 'about/icon-ecs.svg'
     },
     {
       nameKey: 'about.tech.rds.name',
