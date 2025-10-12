@@ -71,8 +71,8 @@ jobs:
         run: |
           BUILD_DIR=$DIST_FOLDER_FOR_S3
           if [ -z "$BUILD_DIR" ]; then BUILD_DIR="dist"; fi
-          echo "Deploying from: hl-web/$BUILD_DIR"
-          aws s3 sync "hl-web/$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
+          echo "Deploying from: $BUILD_DIR"
+          aws s3 sync "$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
 
       - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_ID }} --paths "/*"
