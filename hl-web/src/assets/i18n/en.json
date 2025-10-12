@@ -17,7 +17,7 @@
       "title": "Accelerate your investments with reliable insights, operational speed, and impeccable governance.",
       "subtitle": "HL Deals centralizes origination, structuring, and monitoring for investment banking teams, private equity, and credit fintechs. Make data-driven decisions with controls designed for regulatory audits.",
       "ctaPrimary": "Access the platform",
-      "ctaSecondary": "Explore interactive demo"
+      "ctaSecondary": "Explore demo architecture"
     },
     "highlights": {
       "transactions": "in transactions enabled",
@@ -76,7 +76,8 @@
         "Multi-tenant architecture with end-to-end encryption",
         "Open APIs for core banking and leading ERPs",
         "Customer Success team specialized in finance"
-      ]
+      ],
+      "benefitsCta": "Explore the architecture"
     },
     "cta": {
       "heading": "Ready to accelerate your deal desk?",

@@ -17,7 +17,7 @@
       "title": "Impulsa tus inversiones con información confiable, velocidad operativa y gobierno impecable.",
       "subtitle": "HL Deals centraliza originación, estructuración y seguimiento para equipos de banca de inversión, private equity y fintechs de crédito. Toma decisiones basadas en datos, con controles diseñados para auditorías regulatorias.",
       "ctaPrimary": "Ingresar a la plataforma",
-      "ctaSecondary": "Explorar demo interactiva"
+      "ctaSecondary": "Explorar la arquitectura del demo"
     },
     "highlights": {
       "transactions": "en transacciones habilitadas",
@@ -76,7 +76,8 @@
         "Arquitectura multi-tenant con cifrado end-to-end",
         "APIs abiertas para core bancario y ERPs líderes",
         "Equipo de Customer Success especializado en finanzas"
-      ]
+      ],
+      "benefitsCta": "Explorar la arquitectura"
     },
     "cta": {
       "heading": "¿Listo para acelerar tu mesa de deals?",
