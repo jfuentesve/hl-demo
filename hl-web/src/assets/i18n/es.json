@@ -248,7 +248,7 @@
         "Bucket S3 privado accesible solo mediante Origin Access Identity.",
         "JWT firmados con claves rotables y CORS configurado para clientes confiables.",
         "Subredes privadas para ECS y RDS, con SG mínimos necesarios.",
-        "Scripts de despliegue que fuerzan invalidaciones de caché y versiones consistentes."
+        "Pipelines automatizados invalidan cachés y publican artefactos versionados en cada entorno."
       ]
     }
   },

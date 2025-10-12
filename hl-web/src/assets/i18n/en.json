@@ -248,7 +248,7 @@
         "Private S3 bucket accessible only through the Origin Access Identity.",
         "JWT signed with rotatable keys and CORS configured for trusted clients.",
         "Private subnets for ECS and RDS with minimal security groups.",
-        "Deployment scripts that enforce cache invalidations and consistent versions."
+        "Automated pipelines invalidate caches and roll out versioned artefacts across environments."
       ]
     }
   },
