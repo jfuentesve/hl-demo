@@ -69,7 +69,7 @@ jobs:
 
       - name: Sync to S3
         run: |
-          BUILD_DIR=$DIST_FOLDER_FOR_S3
+          BUILD_DIR="${{ steps.resolve.outputs.BUILD_DIR }}"
           if [ -z "$BUILD_DIR" ]; then BUILD_DIR="dist"; fi
           echo "Deploying from: $BUILD_DIR"
           aws s3 sync "$BUILD_DIR" "s3://${{ vars.S3_BUCKET }}" --delete --only-show-errors
