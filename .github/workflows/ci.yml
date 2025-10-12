@@ -5,11 +5,11 @@ on:
     paths:
       - 'hl-web/**'
       - '.github/workflows/ci.yml'
-  push:
-    branches: [ "ui-release" ]
-    paths:
-      - 'hl-web/**'
-      - '.github/workflows/ci.yml'
+  # push:
+  #   branches: [ "ui-release" ]
+  #   paths:
+  #     - 'hl-web/**'
+  #     - '.github/workflows/ci.yml'
 # Option A: set working dir globally for all run steps
 defaults:
   run:
