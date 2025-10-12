@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -40,8 +40,20 @@ import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog.component'
     TranslateModule
   ]
 })
-export class AdminComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatSort) sort?: MatSort;
+export class AdminComponent implements OnInit {
+  private _sort?: MatSort;
+
+  @ViewChild(MatSort)
+  set sort(sort: MatSort | undefined) {
+    this._sort = sort;
+    if (sort) {
+      this.dataSource.sort = sort;
+    }
+  }
+
+  get sort(): MatSort | undefined {
+    return this._sort;
+  }
 
   deals: Deal[] = [];
   users: User[] = USERS.filter(u => u.role !== 'viewer');
@@ -105,12 +117,6 @@ export class AdminComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.isAuth) {
       this.refresh();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
     }
   }
 
@@ -257,6 +263,8 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   private applyFilters(): void {
     const nextFilter = JSON.stringify(this.filters);
-    this.dataSource.filter = nextFilter === '{"id":"","name":"","client":"","amount":""}' ? '' : nextFilter;
+    this.dataSource.filter = Object.values(this.filters).every(val => !val)
+      ? ''
+      : nextFilter;
   }
 }
