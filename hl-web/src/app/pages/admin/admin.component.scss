@@ -122,11 +122,35 @@ h2 {
     }
 
     .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .mdc-floating-label {
+      color: rgba(255, 255, 255, 0.75);
     }
 
     .mat-mdc-icon-button {
       color: rgba(255, 255, 255, 0.8);
+    }
+
+    .mat-mdc-notched-outline {
+      --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.28);
+      --mdc-outlined-text-field-hover-outline-color: rgba(255, 255, 255, 0.45);
+      --mdc-outlined-text-field-focus-outline-color: #f4c95d;
+      --mdc-outlined-text-field-focus-label-text-color: #f4c95d;
+      --mdc-outlined-text-field-label-text-color: rgba(255, 255, 255, 0.75);
+    }
+    
+    --mat-form-field-outlined-label-text-color: rgba(255, 255, 255, 0.75);
+    --mat-form-field-outlined-outline-color: rgba(255, 255, 255, 0.28);
+    --mat-form-field-outlined-hover-label-text-color: rgba(255, 255, 255, 0.45);
+    --mat-form-field-outlined-hover-outline-color: rgba(255, 255, 255, 0.45);    
+    --mat-form-field-outlined-focus-outline-color: #f4c95d;
+    --mat-form-field-outlined-focus-label-text-color: #f4c95d;
+
+
+    .mat-sort-header-arrow {
+      color: #fff;
     }
   }
 }
