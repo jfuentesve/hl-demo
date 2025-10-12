@@ -76,8 +76,14 @@ h2 {
     vertical-align: middle;
   }
 
+  .mat-mdc-header-row {
+    background: linear-gradient(135deg, #1f3b73, #3f51b5);
+  }
+
   .mat-mdc-header-cell {
-    background: #f8fafc;
+    color: #fff;
+    border-bottom: none;
+    background: transparent;
   }
 
   .header-cell {
@@ -87,7 +93,7 @@ h2 {
 
     span {
       font-weight: 600;
-      color: #1f2937;
+      color: #fff;
     }
   }
 
@@ -98,6 +104,7 @@ h2 {
     .mat-mdc-text-field-wrapper {
       border-radius: 10px;
       padding: 0 12px;
+      background: rgba(255, 255, 255, 0.12);
     }
 
     .mat-mdc-form-field-infix {
@@ -108,6 +115,18 @@ h2 {
 
     .mat-mdc-form-field-subscript-wrapper {
       display: none;
+    }
+
+    .mat-mdc-input-element {
+      color: #fff;
+    }
+
+    .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .mat-mdc-icon-button {
+      color: rgba(255, 255, 255, 0.8);
     }
   }
 }
@@ -135,6 +154,15 @@ h2 {
     .toolbar-meta {
       justify-content: space-between;
       width: 100%;
+      gap: 10px;
+
+      .summary {
+        flex: 1;
+      }
+
+      .clear-filters {
+        flex: 1;
+      }
     }
   }
 
