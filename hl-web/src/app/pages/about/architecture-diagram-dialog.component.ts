@@ -8,9 +8,10 @@ import { MatDialogModule } from '@angular/material/dialog';
   template: `
     <h2 mat-dialog-title>Architecture diagram</h2>
     <mat-dialog-content>
-      <div class="diagram-wrapper">
+      <picture class="diagram-wrapper">
+        <source srcset="about/architecture-mobile@2x.png 2x" />
         <img src="about/architecture-mobile.png" alt="AWS architecture diagram" />
-      </div>
+      </picture>
     </mat-dialog-content>
   `,
   styles: [
