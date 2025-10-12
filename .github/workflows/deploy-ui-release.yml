@@ -14,7 +14,7 @@ defaults:
     working-directory: hl-web
 
 env:
-  BUILD_DIR: hl-web/dist/hl-web/browser
+  NODE_VERSION: '20'
 
 jobs:
   deploy:
@@ -28,7 +28,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: hl-web/package-lock.json  # 👈 point to subfolder lockfile
 
