@@ -6,7 +6,7 @@ on:
     paths:
       - 'hl-web/**'
       - '.github/workflows/deploy-ui-release.yml'
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 # Set once so every run step occurs in the subfolder
 defaults:
