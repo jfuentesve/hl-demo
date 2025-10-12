@@ -102,6 +102,36 @@ export class AboutComponent {
 
   readonly techStack: TechItem[] = [
     {
+      nameKey: 'about.tech.github.name',
+      descriptionKey: 'about.tech.github.description',
+      icon: 'about/icon-github.svg'
+    },
+    {
+      nameKey: 'about.tech.githubActions.name',
+      descriptionKey: 'about.tech.githubActions.description',
+      icon: 'about/icon-github-actions.png'
+    },
+    {
+      nameKey: 'about.tech.codepipeline.name',
+      descriptionKey: 'about.tech.codepipeline.description',
+      icon: 'about/icon-codepipeline.svg'
+    },
+    {
+      nameKey: 'about.tech.codebuild.name',
+      descriptionKey: 'about.tech.codebuild.description',
+      icon: 'about/icon-codebuild.svg'
+    },
+    {
+      nameKey: 'about.tech.ecs.name',
+      descriptionKey: 'about.tech.ecs.description',
+      icon: 'about/icon-ecs.svg'
+    },
+    {
+      nameKey: 'about.tech.docker.name',
+      descriptionKey: 'about.tech.docker.description',
+      icon: 'about/icon-docker.svg'
+    },
+    {
       nameKey: 'about.tech.route53.name',
       descriptionKey: 'about.tech.route53.description',
       icon: 'about/icon-route53.svg'
@@ -120,11 +150,6 @@ export class AboutComponent {
       nameKey: 'about.tech.alb.name',
       descriptionKey: 'about.tech.alb.description',
       icon: 'about/icon-alb.svg'
-    },
-    {
-      nameKey: 'about.tech.ecs.name',
-      descriptionKey: 'about.tech.ecs.description',
-      icon: 'about/icon-ecs.svg'
     },
     {
       nameKey: 'about.tech.rds.name',

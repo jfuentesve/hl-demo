@@ -103,6 +103,22 @@
     },
     "tech": {
       "heading": "Featured services and technologies",
+      "github": {
+        "name": "GitHub",
+        "description": "Release branch with protected merges and required reviews for every deployment."
+      },
+      "githubActions": {
+        "name": "GitHub Actions",
+        "description": "CI workflows that build the Angular SPA and publish static assets automatically."
+      },
+      "codepipeline": {
+        "name": "AWS CodePipeline",
+        "description": "Managed pipeline that sequences source, build, and deploy stages for the API."
+      },
+      "codebuild": {
+        "name": "AWS CodeBuild",
+        "description": "Ephemeral build fleet compiling .NET, building Docker images, and pushing to ECR."
+      },
       "route53": {
         "name": "Amazon Route 53",
         "description": "Managed DNS with health checks and low-latency routing."
@@ -122,6 +138,10 @@
       "ecs": {
         "name": "Amazon ECS Fargate",
         "description": "Serverless container orchestration for .NET workloads on Fargate."
+      },
+      "docker": {
+        "name": "Docker",
+        "description": "Container images produced in CI and reused locally for parity with production."
       },
       "rds": {
         "name": "Amazon RDS",

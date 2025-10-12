@@ -103,6 +103,22 @@
     },
     "tech": {
       "heading": "Servicios y tecnologías destacadas",
+      "github": {
+        "name": "GitHub",
+        "description": "Rama release con merges protegidos y revisiones obligatorias antes de cada despliegue."
+      },
+      "githubActions": {
+        "name": "GitHub Actions",
+        "description": "Workflows de CI que construyen la SPA de Angular y publican los artefactos estáticos."
+      },
+      "codepipeline": {
+        "name": "AWS CodePipeline",
+        "description": "Pipeline administrado que coordina las fases de origen, build y despliegue para la API."
+      },
+      "codebuild": {
+        "name": "AWS CodeBuild",
+        "description": "Plataforma efímera de build que compila .NET, construye imágenes Docker y publica en ECR."
+      },
       "route53": {
         "name": "Amazon Route 53",
         "description": "DNS administrado con health checks y enrutamiento de baja latencia."
@@ -122,6 +138,10 @@
       "ecs": {
         "name": "Amazon ECS Fargate",
         "description": "Orquestación serverless para contenedores .NET con aislamiento administrado."
+      },
+      "docker": {
+        "name": "Docker",
+        "description": "Imágenes de contenedor generadas en CI y reutilizadas localmente para mantener paridad con producción."
       },
       "rds": {
         "name": "Amazon RDS",
