@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 interface TechItem {
   nameKey: string;
@@ -14,10 +17,10 @@ interface TechItem {
   standalone: true,
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
-  imports: [CommonModule, RouterModule, TranslateModule]
+  imports: [CommonModule, RouterModule, TranslateModule, MatDialogModule, MatButtonModule, MatIconModule]
 })
 export class AboutComponent {
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService, private dialog: MatDialog) {}
 
   get currentLang(): 'en' | 'es' {
     const lang = (this.translate.currentLang ?? '').toLowerCase();
@@ -185,4 +188,13 @@ export class AboutComponent {
     'about.security.items.3',
     'about.security.items.4'
   ];
+
+  openDiagram(): void {
+    import('./architecture-diagram-dialog.component').then(({ ArchitectureDiagramDialogComponent }) => {
+      this.dialog.open(ArchitectureDiagramDialogComponent, {
+        panelClass: 'architecture-dialog',
+        maxWidth: '90vw'
+      });
+    });
+  }
 }

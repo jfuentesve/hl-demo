@@ -166,6 +166,9 @@
     },
     "architecture": {
       "title": "Arquitectura AWS",
+      "mobile": {
+        "cta": "Ver diagrama completo"
+      },
       "note": "Los certificados TLS provienen de ACM (us-east-1) y protegen tanto CloudFront como el ALB.",
       "chain": {
         "clients": {
