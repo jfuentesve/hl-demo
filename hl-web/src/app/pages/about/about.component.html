@@ -20,43 +20,56 @@
 
   <section class="architecture">
     <h2>{{ 'about.architecture.title' | translate }}</h2>
-    <div class="diagram-architecture">
-      <div class="chain">
-        @for (item of architectureChain; track item.titleKey; let idx = $index) {
-          <div class="node" [ngClass]="{ 'clients': item.icon === 'about/icon-users.svg' }">
-            <img [src]="item.icon" [alt]="item.titleKey | translate" />
-            <h3>{{ item.titleKey | translate }}</h3>
-            <p [innerHTML]="item.copyKey | translate"></p>
-          </div>
-          @if (idx < architectureChain.length - 1) {
-            <div class="arrow">→</div>
-          }
-        }
-      </div>
 
-      <div class="vpc">
-        <div class="vpc-header">AWS VPC</div>
-        <div class="vpc-content">
-          <div class="subnet public">
-            <div class="subnet-header">{{ 'about.architecture.publicSubnet' | translate }}</div>
-            <div class="node alb">
-              <img src="about/icon-alb.svg" alt="Application Load Balancer" />
-              <h3>{{ 'about.architecture.alb.title' | translate }}</h3>
-              <p [innerHTML]="'about.architecture.alb.copy' | translate"></p>
+    <div class="architecture-mobile">
+      <picture>
+        <source srcset="about/architecture-mobile@2x.png 2x" />
+        <img src="about/architecture-mobile.png" alt="{{ 'about.architecture.title' | translate }}" />
+      </picture>
+      <button mat-stroked-button color="primary" (click)="openDiagram()">
+        {{ 'about.architecture.mobile.cta' | translate }}
+      </button>
+    </div>
+
+    <div class="architecture-desktop">
+      <div class="diagram-architecture">
+        <div class="chain">
+          @for (item of architectureChain; track item.titleKey; let idx = $index) {
+            <div class="node" [ngClass]="{ 'clients': item.icon === 'about/icon-users.svg' }">
+              <img [src]="item.icon" [alt]="item.titleKey | translate" />
+              <h3>{{ item.titleKey | translate }}</h3>
+              <p [innerHTML]="item.copyKey | translate"></p>
             </div>
-          </div>
-          <div class="subnet private">
-            <div class="subnet-header">{{ 'about.architecture.privateSubnet' | translate }}</div>
-            <div class="node ecs">
-              <img src="about/icon-ecs.svg" alt="Amazon ECS Fargate" />
-              <h3>{{ 'about.architecture.ecs.title' | translate }}</h3>
-              <p [innerHTML]="'about.architecture.ecs.copy' | translate"></p>
+            @if (idx < architectureChain.length - 1) {
+              <div class="arrow">→</div>
+            }
+          }
+        </div>
+
+        <div class="vpc">
+          <div class="vpc-header">AWS VPC</div>
+          <div class="vpc-content">
+            <div class="subnet public">
+              <div class="subnet-header">{{ 'about.architecture.publicSubnet' | translate }}</div>
+              <div class="node alb">
+                <img src="about/icon-alb.svg" alt="Application Load Balancer" />
+                <h3>{{ 'about.architecture.alb.title' | translate }}</h3>
+                <p [innerHTML]="'about.architecture.alb.copy' | translate"></p>
+              </div>
             </div>
-            <div class="arrow vertical">↓</div>
-            <div class="node rds">
-              <img src="about/icon-rds.svg" alt="Amazon RDS" />
-              <h3>{{ 'about.architecture.rds.title' | translate }}</h3>
-              <p [innerHTML]="'about.architecture.rds.copy' | translate"></p>
+            <div class="subnet private">
+              <div class="subnet-header">{{ 'about.architecture.privateSubnet' | translate }}</div>
+              <div class="node ecs">
+                <img src="about/icon-ecs.svg" alt="Amazon ECS Fargate" />
+                <h3>{{ 'about.architecture.ecs.title' | translate }}</h3>
+                <p [innerHTML]="'about.architecture.ecs.copy' | translate"></p>
+              </div>
+              <div class="arrow vertical">↓</div>
+              <div class="node rds">
+                <img src="about/icon-rds.svg" alt="Amazon RDS" />
+                <h3>{{ 'about.architecture.rds.title' | translate }}</h3>
+                <p [innerHTML]="'about.architecture.rds.copy' | translate"></p>
+              </div>
             </div>
           </div>
         </div>
@@ -68,18 +81,38 @@
   <section class="pipeline">
     <h2>{{ 'about.pipeline.title' | translate }}</h2>
     <p>{{ 'about.pipeline.copy' | translate }}</p>
-    <div class="pipeline-grid">
-      @for (stage of pipelineStages; track stage.titleKey; let idx = $index) {
-        <div class="stage">
-          @for (icon of stage.icons; track icon) {
-            <img [src]="icon" alt="" />
-          }
-          <h3>{{ stage.titleKey | translate }}</h3>
-          <p [innerHTML]="stage.copyKey | translate"></p>
-        </div>
-        @if (idx < pipelineStages.length - 1) {
-          <div class="arrow">→</div>
-        }
+    <div class="pipeline-flows">
+      @for (flow of pipelineFlows; track flow.titleKey) {
+        <article class="flow-card">
+          <header>
+            <div class="flow-icons">
+              @for (icon of flow.badgeIcons; track icon) {
+                <img [src]="icon" alt="" />
+              }
+            </div>
+            <div class="flow-copy">
+              <h3>{{ flow.titleKey | translate }}</h3>
+              <p>{{ flow.copyKey | translate }}</p>
+            </div>
+          </header>
+
+          <div class="flow-stages">
+            @for (stage of flow.stages; track stage.titleKey; let idx = $index) {
+              <div class="stage">
+                <div class="stage-icons">
+                  @for (icon of stage.icons; track icon) {
+                    <img [src]="icon" alt="" />
+                  }
+                </div>
+                <h4>{{ stage.titleKey | translate }}</h4>
+                <p [innerHTML]="stage.copyKey | translate"></p>
+              </div>
+              @if (idx < flow.stages.length - 1) {
+                <div class="stage-arrow" aria-hidden="true"></div>
+              }
+            }
+          </div>
+        </article>
       }
     </div>
   </section>

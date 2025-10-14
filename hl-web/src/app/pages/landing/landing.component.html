@@ -7,7 +7,7 @@
       <p class="hero-subtitle">{{ 'landing.hero.subtitle' | translate }}</p>
       <div class="hero-actions">
         <a [routerLink]="['/', currentLang, 'login']" class="btn btn-primary">{{ 'landing.hero.ctaPrimary' | translate }}</a>
-        <a [routerLink]="['/', currentLang, 'home']" class="btn btn-ghost">{{ 'landing.hero.ctaSecondary' | translate }}</a>
+        <a [routerLink]="['/', currentLang, 'about']" class="btn btn-ghost">{{ 'landing.hero.ctaSecondary' | translate }}</a>
       </div>
       <ul class="hero-highlights">
         @for (item of highlights; track item.labelKey) {
@@ -76,6 +76,12 @@
           <li>{{ benefit | translate }}</li>
         }
       </ul>
+      <a
+        [routerLink]="['/', currentLang, 'about']"
+        class="btn btn-primary explore-architecture"
+      >
+        {{ 'landing.workflow.benefitsCta' | translate }}
+      </a>
     </div>
   </section>
 

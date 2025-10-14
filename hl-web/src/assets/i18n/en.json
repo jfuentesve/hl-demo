@@ -17,7 +17,7 @@
       "title": "Accelerate your investments with reliable insights, operational speed, and impeccable governance.",
       "subtitle": "HL Deals centralizes origination, structuring, and monitoring for investment banking teams, private equity, and credit fintechs. Make data-driven decisions with controls designed for regulatory audits.",
       "ctaPrimary": "Access the platform",
-      "ctaSecondary": "Explore interactive demo"
+      "ctaSecondary": "Explore demo architecture"
     },
     "highlights": {
       "transactions": "in transactions enabled",
@@ -76,7 +76,8 @@
         "Multi-tenant architecture with end-to-end encryption",
         "Open APIs for core banking and leading ERPs",
         "Customer Success team specialized in finance"
-      ]
+      ],
+      "benefitsCta": "Explore the architecture"
     },
     "cta": {
       "heading": "Ready to accelerate your deal desk?",
@@ -103,6 +104,22 @@
     },
     "tech": {
       "heading": "Featured services and technologies",
+      "github": {
+        "name": "GitHub",
+        "description": "Release branch with protected merges and required reviews for every deployment."
+      },
+      "githubActions": {
+        "name": "GitHub Actions",
+        "description": "CI workflows that build the Angular SPA and publish static assets automatically."
+      },
+      "codepipeline": {
+        "name": "AWS CodePipeline",
+        "description": "Managed pipeline that sequences source, build, and deploy stages for the API."
+      },
+      "codebuild": {
+        "name": "AWS CodeBuild",
+        "description": "Ephemeral build fleet compiling .NET, building Docker images, and pushing to ECR."
+      },
       "route53": {
         "name": "Amazon Route 53",
         "description": "Managed DNS with health checks and low-latency routing."
@@ -122,6 +139,10 @@
       "ecs": {
         "name": "Amazon ECS Fargate",
         "description": "Serverless container orchestration for .NET workloads on Fargate."
+      },
+      "docker": {
+        "name": "Docker",
+        "description": "Container images produced in CI and reused locally for parity with production."
       },
       "rds": {
         "name": "Amazon RDS",
@@ -146,6 +167,9 @@
     },
     "architecture": {
       "title": "AWS architecture",
+      "mobile": {
+        "cta": "View full diagram"
+      },
       "note": "TLS certificates come from ACM (us-east-1) and protect both CloudFront and the ALB.",
       "chain": {
         "clients": {
@@ -182,23 +206,41 @@
     },
     "pipeline": {
       "title": "Automated deployment flow",
-      "copy": "From local scripts to publishing on ECS and CloudFront.",
-      "steps": {
-        "build": {
-          "title": "Local build",
-          "copy": "api-build-push-local.sh runs dotnet publish, Docker build, and push to ECR. ui-build-push-local.sh runs ng build and prepares assets."
-        },
-        "registry": {
-          "title": "Registry",
-          "copy": "Versioned images in Amazon ECR for ECS Fargate."
-        },
-        "frontend": {
-          "title": "Front-end",
-          "copy": "Assets synced to S3 bucket and CloudFront cache invalidated."
-        },
-        "backend": {
-          "title": "Back-end",
-          "copy": "New task definition registered and ECS service updated for the API."
+      "copy": "Independent pipelines keep the API and UI deploying continuously without manual pushes.",
+      "api": {
+        "title": "API · AWS CodePipeline to ECS",
+        "copy": "CodePipeline coordinates Docker image builds and deployments to ECS whenever the release branch advances.",
+        "stages": {
+          "source": {
+            "title": "Source phase",
+            "copy": "GitHub commits on the release branch trigger an AWS CodePipeline execution."
+          },
+          "build": {
+            "title": "Build phase",
+            "copy": "AWS CodeBuild runs dotnet publish, docker build, and pushes the image into Amazon ECR."
+          },
+          "deploy": {
+            "title": "Deploy phase",
+            "copy": "Amazon ECS Fargate refreshes the running service with the new image behind the public ALB."
+          }
+        }
+      },
+      "ui": {
+        "title": "UI · GitHub Actions to CloudFront",
+        "copy": "A GitHub Action compiles the Angular SPA, syncs S3, and invalidates CloudFront caches.",
+        "stages": {
+          "source": {
+            "title": "Source trigger",
+            "copy": "Workflow runs whenever the release branch is updated in GitHub."
+          },
+          "build": {
+            "title": "Build & package",
+            "copy": "Installs dependencies, builds the production Angular bundle, and prepares static assets."
+          },
+          "deploy": {
+            "title": "Deploy & invalidate",
+            "copy": "Artefacts sync to the S3 origin bucket and CloudFront edge caches are invalidated globally."
+          }
         }
       }
     },
@@ -210,7 +252,7 @@
         "Private S3 bucket accessible only through the Origin Access Identity.",
         "JWT signed with rotatable keys and CORS configured for trusted clients.",
         "Private subnets for ECS and RDS with minimal security groups.",
-        "Deployment scripts that enforce cache invalidations and consistent versions."
+        "Automated pipelines invalidate caches and roll out versioned artefacts across environments."
       ]
     }
   },
@@ -221,6 +263,7 @@
     "loading": "Loading deals…",
     "empty": "No deals registered yet. Use \"New deal\" to create one.",
     "columns": {
+      "id": "ID",
       "name": "Name",
       "client": "Client",
       "amount": "Amount",
@@ -229,6 +272,14 @@
     "tooltips": {
       "edit": "Edit deal",
       "delete": "Delete deal"
+    },
+    "filters": {
+      "id": "Filter ID",
+      "name": "Filter by name",
+      "client": "Filter by client",
+      "amount": "Filter amount",
+      "clear": "Clear filter",
+      "clearAll": "Clear filters"
     },
     "loginPrompt": "Please log in to view this page.",
     "errorLoad": "Unable to load deals. Please try again.",
