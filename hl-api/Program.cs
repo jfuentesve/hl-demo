@@ -61,7 +61,7 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 
             if (!string.IsNullOrEmpty(credentials.Password))
             {
-                sqlBuilder.Password = ***REDACTED***;
+                sqlBuilder.Password = credentials.Password;
             }
 
             if (!string.IsNullOrEmpty(credentials.Database))

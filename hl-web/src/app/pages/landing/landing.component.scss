@@ -272,6 +272,17 @@ $gold-accent: #f4c95d;
         margin-right: 8px;
       }
     }
+
+    .explore-architecture {
+      margin-top: 24px;
+      align-self: flex-start;
+      background: $gold-accent;
+      color: #1c2533;
+
+      &:hover {
+        background: lighten($gold-accent, 6%);
+      }
+    }
   }
 }
 
