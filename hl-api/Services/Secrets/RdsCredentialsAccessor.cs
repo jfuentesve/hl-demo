@@ -87,7 +87,7 @@ namespace HLApi.Services.Secrets
             return new DatabaseCredentials
             {
                 Username = builder.UserID,
-                Password = ***REDACTED***
+                Password = builder.Password,
                 Endpoint = builder.DataSource,
                 Port = builder.DataSource.Contains(",",
                         StringComparison.Ordinal) &&
