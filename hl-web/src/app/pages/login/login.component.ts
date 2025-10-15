@@ -22,7 +22,7 @@ type DemoUser = 'alice' | 'bob' | 'admin';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   username = '';
-  password = ***REDACTED***;
+  password = '';
   loading = false;
   error = '';
   bannerVisible = false;
@@ -78,13 +78,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private loginWithCredentials(username: string): void {
-    const password = ***REDACTED***;
+    const password = PASSWORDS[username];
     if (!password) {
       return;
     }
 
     this.username = username;
-    this.password = ***REDACTED***;
+    this.password = password;
     this.submit();
   }
 }
